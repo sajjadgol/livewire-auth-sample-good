@@ -32,10 +32,34 @@
                 @can('message-management')        
                     <li class="nav-item pe-3 {{ Route::currentRouteName() == 'messages' ? 'active' : '' }} ">
                         <a title="Messages" class="nav-link p-0 position-relative"   href="{{ route('message-management') }}">
-                            <span class="material-icons cursor-pointer d-inline-block align-top">mail</span>
+                            <span class="material-icons cursor-pointer d-inline-block align-top">sms</span>
                         </a>
                     </li> 
                 @endcan
+
+                <li class="nav-item dropdown pe-3">
+
+                    <a title="Dashboard" class="nav-link p-0 position-relative" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false"  href="{{ route('dashboard') }}">
+                            <span class="material-icons cursor-pointer d-inline-block align-top">language</span>
+                            <b> {{  strtoupper(\App::getLocale()) }} </b>
+                        </a>
+                    <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="{{ route('locale.setting', 'en') }}">
+                             <b>(EN)</b> English 
+                            </a>
+                        </li>   
+
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="{{ route('locale.setting', 'hi') }}">
+                               <b>(HI)</b> Hindi
+                            </a>
+                        </li>   
+
+                     </ul>
+                </li> 
+
 
                  <li class="nav-item dropdown pe-3">
                     

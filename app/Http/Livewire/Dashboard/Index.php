@@ -2,10 +2,8 @@
 
 namespace App\Http\Livewire\Dashboard;
 
-use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 use App\Traits\GlobalTrait;
 class Index extends Component
 {   

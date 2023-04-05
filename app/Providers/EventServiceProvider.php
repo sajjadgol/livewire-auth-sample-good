@@ -5,9 +5,6 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use App\Events\PaymentRefund;
-use App\Listeners\PaymentRefundProcessed;
-use Illuminate\Support\Facades\Event;
 use App\Events\InstantPushNotification;
 use App\Listeners\SendInstantPushNotification;
 use App\Events\InstantMailNotification;
@@ -29,9 +26,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         InstantMailNotification::class => [
             SendInstantMailNotification::class
-        ],
-        PaymentRefund::class => [
-            PaymentRefundProcessed::class
         ],
     ];
 

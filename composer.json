@@ -43,7 +43,6 @@
             "Astrotomic\\": "app/Overrides/"
         },
         "files": [
-            "app/Helper/Helpers.php",
             "app/Overrides/Scopes.php"
         ]
     },

@@ -3,205 +3,228 @@
 namespace App\Http\Livewire\UserManagement;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\User;
-use App\Exports\UsersExport;
-use App\Models\Driver\UserDriver;
-use App\Models\Util;
+use Illuminate\Support\Carbon;
+use App\Http\DataTable\WithSorting;
+use App\Http\DataTable\WithCachedRows;
+use App\Http\DataTable\WithBulkActions;
+use App\Http\DataTable\WithPerPagePagination;
 use Spatie\Permission\Models\Role;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Hash;
-use App\Events\InstantMailNotification;
-use Mail;
-
-
+use App\Http\DataTable\WithSingleAction;
+use App\Http\DataTable\Column;
 class Index extends Component
 {
+    use WithPerPagePagination, // Added perPage
+        Column,
+        WithSorting, // Added Sorting
+        WithBulkActions, // Bulk actions
+        WithCachedRows, // Improved return  response
+        WithSingleAction; // delete on row item
 
-    use AuthorizesRequests;
-    use WithPagination;
+    // Apply Filters
+    public $filters = [
+        "search" => "",
+        "status" => "",
+        "role" => "",
+        "from_date" => "",
+        "to_date" => "",
+    ];
 
-    public $search = '';
-    public $sortField = 'id';
-    public $sortDirection = 'desc';
-    public $perPage = 10;
-    public $account_status = '';
-    public $is_live = '';
-    public $filter = ['role' => null, 'status' => null , 'is_live'=> null, 'account_status' => null];
-    public $deleteId = '';
-    public $actionStatus = '';
-    public $userId = '';
+    // Event listeners are registered in the $listeners property of your Livewire components.
+    protected $listeners = [
+        "refreshTransactions" => '$refresh',
+        "deleteSelected",
+        "confirm",
+    ];
+
+    /* Apply bootstrap layout in pagination */
+    protected $paginationTheme = "bootstrap";
+
     public $roles;
-    protected $listeners = ['remove', 'confirmApplication'];
-    protected $queryString = ['sortField', 'sortDirection', 'account_status'];
-    protected $paginationTheme = 'bootstrap';
-    public bool $loadData = false;
-  
-    public function init()
-    {
-         $this->loadData = true;
-    }
+    public $account_status = "";
 
-    public function mount($role = null) { 
-        $this->filter['role'] = $role;
-        $this->filter['account_status'] = $this->account_status;
-        $this->filter['is_live'] = $this->is_live;
-        $this->perPage = config('commerce.pagination_per_page');
-        $this->roles = Role::where('status', 1)->get(['id','name']);
-    }
-
-    public function sortBy($field){
-        if($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-        $this->sortField = $field;
-    }
-
-    public function updatingSearch()
-    {
-        $this->gotoPage(1);
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }   
-
-
-    public function updatingFilter()
-    {
-        $this->gotoPage(1);
-    }
-  
-    public function render()
-    {
-        return view('livewire.user-management.index',[
-            'users' =>$this->loadData ? User::with(['roles', 'driver', 'store'])->searchMultipleUsers(trim(strtolower($this->search)), $this->filter)->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage) : [],
-        ]);
-    }
-
-
-   /**
-     * Write code on Method
+    /**
+     * Generic string-based column, attributes assigned
      *
-     * @return response()
+     * @return array() response()
      */
-    public function destroyConfirm($userId)
+    public function columns(): array
     {
-        $this->deleteId  = $userId;
-        $this->dispatchBrowserEvent('swal:confirm', [
-                'action' => 'remove',
-                'type' => 'warning',  
-                'confirmButtonText' => __('user.Yes, delete it!'),
-                'cancelButtonText' => __('user.No, cancel!'),
-                'message' => __('user.Are you sure?'), 
-                'text' => __('user.If deleted, you will not be able to recover this user!')
-            ]);
+        return [
+            Column::field([
+                "label" => __('user::user.Photo'),
+                "field" => "profile_photo",
+                "sortable" => true,
+                "direction" => true,
+                "hidden" => true,
+            ]),
+            Column::field([
+                "label" => __('user::user.Name'),
+                "field" => "name",
+                "sortable" => true,
+                "direction" => true,
+            ]),
+            Column::field([
+                "label" => __('user::user.Phone'),
+                "field" => "phone",
+            ]),
+            Column::field([
+                "label" => __('user::user.Status'),
+                "field" => "status",
+            ]),
+            Column::field([
+                "label" => __('user::user.Role'),
+                "field" => "role",
+            ]),
+            Column::field([
+                "label" => __('user::user.Creation Date'),
+                "field" => "created_at",
+            ]),
+        ];
     }
 
     /**
-     * Write code on Method
+     * The loadData action will be run immediately after the Livewire component renders on the page
      *
-     * @return response()
+     * @return void()
+     */
+    public function init()
+    {
+        $this->loadData = true;
+    }
+
+    public function mount($role = "")
+    {
+        $this->filters["role"] = $role;
+        $this->roles = Role::where("status", 1)->get(["id", "name"]);
+    }
+
+    /**
+     * Pass it to swal:destroyMultiple key of the alert configuration.
+     *
+     * @return void()
+     */
+    public function destroyMultiple()
+    {
+        $this->dispatchBrowserEvent("swal:destroyMultiple", [
+            "action" => "deleteSelected",
+            "type" => "warning",
+            "confirmButtonText" => __('user::user.Yes, delete it!'),
+            "cancelButtonText" => __('user::user.No, cancel!'),
+            "message" => __('user::user.Are you sure?'),
+            "text" => __(
+                'user::user.If deleted, you will not be able to recover this imaginary file!'
+            ),
+        ]);
+    }
+
+    /**
+     * Remove the selected blog from the storage.
+     *
+     * @return void()
+     */
+    public function deleteSelected()
+    {
+        $deleteCount = $this->selectedRowsQuery->count();
+
+        $this->selectedRowsQuery->delete();
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('user::user.User Delete Successfully!') . " -: " . $deleteCount,
+        ]);
+    }
+
+    /**
+     * Clear the filter form and revert the results to default
+     *
+     * @return void()
+     */
+    public function resetFilters()
+    {
+        $this->reset("filters");
+    }
+
+    /**
+     * Return a array of  all of the 's users with filter.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsQueryProperty()
+    {
+        $query = User::query()
+            ->when(
+                $this->filters["status"],
+                fn($query, $status) => $query->where("status", $status)
+            )
+            ->when(
+                $this->filters["search"],
+                fn($query, $search) => $query->where(
+                    "name",
+                    "like",
+                    "%" . $search . "%"
+                )
+            )
+            ->when(
+                $this->filters["from_date"],
+                fn($query, $date) => $query->where(
+                    "created_at",
+                    ">=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $this->filters["to_date"],
+                fn($query, $date) => $query->where(
+                    "created_at",
+                    "<=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $this->filters["role"],
+                fn($query, $role) => $query->whereHas("roles", function (
+                    $query
+                ) use ($role) {
+                    $query->where("name", "=", ucfirst($role));
+                })
+            )
+            ->with(["roles"]);
+
+        return $this->applySorting($query);
+    }
+
+    /**
+     * Store query result in cache
+     * Return a list of cache users of the application.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsProperty()
+    {
+        return $this->cache(function () {
+            return $this->applyPagination($this->rowsQuery);
+        });
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $this->dltid
+     * @return \Illuminate\Http\Response
      */
     public function remove()
     {
-        User::find($this->deleteId)->delete();
-
-        $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('user.User Delete Successfully!')]);
+        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
     }
 
-    
-
-     /**
-     * Write code on Method
-     *
-     * @return response()
+    /**
+     * Show a list of all of the application's users.
+     * @return \Illuminate\Http\Response
      */
-    public function applicationConfirm($userId, $status)
+    public function render()
     {
-        $this->userId  = $userId;
-        $this->actionStatus = $status;
-
-        $this->dispatchBrowserEvent('swal:confirmApplication', [
-                'action' => 'confirmApplication',
-                'type' => 'warning',  
-                'confirmButtonText' =>  $status == 'approved' ? __('user.Yes, approve it!') : __('user.Yes reject it'),
-                'cancelButtonText' => __('user.No, cancel!'),
-                'message' => $status == 'approved' ? __('user.Are you approve?') : __('user.Are you Reject'), 
-                'text' =>  $status == 'approved' ?  __('user.If approved, driver will be listed in driver sections!') : __('user.If rejected, driver will be not listed in driver sections!')
-            ]);
-    }  
-
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-    public function confirmApplication()
-    {        
-        UserDriver::where('user_id','=', $this->userId )->update(['account_status' => $this->actionStatus]);
-        $user = User::whereId($this->userId)->first();
-        $password = 'password';
-        User::where('id', '=' , $this->userId)->update(['status' => 1, 'password' => Hash::make( $password )]);
-
-        if ($this->actionStatus == 'approved') {
-            // send msg to user with user login details
-            $message = __("sms/customer.Dear :name,your application login, Username - :username , Password - :password",['name' => $user->name,"username" => $user->phone, 'password' => $password]);
-        }else{
-            // send msg to user for reject request
-            $message = __("sms/customer.Dear :name,your apllication has been rejected, Please contact to administrator",['name' => $user->name]);
-        }
-        Util::sendMessage($user->phone, $message);
-
-        $this->dispatchBrowserEvent('swal:modal', [
-            'type' => 'success',  
-            'message' => $this->actionStatus == 'approved' ? __('user.Driver Application Approved Successfully!') : __('user.Driver Application Rejected'), 
-            'text' => __('user.It will not list on users table soon.')
+        return view("livewire.user-management.index", [
+            "users" => $this->rows,
         ]);
-
     }
-
-        
-    /**
-     * update store status
-     *
-     * @return response()
-     */
-    public function statusUpdate($userId, $status)
-    {     
-        $status = ( $status == 1 ) ? 0 : 1;
-        User::where('id', $userId )->update(['status' => $status]);
-
-        $user=User::select(['name'])->where('id', $userId )->first();
-        
-        event(new InstantMailNotification($userId, [
-            "code" =>  'forget_password',
-            "args" => [
-                'name' => $user->name,
-               ]
-        ]));
-
-   }
-
-   /**
-    * @return \Illuminate\Support\Collection
-    *
-    */
-   public function export() 
-   {  
-        $users = User::with(['roles', 'driver', 'store'])->searchMultipleUsers(trim(strtolower($this->search)), $this->filter)->orderBy($this->sortField, $this->sortDirection)->get();
-        if(!$users->isEmpty()) {
-            return Excel::download(new UsersExport($users), 'users.xlsx');
-        }
-
-        $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => 'No users data found to export.']);
-   }
-
-
 }
