@@ -17,8 +17,6 @@ class MailsVarables
    const STORE_NAME = "store_name";
    const STORE_ADDRESS = "store_address";
    const LINK = 'link';
-   const ORDER_NUMBER = 'order_number';
-   const VERIFICATION_CODE = 'verification_code';
    const MSG_TITLE = 'msg_title';
    const MSG_BODY = 'msg_body';
    const STATUS = 'status';

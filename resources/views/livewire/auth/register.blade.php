@@ -71,7 +71,6 @@
                                             <option value="Super-Admin">Super Admin</option>
                                             <option value="Admin">Admin</option>
                                             <option value="Provider">Provider</option>
-                                            <option value="Driver">Driver</option>
                                             <option value="Customer">Customer</option>
                                             <option value="Unverified">Unverified</option>
                                         </select>

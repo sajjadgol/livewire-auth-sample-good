@@ -18,7 +18,7 @@ class Index extends Component
     public $sortField = 'name';
     public $sortDirection = 'asc';
     public $perPage = 10;
-    protected $defaultRoles = ['Admin', 'Provider', 'Driver', 'Customer', 'Unverified'];
+    protected $defaultRoles = ['Admin', 'Provider', 'Customer', 'Unverified'];
     public $deleteId = '';
     
     protected $listeners = ['remove'];

@@ -1,0 +1,91 @@
+[
+  {
+      "sectionTitle" : "USERS MANAGEMENT",
+      "type": "collapse",
+      "name": "Users",
+      "key": "",
+      "icon": "groups",
+      "route": "user-management",
+      "href": "",
+      "permission": "user-management",
+      "noCollapse": false,
+      "module": "Users"
+    },
+    {
+      "type": "collapse",
+      "head": "",
+      "name": "Blog",
+      "key": "blog",
+      "icon": "quiz",
+      "route": "blog",
+      "href": "",
+      "permission": "blog",
+      "noCollapse": true,
+      "module": "Blog"
+    },
+    {
+      "sectionTitle" : "Settings",
+      "type": "collapse",
+      "head": "",
+      "name": "Settings",
+      "key": "setting",
+      "icon": "display_settings",
+      "route": "",
+      "href": "",
+      "permission": "provider-manage-store",
+      "noCollapse": false,
+      "collapse" : [
+        {
+          "name" : "Sliders",
+          "icon" : "tune",
+          "key"  : "slider-management",
+          "route" : "slider-management",
+          "href" : "",
+          "permission" : "slider-management"
+        },
+        {
+          "name" : "Faq",
+          "icon" : "quiz",
+          "key"  : "faq-management",
+          "route" : "faq-management",
+          "href" : "",
+          "permission" : "faq-management"
+        },
+        {
+          "name" : "Pages",
+          "icon" : "pages",
+          "key"  : "page-management",
+          "route" : "page-management",
+          "href" : "",
+          "permission" : "page-management"
+        }
+      ]
+    },
+    {
+      "type": "collapse",
+      "head": "",
+      "name": "Administration",
+      "key": "administration",
+      "icon": "admin_panel_settings",
+      "route": "",
+      "href": "",
+      "permission": "",
+      "noCollapse": false,
+      "collapse" : [
+        {
+          "name" : "General Settings",
+          "icon" : "display_settings",
+          "key"  : "site-settings",
+          "route" : "site-settings",
+          "href" : ""
+        },
+        {
+          "name" : "Cache management",
+          "icon" : "cached",
+          "key"  : "cache-management",
+          "route" : "site-cache",
+          "href" : ""
+        }
+      ]
+    }
+  ]

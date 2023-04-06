@@ -52,32 +52,32 @@ class Index extends Component
     {
         return [
             Column::field([
-                "label" => __('user::user.Photo'),
+                "label" => __('components/user.Photo'),
                 "field" => "profile_photo",
                 "sortable" => true,
                 "direction" => true,
                 "hidden" => true,
             ]),
             Column::field([
-                "label" => __('user::user.Name'),
+                "label" => __('components/user.Name'),
                 "field" => "name",
                 "sortable" => true,
                 "direction" => true,
             ]),
             Column::field([
-                "label" => __('user::user.Phone'),
+                "label" => __('components/user.Phone'),
                 "field" => "phone",
             ]),
             Column::field([
-                "label" => __('user::user.Status'),
+                "label" => __('components/user.Status'),
                 "field" => "status",
             ]),
             Column::field([
-                "label" => __('user::user.Role'),
+                "label" => __('components/user.Role'),
                 "field" => "role",
             ]),
             Column::field([
-                "label" => __('user::user.Creation Date'),
+                "label" => __('components/user.Creation Date'),
                 "field" => "created_at",
             ]),
         ];
@@ -109,11 +109,11 @@ class Index extends Component
         $this->dispatchBrowserEvent("swal:destroyMultiple", [
             "action" => "deleteSelected",
             "type" => "warning",
-            "confirmButtonText" => __('user::user.Yes, delete it!'),
-            "cancelButtonText" => __('user::user.No, cancel!'),
-            "message" => __('user::user.Are you sure?'),
+            "confirmButtonText" => __('components/user.Yes, delete it!'),
+            "cancelButtonText" => __('components/user.No, cancel!'),
+            "message" => __('components/user.Are you sure?'),
             "text" => __(
-                'user::user.If deleted, you will not be able to recover this imaginary file!'
+                'components/user.If deleted, you will not be able to recover this imaginary file!'
             ),
         ]);
     }
@@ -131,7 +131,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('user::user.User Delete Successfully!') . " -: " . $deleteCount,
+            __('components/user.User Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 

@@ -43,14 +43,6 @@
                         </li>
                     @endif
 
-                    @if($this->user->hasRole('Driver'))
-                        <li class="nav-item pt-2">
-                            <a class="nav-link text-dark d-flex" data-scroll="" href="#commission-info">
-                                <i class="material-icons text-lg me-2">payments</i>
-                                <span class="text-sm">Commission Settings</span>
-                            </a>
-                        </li>
-                    @endif
                     <li class="nav-item pt-2">
                         <a class="nav-link text-dark d-flex" data-scroll="" href="#other-info">
                             <i class="material-icons text-lg me-2">info</i>

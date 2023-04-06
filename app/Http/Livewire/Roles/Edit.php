@@ -13,7 +13,7 @@ class Edit extends Component
     use AuthorizesRequests;
 
     public Role $role;
-    protected $defaultRoles = ['Admin', 'Provider', 'Driver', 'Customer', 'Unverified'];
+    protected $defaultRoles = ['Admin', 'Provider',  'Customer', 'Unverified'];
     public $permissions;
     public $selectedPermissions=[];
     

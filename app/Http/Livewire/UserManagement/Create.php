@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\UserManagement;
 
-use App\Models\Driver\UserDriver;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Livewire\Component;
@@ -86,15 +85,6 @@ class Create extends Component
                 'country_code' => $this->country_code,
                 'password' => $this->password,           
             ]);
-          
-            if($this->role_id == 'Driver')
-            {
-                UserDriver::create([
-                    'user_id' => $user->id,
-                    'is_live' => 0
-                    ]);        
-            }
-
         if($this->role_id){
             $user->assignRole(explode(',', $this->role_id));     
         }

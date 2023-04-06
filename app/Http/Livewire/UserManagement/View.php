@@ -7,18 +7,15 @@ use App\Models\Address;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
-use App\Models\Driver\UserDriver;
 use App\Models\Stores\StoreOwners;
 use App\Models\Users\UserMetaData;
 use Spatie\Permission\Models\Role;
 use App\Constants\OrderReviewTypes;
-use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 use App\Events\InstantMailNotification;
-use Mail;
 
 class View extends Component
 {
@@ -36,7 +33,6 @@ class View extends Component
     public $stores;
     public $userMeta;
     public $orderReviewType = [];  
-    public $driver_commission_value;
     public $is_global_commission;
     
     protected $listeners = [
@@ -67,12 +63,7 @@ class View extends Component
         $this->address = Address::where('user_id' , $this->user->id)->get();
         $this->stores = StoreOwners::where('user_id', $this->user->id)->get();
         $this->userMeta = UserMetaData::where('user_id' , $this->user->id)->get();
- 
-        $orderReviewType = new OrderReviewTypes;
-        $this->orderReviewType = $orderReviewType->getConstants();
        
-        $this->driver_commission_value =  !empty($this->user->driver) ? $this->user->driver->driver_commission_value : 0;
-        $this->is_global_commission =  !empty($this->user->driver) ? $this->user->driver->is_global_commission : 0;
  
     }
 
@@ -92,46 +83,11 @@ class View extends Component
         $this->user->phone =  $this->user->country_code. $this->user->phone;
         if(!empty($this->role_id)){
             $this->user->syncRoles($this->role_id);     
-        }
-        if(!$this->user->hasRole('Driver')){
-        UserDriver::whereUserId($this->user->id)->delete();    
-        } 
-      
-         if($this->user->hasRole('Driver')){
-             UserDriver::updateOrCreate([
-                 'user_id' =>$this->user->id
-                ], ['user_id' => $this->user->id,
-                     'is_live' => 0 ]
-            ); 
-          }
-            
-      
+        }      
         $this->user->save();
         $this->resetField();
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => __('user.User successfully updated.')]); 
-    }
-
-
-    public function updatedIsGlobalCommission(){
-       
-        $this->is_global_commission = $this->is_global_commission ? 1 : 0;
-        $this->user->driver->update(['is_global_commission' => $this->is_global_commission, 'driver_commission_value' => config('app_settings.driver_commission.value')]);
-        $this->dispatchBrowserEvent('alert', 
-        ['type' => 'success',  'message' => __('user.Commission successfully updated.')]);
-    }
-
-
-    public function updatedDriverCommissionValue(){
-       
-        $this->validate([
-            'driver_commission_value' => 'required|max:'.config('app_settings.driver_commission.value').'|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-        ]);
-        
-        $this->user->driver->update(['driver_commission_value' => $this->driver_commission_value]);
-     
-        $this->dispatchBrowserEvent('alert', 
-        ['type' => 'success',  'message' => __('user.Commission successfully updated.')]);
     }
 
      /**
@@ -252,19 +208,6 @@ class View extends Component
      */
     public function suspendedConfirm($user)
     {  
-        $account_status = ( $user['driver']['account_status'] == 'suspended' ) ? 'approved' : 'suspended';
-        $status = ($user['driver']['account_status'] == 'suspended'  ) ? 0 : 1 ;
-        $this->user->where('id', '=' , $this->user->id )->update(['status' => $status]);  
-        $this->user->driver->update(['account_status' => $account_status, 'is_live' => 0]);         
-        $this->user->account_status = $account_status ;
-        
-        event(new InstantMailNotification($user["id"], [
-            "code" =>  'forget_password',
-            "args" => [
-                'name' => $user["name"],
-               ]
-        ]));
-
         return redirect(request()->header('Referer'));
    }
 

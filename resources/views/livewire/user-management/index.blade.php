@@ -1,6 +1,6 @@
 {{-- Page Title --}}
 @section('page_title')
-    @lang("user::user.page_title")
+    @lang("components/user.page_title")
 @endsection
 
 <x-core.container wire:init="init">
@@ -23,15 +23,42 @@
                 <x-core.card-toolbar>
 
                     {{-- Header Bulk actions  --}}
-                    <x-dropdown label="{{ __('user::user.Actions') }}">
+                    <x-dropdown label="{{ __('components/user.Actions') }}">
                         <x-dropdown.item wire:click="exportSelected">
-                            @lang('user::user.Export')
+                            @lang('components/user.Export')
                         </x-dropdown.item>
 
                         <x-dropdown.item wire:click="destroyMultiple()" class="dropdown-item text-danger">
-                            @lang('user::user.Delete')
+                            @lang('components/user.Delete')
                         </x-dropdown.item>
                     </x-dropdown>
+
+
+                     {{-- Filter Action  --}}
+                     <x-dropdown class="px-2 py-3 dropdown-md" label="{{ __('component.Filter') }}">
+                        <x-input.group inline for="filters.status" label="{{ __('components/user.Status') }}">
+                            <x-input.select wire:model="filters.status" placeholder="{{ __('components/user.Any Status') }}">
+                                <option value="1"> @lang('components/user.Active') </option>
+                                <option value="0"> @lang('components/user.Inactive') </option>
+                            </x-input.select>
+                        </x-input.group>
+                    
+                        <x-input.group inline for="filter-date-min" label="{{ __('components/user.Role') }}">
+                            <x-input.select wire:model="filters.role" placeholder="{{ __('components/user.Any Role') }}">
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}"> {{ $role->name }}</option>
+                                @endforeach
+                            </x-input.select>
+                        </x-input.group>
+                    
+                        {{-- Date renge filter --}}
+                        <x-table.filter-date-input />
+
+                        <x-button.link wire:click="resetFilters" class="mt-2"> @lang('component.Reset Filters') </x-button.link>
+
+                    </x-dropdown>
+
+
 
                     {{-- Filter button with icon --}}
                     <x-table.button.filter icon />
@@ -67,7 +94,7 @@
 
                     {{-- Dynamic columns heading --}}
                     <x-table.heading columns />
-                    <x-table.heading> @lang('user::user.Actions') </x-table.heading>
+                    <x-table.heading> @lang('components/user.Actions') </x-table.heading>
 
                 </x-slot>
                 <x-slot name="body">
@@ -102,8 +129,8 @@
                             {{-- Action , examples- edit, view, delete  --}}
                             <x-table.cell-dropdown>
                                 <x-table.dropdown-item class="dropdown-item text-danger" 
-                                    title="{{ __('user::user.Delete') }}" wire:click="destroyConfirm({{ $user->id }})">
-                                    {{ __('user::user.Delete') }}
+                                    title="{{ __('components/user.Delete') }}" wire:click="destroyConfirm({{ $user->id }})">
+                                    {{ __('components/user.Delete') }}
                                 </x-table.dropdown-item>
                             </x-table.cell-dropdown>
                         </x-table.row>
@@ -119,15 +146,15 @@
 {{-- Tabel Filter --}}
 <x-table.filter icon label="">
 
-    <x-input.group inline for="filters.status" label="{{ __('user::user.Status') }}">
-        <x-input.select wire:model="filters.status" placeholder="{{ __('user::user.Any Status') }}">
-            <option value="1"> @lang('user::user.Active') </option>
-            <option value="0"> @lang('user::user.Inactive') </option>
+    <x-input.group inline for="filters.status" label="{{ __('components/user.Status') }}">
+        <x-input.select wire:model="filters.status" placeholder="{{ __('components/user.Any Status') }}">
+            <option value="1"> @lang('components/user.Active') </option>
+            <option value="0"> @lang('components/user.Inactive') </option>
         </x-input.select>
     </x-input.group>
 
-    <x-input.group inline for="filter-date-min" label="{{ __('user::user.Role') }}">
-        <x-input.select wire:model="filters.role" placeholder="{{ __('user::user.Any Role') }}">
+    <x-input.group inline for="filter-date-min" label="{{ __('components/user.Role') }}">
+        <x-input.select wire:model="filters.role" placeholder="{{ __('components/user.Any Role') }}">
             @foreach ($roles as $role)
                 <option value="{{ $role->name }}"> {{ $role->name }}</option>
             @endforeach

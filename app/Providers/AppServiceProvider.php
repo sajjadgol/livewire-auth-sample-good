@@ -91,17 +91,6 @@ class AppServiceProvider extends ServiceProvider
                 $this->where('status' , '=' ,  $filter['status']);
             }   
 
-            if(array_key_exists('role', $filter) && !empty($filter['role']) && trim(strtolower($filter['role'])) == 'driver'){
-                $this->whereHas('driver', function ($query) use ($filter) {
-                    if( array_key_exists('account_status', $filter) && !empty($filter['account_status'])){
-                        $query->where('account_status' , '=' ,  $filter['account_status']);
-                    }
-
-                    if(array_key_exists('is_live', $filter)  && !is_null($filter['is_live']) && $filter['is_live'] != ""){
-                        $query->where('is_live' , '=' , $filter['is_live']);
-                    }
-                });
-            }
 
             if($string) { 
                 return $this->where(function($query) use ($string) {
@@ -426,37 +415,6 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Builder::macro('searchMultipleOrderReview', function ($string, $filter = [] ) {
-
-            if(array_key_exists('store_id', $filter) && $filter['store_id']){
-                $this->where('store_id' , '=' ,  $filter['store_id'])->where('rating_for', ['store']);
-            } 
-
-            if(array_key_exists('receiver_id', $filter) && $filter['receiver_id']){
-                $this->where('receiver_id' , '=' ,  $filter['receiver_id'])->where('rating_for', 'driver');
-            }  
-
-            if(array_key_exists('receiver_id', $filter) && array_key_exists('store_id', $filter) && $filter['receiver_id'] && $filter['store_id']  ){
-                $this->where('receiver_id' , '=' ,  $filter['receiver_id'])->orWhere('store_id' , '=' ,  $filter['store_id'])->whereIn('rating_for', ['driver', 'store']);
-            } 
-           
-            if(array_key_exists('from_date', $filter) && !empty($filter['from_date']) && array_key_exists('to_date', $filter) && !empty($filter['to_date']) ) {
-                $this->whereDate('created_at','>=', Carbon::create($filter['from_date']));
-                $this->whereDate('created_at','<=',  Carbon::create($filter['to_date']));
-            }
-
-            if($string) {
-                return $this->whereHas('order', function($query) use ($string) {
-                    $query->where(DB::raw('order_number'), 'like', '%'.$string.'%');
-                })->orWhereHas('sender', function($query2) use ($string) {
-                    $query2->where(DB::raw('lower(name)'), 'like', '%'.$string.'%');
-                });
-            } else {
-                return $this;
-            }
-        });
-
-
  
         Builder::macro('searchMultipleTicketCategory', function ($string, $filter = []) {
           
@@ -567,40 +525,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        Builder::macro('searchMultipleRevenues', function ($string, $filter = []) {
-
-         
-            if ($filter['type'] == 'driver') {
-                $this->where('user_id', $filter['id']);
-                $this->where('role_type', 'driver');
-            }
-            if ($filter['type'] == 'store') {
-                $this->where('store_id', $filter['id']);
-                $this->where('role_type', 'store');
-            }
-            if(array_key_exists('from_date', $filter) && !empty($filter['from_date']) && array_key_exists('to_date', $filter) && !empty($filter['to_date']) ) {
-                $this->whereDate('created_at','>=', Carbon::create($filter['from_date']));
-                $this->whereDate('created_at','<=',  Carbon::create($filter['to_date']));
-            }
-
-            if(array_key_exists('payment_status', $filter) && !empty($filter['payment_status'])) {
-                $this->where('status' , '=' ,  $filter['payment_status']);
-            }  
-            
-            if(array_key_exists('transaction_type', $filter) && !empty($filter['transaction_type'])) {
-                $this->where('transaction_type' , '=' ,  $filter['transaction_type']);
-            }  
-            
-            if($string) {
-                return $this->whereHas('order', function($query) use ($string) {
-                    $query->where(DB::raw('order_number'), 'like', '%'.$string.'%');
-                })->orWhereHas('store', function($query2) use ($string) {
-                    $query2->whereTranslationLike('name', '%'.$string.'%');
-                }); 
-            } else {
-                return $this;
-            }
-        });
 
     }
 }
