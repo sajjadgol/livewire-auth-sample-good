@@ -31,5 +31,10 @@ Route::group(['middleware' => 'auth','scopes:admin'], function () {
 
     Route::get('account/profile', EditProfile::class)->name('edit-profile');
     Route::get('dashboard', Index::class)->name('dashboard');
-    
+    Route::get('/setLang/{lang}', function ($locale) {
+        app()->setLocale($locale);
+         Session::put('locale', $locale); // This should also work
+         config(['app.locale' => $locale]);     
+         return back();
+       })->name('locale.setting');   
 });
