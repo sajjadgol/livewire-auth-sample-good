@@ -13,6 +13,7 @@ return [
     "Are you sure?" => "Are you sure?",
     "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
     "User Delete Successfully!" => "User Delete Successfully!",
+    "Select user row checkbox" => "Select user row checkbox",
     'Export' => 'Export',
     'Delete' => 'Delete',
     'Show Columns' => 'Show Columns',

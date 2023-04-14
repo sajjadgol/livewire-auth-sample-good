@@ -35,12 +35,6 @@
                             <span class="text-sm">Commission Settings</span>
                         </a>
                     </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#preparing-time">
-                            <i class="material-icons text-lg me-2">hourglass_top</i>
-                            <span class="text-sm">Meal Preparing Time</span>
-                        </a>
-                    </li>
 
                     <li class="nav-item pt-2">
                         <a class="nav-link text-dark d-flex" data-scroll="" href="#address-info">
@@ -306,25 +300,6 @@
             </div>
         </div> 
 
-       <!-- Food Order Preparing Time -->
-       <div class="card mt-4" id="preparing-time">
-            <div class="card-header">
-                <h5>Order Preparing Time</h5>
-            </div>
-            <div class="card-body pt-0">                
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <div class="input-group input-group-static">
-                            <label>Order Preparing Time (In Min) *</label>
-                            <input wire:model.lazy="store.order_preparing_time" type="text" class="form-control" placeholder="Enter Order Preparing Time e.g 15, 20, 30 etc..">
-                        </div>
-                        @error('store.order_preparing_time')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                        @enderror
-                    </div>                    
-                </div>
-            </div>
-        </div> 
 
 
          <!-- Card Address Info -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\UserManagement;
 
+use App\Events\InstantMailNotification;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -106,6 +107,15 @@ class Index extends Component
      */
     public function destroyMultiple()
     {
+        $deleteCount = $this->selectedRowsQuery->count();
+        if (!$deleteCount > 0) {
+            $this->dispatchBrowserEvent("alert", [
+                "type" => "error",
+                "message" =>
+                __('components/user.Select user row checkbox'),
+            ]);
+            return false;
+        }
         $this->dispatchBrowserEvent("swal:destroyMultiple", [
             "action" => "deleteSelected",
             "type" => "warning",
@@ -154,10 +164,6 @@ class Index extends Component
     {
         $query = User::query()
             ->when(
-                $this->filters["status"],
-                fn($query, $status) => $query->where("status", $status)
-            )
-            ->when(
                 $this->filters["search"],
                 fn($query, $search) => $query->where(
                     "name",
@@ -191,6 +197,10 @@ class Index extends Component
             )
             ->with(["roles"]);
 
+            if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
+                $query->where('status' , '=' ,  $this->filters['status']);
+            }   
+
         return $this->applySorting($query);
     }
 
@@ -216,6 +226,28 @@ class Index extends Component
     {
         return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
     }
+
+
+    /**
+     * update store status
+     *
+     * @return response()
+     */
+    public function statusUpdate($userId, $status)
+    {     
+        $status = ( $status == 1 ) ? 0 : 1;
+        User::where('id', $userId )->update(['status' => $status]);
+
+        $user = User::select(['name'])->where('id', $userId )->first();
+        
+        event(new InstantMailNotification($userId, [
+            "code" =>  'forget_password',
+            "args" => [
+                'name' => $user->name,
+               ]
+        ]));
+
+   }
 
     /**
      * Show a list of all of the application's users.

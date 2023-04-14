@@ -16,6 +16,7 @@ class localization
      */
     public function handle(Request $request, Closure $next)
     {
+        app()->setLocale((\Session::get('locale') ? \Session::get('locale') :  app()->getLocale()));
         $this->languages = \App\Dexlib\Locale::getAllLang();
         $this->lang = isset(request()->ref_lang) ? isset($this->languages[request()->ref_lang]) ?  request()->ref_lang : app()->getLocale() : app()->getLocale();
         $lang = in_array($this->lang,config('translatable.locales')) ? $this->lang : app()->getLocale();

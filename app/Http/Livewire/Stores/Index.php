@@ -60,10 +60,10 @@ class Index extends Component
     {  
     if($this->filter['application_status']== 'waiting') {
        
-        $store=Store::where('is_primary' , 0 )->withTranslation()->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->withAvg('OrderRating','rating')->withCount('OrderRating')->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
+        $store=Store::where('is_primary' , 0 )->withTranslation()->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
     else{
-        $store=Store::where('is_primary' , 0 )->withTranslation()->whereNotIn('application_status' , ['waiting'])->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->withAvg('OrderRating','rating')->withCount('OrderRating')->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
+        $store=Store::where('is_primary' , 0 )->withTranslation()->whereNotIn('application_status' , ['waiting'])->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
     }    
         return view('livewire.store.index',[
             'stores' => $this->loadData ? $store : [],

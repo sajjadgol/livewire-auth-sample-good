@@ -75,7 +75,6 @@ class Edit extends Component
             'store.phone'                 => 'required|numeric|digits_between:8,10',        
             'store.country_code'           => 'required',
             'store.number_of_branch'       => 'required|integer',
-            'store.order_preparing_time'  => 'required|integer',
             'storeAddress.address_line_1'        => 'required|string',
             'storeAddress.landmark'              => 'required|string',
             'storeAddress.city'                  => 'required|string',
@@ -105,7 +104,7 @@ class Edit extends Component
         $this->languages = request()->language;
 
         //  Store translate       
-        $this->store = Store::with('storeAddress')->withAvg('OrderRating','rating')->withCount('OrderRating')->find($id);
+        $this->store = Store::with('storeAddress')->find($id);
 
         $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(app()->getLocale())->name;
         $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(app()->getLocale())->descriptions;

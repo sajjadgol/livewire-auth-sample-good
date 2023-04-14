@@ -9,19 +9,63 @@
       "href": "",
       "permission": "user-management",
       "noCollapse": false,
-      "module": "Users"
+      "module": "Users",
+      "collapse" : [
+        {
+          "name" : "All User",
+          "icon" : "group",
+          "key" : "user-management",
+          "permission" : "user-management",
+          "href" : "",
+          "route" : "user-management"
+        },
+        {
+          "name" : "Update Requests",
+          "icon" : "manage_accounts",
+          "key" : "ticket-management",
+          "permission" : "ticket-management",
+          "href" : "",
+          "route" : "ticket-management"
+        }
+      ]
     },
     {
+      "sectionTitle" : "STORE MANAGEMENT",
       "type": "collapse",
-      "head": "",
-      "name": "Blog",
-      "key": "blog",
-      "icon": "quiz",
-      "route": "blog",
+      "name": "Stores",
+      "key": "",
+      "icon": "store",
+      "route": "store-management",
       "href": "",
-      "permission": "blog",
-      "noCollapse": true,
-      "module": "Blog"
+      "permission": "store-management",
+      "noCollapse": false,
+      "module": "Users",
+      "collapse" : [
+        {
+          "name" : "All Stores",
+          "icon" : "store",
+          "key" : "store-management",
+          "permission" : "store-management",
+          "href" : "",
+          "route" : "store-management"
+        },
+        {
+          "name" : "Unverified Stores",
+          "icon" : "unpublished",
+          "key" : "unverified-stores",
+          "permission" : "unverified-stores",
+          "href" : "",
+          "route" : "unverified-stores"
+        },
+        {
+          "name" : "Unverified Stores",
+          "icon" : "local_convenience_store",
+          "key" : "store-type-management",
+          "permission" : "store-type-management",
+          "href" : "",
+          "route" : "store-type-management"
+        }
+      ]
     },
     {
       "sectionTitle" : "Settings",
@@ -77,14 +121,53 @@
           "icon" : "display_settings",
           "key"  : "site-settings",
           "route" : "site-settings",
-          "href" : ""
+          "href" : "",
+          "permission" : "site-settings"
         },
         {
           "name" : "Cache management",
           "icon" : "cached",
           "key"  : "cache-management",
           "route" : "site-cache",
-          "href" : ""
+          "href" : "",
+          "permission" : "site-cache"
+        }
+      ]
+    },
+    {
+      "type": "collapse",
+      "head": "",
+      "name": "Location",
+      "key": "administration",
+      "icon": "public",
+      "route": "",
+      "href": "",
+      "permission": "",
+      "noCollapse": false,
+      "collapse" : [
+        {
+          "name" : "Country",
+          "icon" : "home_pin",
+          "key"  : "country-management",
+          "route" : "country-management",
+          "href" : "",
+          "permission" : "country-management"
+        },
+        {
+          "name" : "State",
+          "icon" : "flag",
+          "key"  : "state-management",
+          "route" : "state-management",
+          "href" : "",
+          "permission" : "state-management"
+        },
+        {
+          "name" : "City",
+          "icon" : "pin_drop",
+          "key"  : "city-management",
+          "route" : "city-management",
+          "href" : "",
+          "permission" : "city-management"
         }
       ]
     }
