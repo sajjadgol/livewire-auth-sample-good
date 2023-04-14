@@ -112,7 +112,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/user.Select user row checkbox'),
+                __('components/user.Please select at least one user'),
             ]);
             return false;
         }
@@ -237,16 +237,12 @@ class Index extends Component
     {     
         $status = ( $status == 1 ) ? 0 : 1;
         User::where('id', $userId )->update(['status' => $status]);
-
-        $user = User::select(['name'])->where('id', $userId )->first();
         
-        event(new InstantMailNotification($userId, [
-            "code" =>  'forget_password',
-            "args" => [
-                'name' => $user->name,
-               ]
-        ]));
-
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('components/user.Status updated Successfully!'),
+        ]);
    }
 
     /**

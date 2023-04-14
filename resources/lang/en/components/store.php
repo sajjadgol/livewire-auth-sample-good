@@ -1,12 +1,14 @@
 <?php
 
 return [
-    "page_title" => 'Users',
+    "page_title" => 'Unverified Stores',
+    "Stores" => "Stores",
+    "Suspended" => "Suspended",
     'Photo' => 'Photo',
     'Name' => "Name",
     'Phone' => 'Phone',
+    "Email" => "Email",
     "Status" => 'Status',
-    "Role" => "Role",
     "Creation Date" => "Creation Date",
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
@@ -14,7 +16,6 @@ return [
     "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
     "User Delete Successfully!" => "User Delete Successfully!",
     "Please select at least one user" => "Please select at least one user",
-    'Status updated Successfully!' => "Status updated Successfully!",
     'Export' => 'Export',
     'Delete' => 'Delete',
     'Show Columns' => 'Show Columns',
@@ -23,5 +24,19 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'Any Role' => 'Any Role'
+    'Status updated Successfully!' => "Status updated Successfully!",
+    "Approved" => "Approved",
+    "Reject" => "Reject",
+    "All Account Status" => "All Account Status",
+    "Suspend" => "Suspend",
+    "All Type" => "All Type",
+    "Store Type" => "Store Type",
+    "Application status" => "Application status",
+    "Searchable" => "Searchable",
+    "Remove to Searchable" => "Remove to Searchable",
+    "Mark as Searchable" => "Mark as Searchable",
+    "Top Store" => "Top Store",
+    "Remove to Top Store" => "Remove to Top Store",
+    "Mark as Top Store" => "Mark as Top Store"
+
 ];

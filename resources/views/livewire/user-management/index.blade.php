@@ -58,9 +58,6 @@
 
                     </x-dropdown>
 
-
-
-
                     {{--  Hide & show columns dropdown --}}
                     <x-dropdown>
                         <x-slot name="label">
