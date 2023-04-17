@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Stores;
 
 use App\Models\Stores\BusinessHour;
-use App\Models\User;
 use Livewire\Component;
 use App\Models\Stores\Store;
 use App\Models\Worlds\State;
@@ -11,9 +10,7 @@ use App\Models\Worlds\Cities;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
 use App\Models\Stores\StoreType;
-use App\Models\Stores\StoreOwners;
 use App\Models\Stores\StoreAddress;
-use App\Models\Stores\StoreMetaData;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -154,13 +151,6 @@ class Create extends Component
 
         BusinessHour::insert($defaultBusinessHours);
 
-        // $storeModel = new Store();
-        // StoreMetaData::create([
-        //     'store_id'  => $store->id,
-        //     'key'       => 'business_hours',
-        //     'value'     => $storeModel->getDefaultBusinessHours()
-        // ]);
-    
         return redirect(route('store-management'))->with('status','Store successfully created.');
     }
 

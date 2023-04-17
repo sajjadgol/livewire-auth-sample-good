@@ -110,18 +110,7 @@
                                <input wire:model='logo_path' wire:loading.attr="disabled" type="file" id="file-input">
                             </div>
                     </div>
-                    <div class="col-sm-auto col-8 my-auto">
-                        <div class="h-100">
-                            <h5 class="mb-1 font-weight-bolder">
-                                {{ $store->name }} <span class="fa-sm material-symbols-outlined text-warning">
-                                    star
-                                    </span>{{$store->order_rating_avg_rating }}   ({{ $store->order_rating_count }})
-                            </h5>
-                            <p class="mb-0 font-weight-normal text-sm">
-                                + {{ $store->phone }}
-                            </p>
-                        </div>
-                    </div>
+                   
                     <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3">
                         <div class="form-check form-switch ms-2 my-auto">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault35"  wire:change="statusUpdate({{ $store->id }},{{ $store->status}})"
@@ -195,16 +184,11 @@
                             <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
-<!--                         
-                        <div class="col-3 mb-4">
-                            <div class="input-group input-group-static">
-                                <label>Number Of Branch *</label>
-                                <input wire:model.lazy="store.number_of_branch" type="text" class="form-control" placeholder="Enter a Number Of Branch e.g 1, 2, 3 etc..">
-                            </div>
-                            @error('store.number_of_branch')
+
+                        @error('store.number_of_branch')
                             <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
-                        </div>   -->
+                        </div> 
 
                         <div class="col-2  mb-4">
                             <div class="input-group input-group-static">

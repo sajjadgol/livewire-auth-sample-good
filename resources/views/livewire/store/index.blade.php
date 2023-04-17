@@ -124,7 +124,7 @@
                             <x-table.cell-avatar column="logo_path" url="{{ $store->logo_path }}"
                                 class="position-relative" />
                         
-                            <x-table.cell column="name" href="{{ route('edit-store-type' , $store) }}">{{ $store->name }}</x-table.cell>
+                            <x-table.cell column="name" href="{{ route('edit-store' , $store) }}">{{ $store->name }}</x-table.cell>
                             <x-table.cell column="email" >{{ $store->email }}</x-table.cell>
 
                             <x-table.cell-phone column="phone" code="{{ $store->country_code }}"
@@ -137,7 +137,7 @@
                                 @endif
                             </x-table.cell-switch>
 
-                            <x-table.cell-lang :data="json_decode($store)" route="edit-store-type"/>
+                            <x-table.cell-lang :data="json_decode($store)" route="edit-store"/>
 
 
                             <x-table.cell-date column="created_at">{{ $store->created_at }}</x-table.cell-date>
@@ -159,7 +159,7 @@
                                 </x-table.cell>
                                 @else
                                     <x-table.cell-dropdown>
-                                    @can('edit-store-type')
+                                    @can('edit-store')
                                         <x-table.dropdown-item class="dropdown-item" 
                                             title="{{ __('components/store.Searchable') }}" wire:click="searchableConfirm({{ $store }})">
                                             {{ $store->is_searchable ? trans("components/store.Remove to Searchable") : trans("components/store.'Mark as Searchable") }}
@@ -171,7 +171,7 @@
                                         </x-table.dropdown-item>
 
                                         <x-table.dropdown-item class="dropdown-item" 
-                                            title="{{ __('components/store.Edit') }}" href="{{ route('edit-store-type', $store) }}">
+                                            title="{{ __('components/store.Edit') }}" href="{{ route('edit-store', $store) }}">
                                             {{ __('components/store.Edit') }}
                                         </x-table.dropdown-item>
                                     @endcan

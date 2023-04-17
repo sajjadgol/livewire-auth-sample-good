@@ -65,7 +65,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store-type') }}" />
+                        <x-table.button.add icon href="{{ route('add-city') }}" />
                     @endcan
 
                 </x-core.card-toolbar>

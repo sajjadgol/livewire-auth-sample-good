@@ -2,148 +2,219 @@
 
 namespace App\Http\Livewire\Tickets;
 
-use App\Models\Tickets\Ticket;
 use App\Constants\TicketsStatus;
 use Livewire\Component;
-use Livewire\WithPagination;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Models\User;
-use App\Events\InstantPushNotification;
+use App\Http\DataTable\WithSorting;
+use App\Http\DataTable\WithCachedRows;
+use App\Http\DataTable\WithBulkActions;
+use App\Http\DataTable\WithPerPagePagination;
+use App\Http\DataTable\WithSingleAction;
+use App\Http\DataTable\Column;
+use App\Models\Tickets\Ticket;
 
 class Index extends Component
-{   
-    use AuthorizesRequests;
-    use WithPagination;
+{
+    use WithPerPagePagination, // Added perPage
+        Column,
+        WithSorting, // Added Sorting
+        WithBulkActions, // Bulk actions
+        WithCachedRows, // Improved return  response
+        WithSingleAction; // delete on row item
 
-    public $search = '';
-    public $sortField = 'id';
-    public $sortDirection = 'asc';
-    public $perPage = 10;
-    public $deleteId = '';
+    // Apply Filters
+    public $filters = [
+        "search" => "",
+        "status" => "",
+        "from_date" => "",
+        "to_date" => "",
+    ];
+
+    // Event listeners are registered in the $listeners property of your Livewire components.
+    protected $listeners = [
+        "refreshTransactions" => '$refresh',
+        "deleteSelected",
+        "confirm",
+    ];
+
+    /* Apply bootstrap layout in pagination */
+    protected $paginationTheme = "bootstrap";
+
     public $statusList;
     public $new_status;
-    public $filter;
-     
-    protected $listeners = ['remove', 'update'];   
-    protected $queryString = ['sortField', 'sortDirection'];
-    protected $paginationTheme = 'bootstrap';
-    public bool $loadData = false;
-  
-    public function init()
+
+    /**
+     * Generic string-based column, attributes assigned
+     *
+     * @return array() response()
+     */
+    public function columns(): array
     {
-         $this->loadData = true;
+        return [
+            Column::field([
+                "label" => __('components/ticket.Title'),
+                "field" => "title",
+                "sortable" => true,
+                "direction" => true,
+            ]),
+            Column::field([
+                "label" => __('components/ticket.Customer Name'),
+                "field" => "user_id",
+                "sortable" => true,
+                "direction" => true,
+            ]),
+            Column::field([
+                "label" => __('components/ticket.Creation Date'),
+                "field" => "created_at",
+            ]),
+            Column::field([
+                "label" => __('components/ticket.Status'),
+                "field" => "status",
+            ]),
+        ];
     }
-
-    public function sortBy($field){
-        if($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-        $this->sortField = $field;
-    }
-
     public function mount($status = 'open') {
-        $this->perPage = config('commerce.pagination_per_page');
-        $this->filter['status'] = $status;
+        $this->filters['status'] = $status;
         $statusConst = new TicketsStatus();
         $this->statusList =  $statusConst->getConstants();
     }
 
-    public function statusUpdate($ticket, $status)
-	{    
-        if(!in_array($status, $this->statusList)){
-            $this->dispatchBrowserEvent('alert', 
-            ['type' => 'error',  'message' => __('ticket.Invalid action you cannot perform that action !')]);
-        }
-        
-        $this->ticketId  = $ticket['id'];
-        $this->new_status  = $status;
-        
-        $textStatus = $status == 'closed' ? __('ticket.Approve') : __('ticket.Reject');
-        $this->dispatchBrowserEvent('swal:confirm', [
-                'action' => 'update',
-                'type' => 'warning',  
-                'confirmButtonText' => __('ticket.Yes,')." ".$textStatus." ". __('ticket.it!'),
-                'cancelButtonText' => __('ticket.No, cancel!'),
-                'message' => __('ticket.Are you sure want to').$textStatus.'?', 
-                'text' => __('ticket.If')." ".$textStatus.__('ticket., you will not be able to revert this action!')
-            ]);
- 	}
 
-    public function update()
+    /**
+     * The loadData action will be run immediately after the Livewire component renders on the page
+     *
+     * @return void()
+     */
+    public function init()
     {
-        $ticket = Ticket::find($this->ticketId);
-        $ticket->status = $this->new_status;
-        
-            if($ticket->category->name == 'update-mobile-number'){
-                $user = User::find($ticket->user_id);
-                $newData = json_decode($ticket->content);
-                $user->country_code = $newData->country_code;
-                $user->phone = $newData->country_code.$newData->mobile;
-                $user->save();
-
-                $textStatus = $this->new_status == 'closed' ? __('ticket.Approved') : __('ticket.Rejected');
-                event(new InstantPushNotification($ticket->user_id, [
-                    "title" => __( 'ticket.Request ').$textStatus ,
-                    "body" => __('ticket.Your phone number update request has been ').$textStatus,
-                    "data" => [
-                        'type' => 'update-mobile-number',
-                        'status' =>$this->new_status ,
-                    ]
-                ]));
-
-            }      
-       
-        $ticket->save();
+        $this->loadData = true;
     }
 
-    public function render()
+    /**
+     * Pass it to swal:destroyMultiple key of the alert configuration.
+     *
+     * @return void()
+     */
+    public function destroyMultiple()
     {
-        return view('livewire.tickets.index', [
-            "tickets" =>$this->loadData ? Ticket::with(['user', 'category'])->searchMultipleTicket(trim(strtolower($this->search)), $this->filter)->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage) : [],
+        $deleteCount = $this->selectedRowsQuery->count();
+        if (!$deleteCount > 0) {
+            $this->dispatchBrowserEvent("alert", [
+                "type" => "error",
+                "message" =>
+                __('components/ticket.Please select at least one user'),
+            ]);
+            return false;
+        }
+        $this->dispatchBrowserEvent("swal:destroyMultiple", [
+            "action" => "deleteSelected",
+            "type" => "warning",
+            "confirmButtonText" => __('components/ticket.Yes, delete it!'),
+            "cancelButtonText" => __('components/ticket.No, cancel!'),
+            "message" => __('components/ticket.Are you sure?'),
+            "text" => __(
+                'components/ticket.If deleted, you will not be able to recover this imaginary file!'
+            ),
         ]);
     }
 
-     /**
-     * Write code on Method
+    /**
+     * Remove the selected blog from the storage.
      *
-     * @return response()
+     * @return void()
+     */
+    public function deleteSelected()
+    {
+        $deleteCount = $this->selectedRowsQuery->count();
+
+        $this->selectedRowsQuery->delete();
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('components/ticket.Ticket Delete Successfully!') . " -: " . $deleteCount,
+        ]);
+    }
+
+    /**
+     * Clear the filter form and revert the results to default
+     *
+     * @return void()
+     */
+    public function resetFilters()
+    {
+        $this->reset("filters");
+    }
+
+    /**
+     * Return a array of  all of the 's ticket with filter.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsQueryProperty()
+    {
+        $query = Ticket::query()
+            ->when(
+                $this->filters["search"],
+                fn($query, $search) => $query->WhereTranslationLike(
+                    "title",
+                    "%" . $search . "%"
+                )
+            )->
+            with(['user', 'category']);
+            if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
+                $query->where('status' , '=' ,  $this->filters['status']);
+            }   
+        return $this->applySorting($query);
+    }
+
+    /**
+     * Store query result in cache
+     * Return a list of cache ticket of the application.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsProperty()
+    {
+        return $this->cache(function () {
+            return $this->applyPagination($this->rowsQuery);
+        });
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $this->dltid
+     * @return \Illuminate\Http\Response
      */
     public function remove()
     {
-        Ticket::find($this->deleteId)->delete();
-
-        $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('ticket.Ticket Delete Successfully!')]);
-
-    } 
-
-    public function updatingSearch()
-    {
-        $this->gotoPage(1);
+        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
     }
 
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }   
 
-     /**
-     * Write code on Method
+    /**
+     * update store status
      *
      * @return response()
      */
-    public function destroyConfirm($ticketId)
+    public function statusUpdate($id, $status)
+    {     
+        $status = ( $status == 1 ) ? 0 : 1;
+        Ticket::where('id', $id )->update(['status' => $status]);
+        
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('components/ticket.Status updated Successfully!'),
+        ]);
+   }
+
+    /**
+     * Show a list of all of the application's ticket.
+     * @return \Illuminate\Http\Response
+     */
+    public function render()
     {
-        $this->deleteId  = $ticketId;
-        $this->dispatchBrowserEvent('swal:confirm', [
-                'action' => 'remove',
-                'type' => 'warning',  
-                'confirmButtonText' => __('ticket.Yes, delete it!'),
-                'cancelButtonText' => __('ticket.No, cancel!'),
-                'message' => __('ticket.Are you sure?'), 
-                'text' => ('ticket.If deleted, you will not be able to recover this ticket data!')
-            ]);
+        return view("livewire.tickets.index", [
+            "tickets" => $this->rows,
+        ]);
     }
 }

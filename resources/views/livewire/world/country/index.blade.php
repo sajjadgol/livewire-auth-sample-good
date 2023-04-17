@@ -65,7 +65,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store-type') }}" />
+                        <x-table.button.add icon href="{{ route('add-country') }}" />
                     @endcan
 
                 </x-core.card-toolbar>
@@ -73,7 +73,7 @@
         <x-slot name="body">
 
             {{--  Table with perPage and pagination --}}
-            <x-table perPage total="{{ $countrys->total() }}" id="users-list" paginate="{{ $countrys->links() }}">
+            <x-table perPage total="{{ $countrys->total() }}" id="country-list" paginate="{{ $countrys->links() }}">
                 <x-slot name="head">
 
                     {{-- Select-all checkbox  --}}

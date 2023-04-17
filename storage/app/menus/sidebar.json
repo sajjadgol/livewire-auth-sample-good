@@ -9,25 +9,7 @@
       "href": "",
       "permission": "user-management",
       "noCollapse": false,
-      "module": "Users",
-      "collapse" : [
-        {
-          "name" : "All User",
-          "icon" : "group",
-          "key" : "user-management",
-          "permission" : "user-management",
-          "href" : "",
-          "route" : "user-management"
-        },
-        {
-          "name" : "Update Requests",
-          "icon" : "manage_accounts",
-          "key" : "ticket-management",
-          "permission" : "ticket-management",
-          "href" : "",
-          "route" : "ticket-management"
-        }
-      ]
+      "module": "Users"
     },
     {
       "sectionTitle" : "STORE MANAGEMENT",
@@ -66,6 +48,18 @@
           "route" : "store-type-management"
         }
       ]
+    },
+    {
+      "sectionTitle" : "Ticket Support",
+      "type": "collapse",
+      "head": "",
+      "name": "Tickets",
+      "key": "ticket",
+      "icon": "contact_support",
+      "route": "ticket-management",
+      "href": "",
+      "permission": "ticket-management",
+      "noCollapse": false
     },
     {
       "sectionTitle" : "Settings",

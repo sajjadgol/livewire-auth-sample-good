@@ -1,6 +1,7 @@
 <?php
 return [
     "page_title" => 'Faqs',
+    "page_title_create" => 'Add FAQ',
     'Title' => "Title ",
     "App Name" => 'App Name',
     "Status" => 'Status',

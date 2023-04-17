@@ -66,7 +66,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store-type') }}" />
+                        <x-table.button.add icon href="{{ route('add-page') }}" />
                     @endcan
 
                 </x-core.card-toolbar>
@@ -74,7 +74,7 @@
         <x-slot name="body">
 
             {{--  Table with perPage and pagination --}}
-            <x-table perPage total="{{ $pages->total() }}" id="users-list" paginate="{{ $pages->links() }}">
+            <x-table perPage total="{{ $pages->total() }}" id="page-list" paginate="{{ $pages->links() }}">
                 <x-slot name="head">
 
                     {{-- Select-all checkbox  --}}

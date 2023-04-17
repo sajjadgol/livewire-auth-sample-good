@@ -10,4 +10,4 @@
         </span>
     @endif
 </div>
-<input type="text" {{ $attributes->merge(['class' => 'form-control' . ($leadingAddOn ? ' rounded-none rounded-r-md' : '')]) }}/>
+<input {{ $attributes }} {{ $attributes->merge(['class' => 'form-control' . ($leadingAddOn ? ' rounded-none rounded-r-md' : '')]) }}/>

@@ -6,7 +6,7 @@
 <div {{ $attributes }} class="card {{ $class }}" id="basic-info">
     @isset($header)
         <div class="card-header">
-            {{ $header }}
+             {{ $header }}
         </div>
     @endisset 
     @isset($body)        
