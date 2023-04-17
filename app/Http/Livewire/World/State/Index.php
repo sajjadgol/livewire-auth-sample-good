@@ -138,7 +138,7 @@ class Index extends Component
     }
 
     /**
-     * Return a array of  all of the 's users with filter.
+     * Return a array of  all of the 's state with filter.
      *
      * @return \Illuminate\Http\Response
      */
@@ -161,7 +161,7 @@ class Index extends Component
 
     /**
      * Store query result in cache
-     * Return a list of cache users of the application.
+     * Return a list of cache state of the application.
      *
      * @return \Illuminate\Http\Response
      */
@@ -188,10 +188,10 @@ class Index extends Component
      *
      * @return response()
      */
-    public function statusUpdate($userId, $status)
+    public function statusUpdate($id, $status)
     {     
         $status = ( $status == 1 ) ? 0 : 1;
-        User::where('id', $userId )->update(['status' => $status]);
+        State::where('id', $id )->update(['status' => $status]);
         
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
@@ -201,7 +201,7 @@ class Index extends Component
    }
 
     /**
-     * Show a list of all of the application's users.
+     * Show a list of all of the application's state.
      * @return \Illuminate\Http\Response
      */
     public function render()

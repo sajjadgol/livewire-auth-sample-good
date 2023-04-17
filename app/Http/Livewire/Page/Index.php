@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Page;
 
 use Livewire\Component;
-use App\Models\User;
 use App\Http\DataTable\WithSorting;
 use App\Http\DataTable\WithCachedRows;
 use App\Http\DataTable\WithBulkActions;
@@ -142,7 +141,7 @@ class Index extends Component
     }
 
     /**
-     * Return a array of  all of the 's users with filter.
+     * Return a array of  all of the 's page with filter.
      *
      * @return \Illuminate\Http\Response
      */
@@ -165,7 +164,7 @@ class Index extends Component
 
     /**
      * Store query result in cache
-     * Return a list of cache users of the application.
+     * Return a list of cache page of the application.
      *
      * @return \Illuminate\Http\Response
      */
@@ -192,10 +191,10 @@ class Index extends Component
      *
      * @return response()
      */
-    public function statusUpdate($pageId, $status)
+    public function statusUpdate($id, $status)
     {     
         $status = ( $status == "published") ? 'unpublished' : 'published';
-        Post::where('id', $pageId )->update(['status' => $status]);      
+        Post::where('id', $id )->update(['status' => $status]);      
 
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
@@ -205,7 +204,7 @@ class Index extends Component
    }
 
     /**
-     * Show a list of all of the application's users.
+     * Show a list of all of the application's page.
      * @return \Illuminate\Http\Response
      */
     public function render()

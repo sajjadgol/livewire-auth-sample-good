@@ -205,10 +205,10 @@ class Index extends Component
      *
      * @return response()
      */
-    public function statusUpdate($userId, $status)
+    public function statusUpdate($store_id, $status)
     {     
         $status = ( $status == 1 ) ? 0 : 1;
-        User::where('id', $userId )->update(['status' => $status]);
+        Store::where('id', $store_id )->update(['status' => $status]);
 
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
