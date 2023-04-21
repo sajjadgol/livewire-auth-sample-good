@@ -1,6 +1,6 @@
 {{-- Page Title --}}
 @section('page_title')
-    @lang("components/storeType.add_store_title")
+    @lang("components/restaurantType.edit_restaurant_title") ({{  $languages }})
 @endsection
 <x-core.container>
 
@@ -18,20 +18,13 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submitText="create store type" submit-target="store" cancel-route="{{ route('store-type-management') }}">
+            <x-form.form submitText="Update Restaurant Type" submit-target="editTranslate" cancel-route="{{ route('restaurant-type-management') }}">
 
                 {{-- Input-group --}}
-                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
+                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('restaurantType.name')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="name" placeholder="Enter a store type name" />
+                    <x-input.text wire:model.lazy="restaurantType.name" placeholder="Enter a restaurant type name" />
                 </x-input.group>
-
-                <x-input.group inline colspan="col-12" for="status" label="Status" :error="$errors->first('status')">
-                    {{-- Input text --}}
-                    <x-input.checkbox wire:model.lazy="status" label="Active"/>
-                </x-input.group>
-
-
             </x-form.form>
         </x-slot>
     </x-core.card>

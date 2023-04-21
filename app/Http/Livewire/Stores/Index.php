@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\DataTable\WithSingleAction;
 use App\Http\DataTable\Column;
 use App\Models\Stores\Store;
-use App\Models\Stores\StoreType;
+use App\Models\Stores\RestaurantType;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -30,7 +30,7 @@ class Index extends Component
         "search" => "",
         "status" => "",
         "application_status" => "",
-        "store_type" => "",
+        "restaurant_type" => "",
         "from_date" => "",
         "to_date" => "",
     ];
@@ -48,7 +48,7 @@ class Index extends Component
     public $roles;
     public $account_status = "";
     public $application_status ;
-    public $storeTypes;
+    public $restaurantTypes;
 
     /**
      * Generic string-based column, attributes assigned
@@ -104,8 +104,8 @@ class Index extends Component
     }
     public function mount() {  
         $this->filters['application_status'] = $this->application_status; 
-        $this->filters['store_type'] = $this->storeTypes;   
-        $this->storeTypes = StoreType::withTranslation()->get();
+        $this->filters['restaurant_type'] = $this->restaurantTypes;   
+        $this->restaurantTypes = RestaurantType::withTranslation()->get();
     }
 
 

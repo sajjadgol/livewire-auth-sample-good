@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 use App\Models\Worlds\Cities;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
-use App\Models\Stores\StoreType;
+use App\Models\Stores\RestaurantType;
 use App\Models\Stores\StoreOwners;
 use App\Models\Stores\BusinessHour;
 use App\Models\Stores\StoreAddress;
@@ -149,7 +149,7 @@ class Edit extends Component
         
         $this->timeOptionsList = Utils::timeOptions();
         $this->accounts = StoreOwners::where('store_id', $this->store->id)->get();
-        $this->store_type = StoreType::withTranslation()->translatedIn($this->lang)->get();
+        $this->store_type = RestaurantType::withTranslation()->translatedIn($this->lang)->get();
 
         $this->commission_value = $this->store->commission_value;
         $this->is_global_commission = $this->store->is_global_commission;

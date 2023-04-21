@@ -9,7 +9,7 @@ use App\Models\Worlds\State;
 use App\Models\Worlds\Cities;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
-use App\Models\Stores\StoreType;
+use App\Models\Stores\RestaurantType;
 use App\Models\Stores\StoreAddress;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -84,7 +84,7 @@ class Create extends Component
         $this->countries = Country::all();
         $this->states = collect();
         $this->cities = collect();
-        $this->store_type = StoreType::all();
+        $this->store_type = RestaurantType::all();
         $this->country_code = Country::where('is_default', 1)->value('country_code');
     }
 

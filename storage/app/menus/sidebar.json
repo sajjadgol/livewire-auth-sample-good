@@ -40,14 +40,13 @@
           "route" : "unverified-stores"
         },
         {
-          "name" : "Stores Type",
+          "name" : "Restaurants Type",
           "icon" : "local_convenience_store",
-          "key" : "store-type-management",
-          "permission" : "store-type-management",
+          "key" : "restaurant-type-management",
+          "permission" : "restaurant-type-management",
           "href" : "",
-          "route" : "store-type-management"
+          "route" : "restaurant-type-management"
         }
-       
       ]
     },
     {

@@ -57,10 +57,10 @@
                             </x-input.select>
                         </x-input.group>
 
-                        <x-input.group inline for="filters.store_type" label="{{ __('components/store.Store Type') }}">
-                            <x-input.select wire:model="filters.store_type" placeholder="{{ __('components/store.All Type') }}">
-                                @foreach ($storeTypes as $storeType)
-                                    <option  class="optionGroup"  value="{{ $storeType->name }}"> {{ $storeType->name }}</option>
+                        <x-input.group inline for="filters.restaurant_type" label="{{ __('components/store.Store Type') }}">
+                            <x-input.select wire:model="filters.restaurant_type" placeholder="{{ __('components/store.All Type') }}">
+                                @foreach ($restaurantTypes as $restaurantType)
+                                    <option  class="optionGroup"  value="{{ $restaurantType->name }}"> {{ $restaurantType->name }}</option>
                                 @endforeach  
                             </x-input.select>
                         </x-input.group>
