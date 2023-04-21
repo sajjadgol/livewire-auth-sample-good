@@ -1,6 +1,6 @@
 {{-- Page Title --}}
 @section('page_title')
-    @lang("components/user.page_title_add")
+    @lang("components/store.add_store_title")
 @endsection
 @if(env('GOOGLE_MAP_KEY') == '')
     <x-alert class="alert-warning"><strong>Warning! </strong> Get the coordinates of a stores, You will need to set your API Key. <a class="btn-link">Set Google API Key now</a></x-alert>
@@ -23,7 +23,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form enctype="multipart/form-data" submit-target="store" cancel-route="{{ route('user-management') }}">
+            <x-form.form enctype="multipart/form-data" submitText="create store" submit-target="store" cancel-route="{{ route('store-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Full Name *" :error="$errors->first('name')">
@@ -66,7 +66,7 @@
                 </x-input.group>
 
                 {{-- letlong --}}
-                <div class="col-6 mb-4">
+                <div class="col-12 mb-4">
                     <div class="input-group input-group-static">
                         <label>Landmark (GPS Coordinates)*</label>
                         <input wire:model.lazy="landmark" type="text"  id="googleMapAutocomplete"  class="form-control" placeholder="Enter a Landmark">
@@ -77,13 +77,13 @@
                         <p class='text-info inputerror'>Latitude: {{$latitude}}, Longitude: {{$longitude}}</p>
                     @endif
                     @error('landmark')
-                        <p class='text-danger inputerror'>{{ $message }} </p>
+                        <span class='text-danger inputerror'>{{ $message }} </span>
                     @enderror
                     @error('latitude')
-                        <p class='text-danger inputerror'>{{ $message }} </p>
+                        <span class='text-danger inputerror'>{{ $message }} </span>
                     @enderror
                     @error('longitude')
-                        <p class='text-danger inputerror'>{{ $message }} </p>
+                        <span class='text-danger inputerror'>{{ $message }} </span>
                     @enderror
                 </div>
 
@@ -101,7 +101,7 @@
                 </x-input.group>
 
                 <x-input.group colspan="col-12" for="stateName" label="State *" :error="$errors->first('state')">
-                    <x-input.select class="form-control" wire:model="country" id="stateName" onfocus="focused(this)" onfocusout="defocused(this)"
+                    <x-input.select class="form-control" wire:model="state" id="stateName" onfocus="focused(this)" onfocusout="defocused(this)"
                         placeholder="Choose Your State">
                         @foreach ($states  as $stateValue)
                             <option value="{{ $stateValue['id'] }},{{ $stateValue['name'] }}">{{ $stateValue['name']}}</option>

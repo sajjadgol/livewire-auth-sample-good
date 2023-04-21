@@ -1,6 +1,8 @@
 <?php
 return [
-    "page_title" => 'Country',
+    "page_title" => 'States',
+    "add_state_title" => "Add State",
+    "edit_state_title" => "Edit State",
     'Name' => "Name ",
     "Country Name" => 'Country Name',
     "Status" => 'Status',
@@ -8,9 +10,9 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
+    "If deleted, you will not be able to recover this states!" => "If deleted, you will not be able to recover this states!",
     "State Delete Successfully!" => "State Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "Please select at least one state" => "Please select at least one state",
     'Status updated Successfully!' => "Status updated Successfully!",
     'Export' => 'Export',
     'Delete' => 'Delete',
@@ -20,4 +22,6 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
+    'add_state' => 'Add State',
+    'state_delete_msg' => 'State Delete Successfully!'
 ];

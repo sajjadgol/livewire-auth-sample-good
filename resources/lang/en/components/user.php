@@ -24,5 +24,7 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'Any Role' => 'Any Role'
+    'Any Role' => 'Any Role',
+    'add_user' => 'Add User',
+    'user_delete_msg'=> 'User Delete Successfully!'
 ];

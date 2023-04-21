@@ -65,7 +65,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-faq') }}" />
+                        <x-table.button.add icon href="{{ route('add-faq') }}" >@lang('components/faq.Add Faq') </x-table.button.add>
                     @endcan
 
                 </x-core.card-toolbar>

@@ -1,3 +1,7 @@
+{{-- Page Title --}}
+@section('page_title')
+    @lang("components/slider.edit_slider_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -18,18 +22,18 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('store-type-management') }}">
+            <x-form.form submitText="update slider" submit-target="edit" cancel-route="{{ route('slider-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('slider.name')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="slider.name" placeholder="Enter a Name" />
+                    <x-input.text wire:model.lazy="slider.name" placeholder="Enter a slider" />
                 </x-input.group>
 
                 <x-input.group colspan="col-12" for="description" label="Description *" :error="$errors->first('slider.description')">
                     {{-- Rech text --}}
-                    <x-input.rich-text wire:model.lazy="slider.name">
-                        {{ $slider->description }}
+                    <x-input.rich-text wire:model.lazy="slider.description">
+                        {!! $slider->description !!}
                     </x-input.rich-text>
                 </x-input.group>
 

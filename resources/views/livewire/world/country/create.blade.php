@@ -1,3 +1,6 @@
+@section('page_title')
+    @lang("components/country.add_country_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,7 +17,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('country-management') }}">
+            <x-form.form submitText="Create Country" submit-target="store" cancel-route="{{ route('country-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
@@ -26,11 +29,11 @@
                     <x-input.text wire:model.lazy="country_code" placeholder="Enter a country code e.g. 1, 91, 966 etc.." />
                 </x-input.group>
 
-                <x-input.group colspan="col-12" for="country_ios_code" label="Country Code *" :error="$errors->first('country_ios_code')">
+                <x-input.group colspan="col-12" for="country_ios_code" label="Country iso Code *" :error="$errors->first('country_ios_code')">
                     <x-input.text wire:model.lazy="country_ios_code" placeholder="Enter a country ios code" />
                 </x-input.group>
 
-                <x-input.group colspan="col-12" for="nationality" label="Nationality *" :error="$errors->first('nationality')">
+                <x-input.group colspan="col-12" for="nationality" label="Nationality" :error="$errors->first('nationality')">
                     <x-input.text wire:model.lazy="nationality" placeholder="Enter a Nationality" />
                 </x-input.group>
 

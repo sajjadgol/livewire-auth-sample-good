@@ -1,6 +1,6 @@
 <?php
 return [
-    "page_title" => 'Faqs',
+    "page_title" => 'FAQs',
     "page_title_create" => 'Add FAQ',
     'Title' => "Title ",
     "App Name" => 'App Name',
@@ -9,9 +9,9 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
+    "If deleted, you will not be able to recover this faqs!" => "If deleted, you will not be able to recover this faqs!",
     "Faq Delete Successfully!" => "Faq Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "Please select at least one faq" => "Please select at least one faq",
     'Status updated Successfully!' => "Status updated Successfully!",
     'Export' => 'Export',
     'Delete' => 'Delete',
@@ -21,4 +21,7 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
+    'Add Faq' => 'Add FAQ',
+    'edit_page_title' => 'Edit FAQ',
+    'faq_delete_msg' => 'FAQ Delete Successfully!'
 ];

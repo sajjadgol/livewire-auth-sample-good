@@ -121,7 +121,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/store.Please select at least one user'),
+                __('components/store.Please select at least one store'),
             ]);
             return false;
         }
@@ -132,7 +132,7 @@ class Index extends Component
             "cancelButtonText" => __('components/store.No, cancel!'),
             "message" => __('components/store.Are you sure?'),
             "text" => __(
-                'components/store.If deleted, you will not be able to recover this imaginary file!'
+                'components/store.If deleted, you will not be able to recover this stores!'
             ),
         ]);
     }
@@ -150,7 +150,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/store.User Delete Successfully!') . " -: " . $deleteCount,
+            __('components/store.Store Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -196,7 +196,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/store.store_delete_msg')]);    
+        }
+        return $query;
     }
 
 

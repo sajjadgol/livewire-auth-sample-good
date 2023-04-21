@@ -1,5 +1,5 @@
 @section('page_title')
-    @lang("components/faq.page_title")
+    @lang("components/pages.add_page_title")
 @endsection
 <x-core.container>
 
@@ -17,12 +17,12 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('faq-management') }}">
+            <x-form.form submitText="Create Page" submit-target="store" cancel-route="{{ route('page-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="title" label="Title *" :error="$errors->first('title')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="title" placeholder="Enter a Title" />
+                    <x-input.text wire:model.lazy="title" placeholder="Enter a page title" />
                 </x-input.group>
 
                 <x-input.group colspan="col-12" for="content" label="Content *" :error="$errors->first('content')">
@@ -32,7 +32,7 @@
                     </x-input.rich-text>
                 </x-input.group>
 
-                <x-input.group colspan="col-12 mt-4" for="status" label="Select Status *" :error="$errors->first('status')">
+                <x-input.group colspan="col-12 mt-4" for="status" label="Select Status" :error="$errors->first('status')">
                     <x-input.select class="form-control" wire:model="status" id="status" onfocus="focused(this)" onfocusout="defocused(this)"
                         placeholder="Choose a status">
                         <option value="published">Published</option>

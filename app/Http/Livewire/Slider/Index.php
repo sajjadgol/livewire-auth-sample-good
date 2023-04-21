@@ -2,15 +2,16 @@
 
 namespace App\Http\Livewire\Slider;
 
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Slider\Slider;
+use App\Http\DataTable\Column;
+use App\Models\Slider\SliderImage;
 use App\Http\DataTable\WithSorting;
 use App\Http\DataTable\WithCachedRows;
 use App\Http\DataTable\WithBulkActions;
-use App\Http\DataTable\WithPerPagePagination;
 use App\Http\DataTable\WithSingleAction;
-use App\Http\DataTable\Column;
-use App\Models\Slider\Slider;
-use App\Models\Slider\SliderImage;
+use App\Http\DataTable\WithPerPagePagination;
 
 class Index extends Component
 {
@@ -52,8 +53,6 @@ class Index extends Component
             Column::field([
                 "label" => __('components/slider.Name'),
                 "field" => "name",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/slider.START DATE TIME'),
@@ -96,7 +95,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/slider.Please select at least one user'),
+                __('components/slider.Please select at least one slider'),
             ]);
             return false;
         }
@@ -107,7 +106,7 @@ class Index extends Component
             "cancelButtonText" => __('components/slider.No, cancel!'),
             "message" => __('components/slider.Are you sure?'),
             "text" => __(
-                'components/slider.If deleted, you will not be able to recover this imaginary file!'
+                'components/slider.If deleted, you will not be able to recover this sliders!'
             ),
         ]);
     }
@@ -147,17 +146,33 @@ class Index extends Component
     public function getRowsQueryProperty()
     {
         $query = Slider::query()
-            ->when(
+        ->when(
+            $this->filters["from_date"],
+            fn($query, $date) => $query->whereDate(
+                "created_at",
+                ">=",
+                Carbon::parse($date)
+            )
+        )
+        ->when(
+            $this->filters["to_date"],
+            fn($query, $date) => $query->whereDate(
+                "created_at",
+                "<=",
+                Carbon::parse($date)
+            )
+        )
+        ->when(
                 $this->filters["search"],
-                fn($query, $search) => $query->WhereTranslationLike(
+                fn($query, $search) => $query->whereTranslationLike(
                     "name",
                     "%" . $search . "%"
                 )
-            );
+        )->withTranslation();
 
-            if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
-                $query->where('status' , '=' ,  $this->filters['status']);
-            }   
+        if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
+            $query->where('status' , '=' ,  $this->filters['status']);
+        }   
         return $this->applySorting($query);
     }
 
@@ -182,7 +197,13 @@ class Index extends Component
     public function remove()
     {
         SliderImage::where('slider_id', $this->dltid)->delete();
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/slider.slider_delete_msg')]);    
+        }
+        return $query;
     }
 
 

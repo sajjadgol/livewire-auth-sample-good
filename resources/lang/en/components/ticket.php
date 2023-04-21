@@ -8,9 +8,9 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
+    "If deleted, you will not be able to recover this tickets!" => "If deleted, you will not be able to recover this tickets!",
     "Ticket Delete Successfully!" => "Ticket Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "Please select at least one ticket" => "Please select at least one ticket",
     'Status updated Successfully!' => "Status updated Successfully!",
     'Export' => 'Export',
     'Delete' => 'Delete',
@@ -20,4 +20,5 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
+    "ticket_delete_msg" => 'Ticket Delete Successfully!'
 ];

@@ -13,9 +13,9 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
-    "User Delete Successfully!" => "User Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "If deleted, you will not be able to recover this stores!" => "If deleted, you will not be able to recover this stores!",
+    "Store Delete Successfully!" => "Store Delete Successfully!",
+    "Please select at least one store" => "Please select at least one store",
     'Export' => 'Export',
     'Delete' => 'Delete',
     'Show Columns' => 'Show Columns',
@@ -37,6 +37,9 @@ return [
     "Mark as Searchable" => "Mark as Searchable",
     "Top Store" => "Top Store",
     "Remove to Top Store" => "Remove to Top Store",
-    "Mark as Top Store" => "Mark as Top Store"
+    "Mark as Top Store" => "Mark as Top Store",
+    "add_store" => "Add Store",
+    "add_store_title"=> "Add New Store",
+    "store_delete_msg" => "Store Delete Successfully!"
 
 ];

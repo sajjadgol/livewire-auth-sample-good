@@ -25,7 +25,7 @@ class Create extends Component
     public $logo_path;
     public $email = '';
     public $name = '';
-    public $descriptions = '';
+    public $descriptions='';
     public $phone = '';
     public $order_preparing_time = '';
     public $number_of_branch = 1;

@@ -40,7 +40,13 @@ class Edit extends Component
     }
 
     public function edit() {
-       $this->validate();
+        $content =$this->post->content;
+        if ($content == '<p><br></p>'){
+            $this->post->content = '';
+        }
+       
+        $this->validate();
+
         $this->post->update([
             'user_id'   => auth()->user()->id,
             'title'     => $this->post->title,
@@ -53,7 +59,11 @@ class Edit extends Component
 
 
     public function editTranslate()
-    {
+    {   
+        $content =$this->post->content;
+        if ($content == '<p><br></p>'){
+            $this->post->content = '';
+        }
         $request =  $this->validate([
             'post.title' => 'required',
             'post.content' => 'required',

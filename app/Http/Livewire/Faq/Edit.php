@@ -49,12 +49,12 @@ class Edit extends Component
     }
 
     public function saveForm()
-    {
-        $descriptions =$this->descriptions;
-            if ($descriptions == '<p>b</p>'){
-                $this->$descriptions = 'cannot send empty value';
+    {   
+        $descriptions=$this->descriptions;
+            if ($descriptions == '<p><br></p>'){
+                $this->$descriptions = '';
             }
-        $this->validate();
+         $this->validate();
 
     }
 
@@ -65,7 +65,13 @@ class Edit extends Component
     }
 
     public function editTranslate()
-    {
+    {  
+        $descriptions =$this->faq->descriptions;
+
+        if ($descriptions == '<p><br></p>'){
+            $this->faq->descriptions = '';
+        }
+
         $request =  $this->validate([
             'faq.title' => 'required',
             'faq.descriptions' => 'required',

@@ -1,6 +1,8 @@
 <?php
 return [
-    "page_title" => 'City',
+    "page_title" => 'Cities',
+    "add_page_title"=> "Add City",
+    "edit_page_title"=> "Edit City",
     'Name' => "Name ",
     "Country Name" => 'Country Name',
     "State Name" => "State Name",
@@ -9,9 +11,9 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
-    "State Delete Successfully!" => "State Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "If deleted, you will not be able to recover this cities!" => "If deleted, you will not be able to recover this cities!",
+    "City Delete Successfully!" => "City Delete Successfully!",
+    "Please select at least one city" => "Please select at least one city",
     'Status updated Successfully!' => "Status updated Successfully!",
     'Export' => 'Export',
     'Delete' => 'Delete',
@@ -21,4 +23,6 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
+    'add_city' => 'Add City',
+    'city_delete_msg' => 'City Delete Successfully!'
 ];

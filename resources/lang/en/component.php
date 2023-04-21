@@ -21,5 +21,9 @@ return [
   'Record, do you want to select all' => 'Record, do you want to select all',
   'Select All' => 'Select All',
   'You are currently selecting all' => 'You are currently selecting all :total records.',
-  'Loading' => 'Loading...'
+  'Loading' => 'Loading...',
+  'Yes, delete it!' => 'Yes, delete it!',
+  'No, cancel!' => 'No, cancel!',
+  'Are you sure?' => 'Are you sure?',
+  'If deleted, you will not be able to recover this record!'=> 'If deleted, you will not be able to recover this record!'
 ];

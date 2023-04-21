@@ -90,7 +90,7 @@
 
                     @can('add-store')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store') }}" />
+                        <x-table.button.add icon href="{{ route('add-store') }}" > @lang('components/store.add_store') </x-table.button.add>
                     @endcan
 
                 </x-core.card-toolbar>

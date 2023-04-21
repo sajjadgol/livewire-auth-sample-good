@@ -51,8 +51,7 @@ class Index extends Component
             Column::field([
                 "label" => __('components/storeType.Name'),
                 "field" => "name",
-                "sortable" => true,
-                "direction" => true,
+               
             ]),
             Column::field([
                 "label" => __('components/storeType.Creation Date'),
@@ -91,7 +90,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/storeType.Please select at least one user'),
+                __('components/storeType.Please select at least one store type!'),
             ]);
             return false;
         }
@@ -102,7 +101,7 @@ class Index extends Component
             "cancelButtonText" => __('components/storeType.No, cancel!'),
             "message" => __('components/storeType.Are you sure?'),
             "text" => __(
-                'components/storeType.If deleted, you will not be able to recover this imaginary file!'
+                'components/storeType.If deleted, you will not be able to recover this store types!'
             ),
         ]);
     }
@@ -140,7 +139,7 @@ class Index extends Component
      * @return \Illuminate\Http\Response
      */
     public function getRowsQueryProperty()
-    {
+    {   
         $query = StoreType::query()
             ->when(
                 $this->filters["search"],
@@ -152,7 +151,8 @@ class Index extends Component
 
             if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
                 $query->where('status' , '=' ,  $this->filters['status']);
-            }   
+            }  
+            
         return $this->applySorting($query);
     }
 
@@ -176,7 +176,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/storeType.storetype_delete_msg')]);    
+        }
+        return $query;
     }
 
 

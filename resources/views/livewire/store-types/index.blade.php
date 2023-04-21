@@ -44,7 +44,6 @@
                         </x-input.group>
                     
                         {{-- Date renge filter --}}
-                        <x-table.filter-date-input />
 
                         <x-button.link wire:click="resetFilters" class="mt-2"> @lang('component.Reset Filters') </x-button.link>
 
@@ -65,7 +64,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store-type') }}" />
+                        <x-table.button.add icon href="{{ route('add-store-type') }}" >@lang('components/storeType.Add Store')</x-table.button.add>
                     @endcan
 
                 </x-core.card-toolbar>

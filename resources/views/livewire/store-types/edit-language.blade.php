@@ -1,3 +1,7 @@
+{{-- Page Title --}}
+@section('page_title')
+    @lang("components/storeType.edit_store_title") ({{  $languages }})
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,10 +18,10 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('store-type-management') }}">
+            <x-form.form submitText="Update Store Type" submit-target="editTranslate" cancel-route="{{ route('store-type-management') }}">
 
                 {{-- Input-group --}}
-                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
+                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('storeType.name')">
                     {{-- Input text --}}
                     <x-input.text wire:model.lazy="storeType.name" placeholder="Enter a store type name" />
                 </x-input.group>

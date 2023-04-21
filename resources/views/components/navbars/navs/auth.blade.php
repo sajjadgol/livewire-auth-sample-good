@@ -29,14 +29,6 @@
                     </li> 
                 @endcan
 
-                @can('message-management')        
-                    <li class="nav-item pe-3 {{ Route::currentRouteName() == 'messages' ? 'active' : '' }} ">
-                        <a title="Messages" class="nav-link p-0 position-relative"   href="{{ route('message-management') }}">
-                            <span class="material-icons cursor-pointer d-inline-block align-top">sms</span>
-                        </a>
-                    </li> 
-                @endcan
-
                 <li class="nav-item dropdown pe-3">
 
                     <a title="Dashboard" class="nav-link p-0 position-relative" id="dropdownMenuButton"

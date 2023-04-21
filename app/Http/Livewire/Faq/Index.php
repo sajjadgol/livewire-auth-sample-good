@@ -97,7 +97,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/faq.Please select at least one user'),
+                __('components/faq.Please select at least one faq'),
             ]);
             return false;
         }
@@ -108,7 +108,7 @@ class Index extends Component
             "cancelButtonText" => __('components/faq.No, cancel!'),
             "message" => __('components/faq.Are you sure?'),
             "text" => __(
-                'components/faq.If deleted, you will not be able to recover this imaginary file!'
+                'components/faq.If deleted, you will not be able to recover this faqs!'
             ),
         ]);
     }
@@ -182,7 +182,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/faq.faq_delete_msg')]);    
+        }
+        return $query;
     }
 
 

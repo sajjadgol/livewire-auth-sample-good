@@ -1,6 +1,8 @@
 <?php
 return [
-    "page_title" => 'Country',
+    "page_title" => 'Countries',
+    "add_country_title" => "Add Country",
+    "Edit_country_title" => "Edit Country",
     'Name' => "Name ",
     "Country Code" => 'Country Code',
     "Country Iso Code" => 'Country Iso Code',
@@ -9,10 +11,11 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
+    "If deleted, you will not be able to recover this countries!" => "If deleted, you will not be able to recover this countries!",
     "Country Delete Successfully!" => "Country Delete Successfully!",
-    "Please select at least one user" => "Please select at least one user",
+    "Please select at least one country" => "Please select at least one country",
     'Status updated Successfully!' => "Status updated Successfully!",
+    "Country successfully created." => "Country successfully created.",
     'Export' => 'Export',
     'Delete' => 'Delete',
     'Show Columns' => 'Show Columns',
@@ -21,4 +24,6 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
+    'add_country' => 'Add Country',
+    'country_delete_msg' => 'Country Delete Successfully!'
 ];
