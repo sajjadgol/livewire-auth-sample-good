@@ -105,34 +105,59 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        // Store Filter
+        Builder::macro('searchMultipleStore', function ($filters) {
 
-        Builder::macro('searchMultipleStore', function ($string, $filter) {
+            $query = $this;
+            $search = trim(strtolower($filters['search']));
+            $query->when(
+                $search,
+                fn($query, $search) => 
+                $query->Where(DB::raw('lower(email)'),  'like','%'.$search.'%')
+                ->orWhere('stores.phone', 'like', '%'.$search.'%')
+                ->orWhere('stores.created_at', 'like','%'.$search.'%')
+                ->orWhereTranslationLike('name', '%'.$search.'%')
+            )
+            ->when(
+                $filters["from_date"],
+                fn($query, $date) => $query->where(
+                    "created_at",
+                    ">=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $filters["to_date"],
+                fn($query, $date) => $query->where(
+                    "created_at",
+                    "<=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $filters["application_status"],
+                fn($query, $application_status) => 
+                    $query->where("application_status", ucfirst($application_status))
+               )
+            ->when(
+                $filters["store_type"],
+                fn($query, $store_type) => 
+                    $query->WhereTranslation("restaurant_type", \Str::lower($store_type))
+                )
+            ->when(
+                $filters["application_status"] != 'waiting',
+                fn($query, $store_type) => 
+                    $query->whereNot("application_status", 'waiting')
+                );
 
-            if(array_key_exists('application_status', $filter) && !empty($filter['application_status'])){
-                $this->where('application_status', '=' , $filter['application_status']);
+            if(array_key_exists('status', $filters) && is_numeric($filters['status'])){ 
+                $query->where('status' , '=' ,  $filters['status']);
             }
-
-            if(array_key_exists('status', $filter) && is_numeric($filter['status'])){ 
-                $this->where('status' , '=' ,  $filter['status']);
-            }
-
-            if(array_key_exists('store_type', $filter) && !empty($filter['store_type'])){ 
-                $this->where('restaurant_type' , '=' ,  $filter['store_type']);
-            }
-          
-            if($string) {               
-                return $this->where(function($query) use ($string) {
-                            $query
-                            ->Where(DB::raw('lower(email)'),  'like','%'.$string.'%')
-                            ->orWhere('stores.phone', 'like', '%'.$string.'%')
-                            ->orWhere('stores.created_at', 'like','%'.$string.'%')
-                            ->orWhereTranslationLike('name', '%'.$string.'%');
-                        });                      
-                           
-            } else {
-                return $this;
-            }
+            return $query;
         });
+
+
+        
         Builder::macro('searchStoreOwner', function ($string) {
             if($string) {               
                 return $this->where(function($query) use ($string) {

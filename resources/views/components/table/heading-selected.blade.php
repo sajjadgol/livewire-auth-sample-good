@@ -1,7 +1,7 @@
 @props([
     'total' => 0
 ])
-<th style="padding: 0.75rem 0.5rem">
+<th style="padding: 0.75rem 0.2rem">
     @if ($total > 0)
             <x-input.checkbox wire:model="selectPage" />
         @else

@@ -1,116 +1,43 @@
-@section('page_title')
-    Edit Country
-@endsection
-<div class="container-fluid py-4 bg-gray-200">
-    <div class="row mb-5">
-        <div class="col-lg-9 col-12 mx-auto position-relative">
-            @if (session('status'))
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="alert alert-success alert-dismissible text-white mt-3" role="alert">
-                        <span class="text-sm">{{ Session::get('status') }}</span>
-                        <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endif
-           
-            <!-- Card Basic Info -->
-            <div class="card mt-4" id="basic-info">
-                <div class="card-body pt-5">
-                    <form wire:submit.prevent="edit">
+<x-core.container>
 
-                        <div class="row ">
-                            <div class="col-12  mb-4">
-                                <div class="input-group input-group-static">
-                                    <label>Name *</label>
-                                    <input wire:model.lazy="country.name" type="text" class="form-control" placeholder="Enter a Country name">
-                                </div>
-                                @error('country.name')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>
+    {{-- loader --}}
+    <x-loder />
 
-                            <div class="col-12  mb-4">
-                                <div class="input-group input-group-static">
-                                    <label>Country Code *</label>
-                                    <input wire:model.lazy="country.country_code" type="text" class="form-control"
-                                        placeholder="Enter a country code e.g. 1, 91, 966 etc..">
-                                </div>
-                                @error('country.country_code')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>  
+    {{-- Alert message - alert-success, examples- alert-danger, alert-warning, alert-primary  --}}
+    @if (session('status'))
+        <x-alert class="alert-success">{{ Session::get('status') }}</x-alert>
+    @endif
 
-                            <div class="col-12  mb-4">
-                                <div class="input-group input-group-static">
-                                    <label>Country Iso Code *</label>
-                                    <input wire:model.lazy="country.country_ios_code" type="text" class="form-control"
-                                        placeholder="Enter a country ios code">
-                                </div>
-                                @error('country.country_ios_code')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>        
-                            
-                            <div class="col-12  mb-4">
-                                <div class="input-group input-group-static">
-                                    <label>Nationality</label>
-                                    <input wire:model.lazy="country.nationality" type="text" class="form-control"
-                                        placeholder="Enter a Nationality">
-                                </div>
-                                @error('country.nationality')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>      
-                            <div class="col-12">
-                                <div class="form-group">
-                                    
-                                    <div class="form-check">
-                                        <input wire:model="country.is_default" class="form-check-input" type="checkbox"  id="flexCheckFirst">
-                                        <label class="form-check-label" for="flexCheckFirst">Is Default</label>
-                                     </div>
-                                </div>
-                                @error('country.is_default')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>   
-                            <div class="col-12">
-                                <div class="form-group ">
-                                  
-                                     <div class="form-check">
-                                        <input wire:model="country.status" class="form-check-input" type="checkbox"  id="flexCheckActive">
-                                        <label class="form-check-label" for="flexCheckActive">Active</label>
-                                     </div>
-                                </div>
-                                @error('country.status')
-                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                @enderror
-                            </div>    
-                    
+    {{-- Card --}}
+    <x-core.card class="col-lg-9 col-12 p-3 mx-auto position-relative">
 
-                        </div>
-        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-end mt-4">
-                                    <a  href="{{ route('country-management') }}" class="btn btn-light m-0">Cancel</a>
-                                    <button type="submit" wire:loading.attr="disabled" name="submit" class="btn bg-gradient-dark m-0 ms-2">
-                                        <span wire:loading.remove wire:target="edit">Update Country</span>
-                                        <span wire:loading wire:target="edit"><x-buttonSpinner></x-buttonSpinner></span>
- 
-                                        </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
- 
-        </div>
-    </div>
-</div>
- 
+        {{-- Card Body --}}
+        <x-slot name="body">
+            {{-- Form --}}
+            <x-form.form submit-target="store" cancel-route="{{ route('country-management') }}">
+
+                {{-- Input-group --}}
+                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
+                    {{-- Input text --}}
+                    <x-input.text wire:model.lazy="country.name" placeholder="Enter a country name" />
+                </x-input.group>
+
+                <x-input.group colspan="col-12" for="country_code" label="Country Code *" :error="$errors->first('country_code')">
+                    <x-input.text wire:model.lazy="country.country_code" placeholder="Enter a country code e.g. 1, 91, 966 etc.." />
+                </x-input.group>
+
+                <x-input.group colspan="col-12" for="country_ios_code" label="Country Code *" :error="$errors->first('country_ios_code')">
+                    <x-input.text wire:model.lazy="country.country_ios_code" placeholder="Enter a country ios code" />
+                </x-input.group>
+
+                <x-input.group colspan="col-12" for="nationality" label="Nationality *" :error="$errors->first('nationality')">
+                    <x-input.text wire:model.lazy="country.nationality" placeholder="Enter a Nationality" />
+                </x-input.group>
+
+                <x-input.checkbox wire:model.lazy="country.is_default" label="Is Default"/>
+                <x-input.checkbox wire:model.lazy="country.status" label="Active"/>
+
+            </x-form.form>
+        </x-slot>
+    </x-core.card>
+</x-core.container>

@@ -1,115 +1,134 @@
+{{-- Page Title --}}
 @section('page_title')
-    Pages
+    @lang("components/pages.page_title")
 @endsection
-<div class="container-fluid py-4" wire:init="init">
-    <div class="row mt-4">
-        <div class="col-12">
-            <x-alert></x-alert>
-            <div class="card custom-card">
-                <!-- Card header -->
-                @include('livewire.page.filter')
-                <!-- Card header end -->
-             <div class="card-body pt-0"> 
-                <x-table>
 
-                    <x-slot name="head">
-                        <x-table.heading sortable wire:click="sortBy('title')"
-                            :direction="$sortField === 'title' ? $sortDirection : null"> Title
-                        </x-table.heading>   
-                        <x-table.heading> Slug
-                        </x-table.heading>                       
-                        <x-table.heading sortable wire:click="sortBy('created_at')"
-                            :direction="$sortField === 'created_at' ? $sortDirection : null">
-                            Creation Date
-                        </x-table.heading>
-                        <x-table.heading>
-                        Published
-                        </x-table.heading>
-                        <x-table.heading>
-                            {{ implode(' | ',config('translatable.locales')) }}
-                        </x-table.heading>     
-                        <x-table.heading>Actions</x-table.heading>
-                    </x-slot>
+<x-core.container wire:init="init">
+    <x-loder />
 
-                    <x-slot name="body">
-                        @foreach ($pages as $page)
-                        <x-table.row wire:key="row-{{ $page->id }}">
-                            <x-table.cell>{{ $page->title }}</x-table.cell>  
-                            <x-table.cell>{{ $page->slug }}</x-table.cell>                                                  
-                            <x-table.cell>{{ $page->created_at->format(config('app_settings.date_format.value')) }}</x-table.cell>
-                            <x-table.cell> 
-                                @if(!in_array($page->slug, $this->defaultPages) )  
-                                    <div class="form-check form-switch ms-3">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault35" wire:loading.attr="disabled"   wire:change="statusUpdate({{ $page->id }}, '{{ $page->status}}')"
-                                            @if($page->status == 'published') checked="" @endif>
-                                    </div>
-                                @endif   
-                            </x-table.cell> 
+    {{-- Alert message - alert-success, examples- alert-danger, alert-warning, alert-primary  --}}
+    <x-slot name="alert">
+        @if (session('status'))
+            <x-alert class="alert-success">{{ Session::get('status') }}</x-alert>
+        @endif
+    </x-slot>
 
-                            <x-table.cell> 
-                                @foreach (config('translatable.locales') as $locale)
-                                <a href="@if(app()->getLocale() != $locale) {{ route('edit-page', ['id' => $page->id,'ref_lang' => $locale]) }}  @else {{ route('edit-page', $page) }} @endif" class="" data-original-title="{{ $locale }}" title="{{ $locale }}"> 
-                                    <span class="material-symbols-outlined text-md">
-                                     {{ in_array($locale, array_column(json_decode($page->translations, true), 'locale')) ? 'edit' : 'add' }}
-                                   </span>
-                                </a> 
-                                @endforeach
-                            </x-table.cell>
-                         
-                            <x-table.cell>                               
-                                <div class="dropdown dropup dropleft">
-                                    <button class="btn bg-gradient-default" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="material-icons">
-                                            more_vert
-                                        </span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @can('edit-page')
-                                            <li><a class="dropdown-item"  data-original-title="Edit" title="Edit" href="{{ route('edit-page', $page) }}">Edit</a></li>
-                                        @endcan
-                                        @if(!in_array($page->slug, $this->defaultPages) )  
-                                            <li><a class="dropdown-item text-danger"  data-original-title="Remove" title="Remove" wire:click="destroyConfirm({{ $page->id }})">Delete</a></li>
-                                        @endif 
-                                    </ul>
-                                </div>
-                            </x-table.cell>
-                        </x-table.row>
+    {{-- Card --}}
+    <x-core.card class="custom-card">
+        <x-slot name="header">
+
+            {{-- Filter row with seachable --}}
+            <x-table.container-filter-row seachable />
+
+                <x-core.card-toolbar>
+                    {{-- Header Bulk actions  --}}
+                    <x-dropdown label="{{ __('components/pages.Actions') }}">
+                        <x-dropdown.item wire:click="exportSelected">
+                            @lang('components/pages.Export')
+                        </x-dropdown.item>
+
+                        
+                        <x-dropdown.item wire:click="destroyMultiple()" class="dropdown-item text-danger">
+                            @lang('components/pages.Delete')
+                        </x-dropdown.item>
+                    </x-dropdown>
+
+
+                     {{-- Filter Action  --}}
+                     <x-dropdown class="px-2 py-3 dropdown-md" label="{{ __('component.Filter') }}">
+                        <x-input.group inline for="filters.status" label="{{ __('components/pages.Status') }}">
+                            <x-input.select wire:model="filters.status" placeholder="{{ __('components/pages.Any Status') }}">
+                                <option value="published"> @lang('components/pages.Published') </option>
+                                <option value="draft">@lang('components/pages.Draft') </option>
+                                <option value="unpublished">@lang('components/pages.Unpublished') </option>
+                        </x-input.select>
+                        </x-input.group>
+                    
+                        {{-- Date renge filter --}}
+                        <x-table.filter-date-input />
+
+                        <x-button.link wire:click="resetFilters" class="mt-2"> @lang('component.Reset Filters') </x-button.link>
+
+                    </x-dropdown>
+
+                    {{--  Hide & show columns dropdown --}}
+                    <x-dropdown>
+                        <x-slot name="label">
+                            <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mui-datatables-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ViewColumnIcon"><path d="M14.67 5v14H9.33V5h5.34zm1 14H21V5h-5.33v14zm-7.34 0V5H3v14h5.33z"></path></svg>
+                        </x-slot>
+                        @foreach ($columns as $column)
+                            <x-dropdown.item>
+                                <x-input.checkbox label="{{ Str::ucfirst($column['label']) }}"
+                                    wire:model="selectedColumns" value="{{ $column['field'] }}" />
+                            </x-dropdown.item>
                         @endforeach
-                    </x-slot>
-                </x-table>
-                @if($pages && $pages->total() > 10)
-                <div class="row mx-2">
-                    <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"><div class="dataTables_length" id="kt_ecommerce_sales_table_length">
-                        <label>
-                            <select  wire:model="perPage"  name="kt_ecommerce_sales_table_length" aria-controls="kt_ecommerce_sales_table" class="form-select form-select-sm form-select-solid">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </label>
-                    </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
-                        <div class="dataTables_paginate paging_simple_numbers" id="kt_ecommerce_sales_table_paginate">
-                            @if ($pages)
-                            <div id="datatable-bottom">
-                                {{ $pages->links() }}
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                @endif
-                @if($pages && $pages->total() == 0)
-                    <div>
-                        <p class="text-center">No records found!</p>
-                    </div>
-                @endif
-             </div>
-            </div>
-        </div>
-    </div>
-    <x-loder ></x-loder>
-</div>
- 
+                    </x-dropdown>
+
+                    @can('add-user')
+                        {{-- button with icon,href --}}
+                        <x-table.button.add icon href="{{ route('add-page') }}" />
+                    @endcan
+
+                </x-core.card-toolbar>
+        </x-slot>
+        <x-slot name="body">
+
+            {{--  Table with perPage and pagination --}}
+            <x-table perPage total="{{ $pages->total() }}" id="page-list" paginate="{{ $pages->links() }}">
+                <x-slot name="head">
+
+                    {{-- Select-all checkbox  --}}
+                    <x-table.heading-selected total="{{ $pages->total() }}" />
+
+                    {{-- Dynamic columns heading --}}
+                    <x-table.heading columns />
+                    <x-table.heading> @lang('components/pages.Actions') </x-table.heading>
+
+                </x-slot>
+                <x-slot name="body">
+                    {{-- Select records count (which rows checkbox checked) --}}
+                    <x-table.row-selected-count selectPage="{{ $selectPage }}" selectedAll="{{ $selectAll }}"
+                        count="{{ $pages->count() }}" total="{{ $pages->total() }}" />
+
+                        {{-- Table row --}}
+                        @forelse ($pages as $page)
+                        <x-table.row wire:key="row-{{ $page->id }}">
+
+                            {{-- Select checkbox --}}
+                            <x-table.cell-selected value="{{ $page->id }}" />
+                        
+                            <x-table.cell column="title" href="">{{ $page->title }}</x-table.cell>
+                            <x-table.cell column="slug" href="">{{ $page->slug }}</x-table.cell>
+
+                            <x-table.cell-date column="created_at">{{ $page->created_at }}</x-table.cell-date>
+
+                            <x-table.cell-switch column="status" status="{{ $page->status == 'published' }}"
+                                wire:change="statusUpdate({{ $page->id }},{{ $page->status }})">
+                            </x-table.cell-switch>
+
+                            <x-table.cell-lang :data="json_decode($page)" route="edit-page"/>
+                        
+                            {{-- Action , examples- edit, view, delete  --}}
+                            <x-table.cell-dropdown>
+                                @can('edit-page')
+                                <x-table.dropdown-item class="dropdown-item" 
+                                    title="{{ __('components/pages.Edit') }}" href="{{ route('edit-page', $page) }}">
+                                    {{ __('components/pages.Edit') }}
+                                </x-table.dropdown-item>
+                                @endcan
+                                @if(!in_array($page->slug, $this->defaultPages) )  
+                                <x-table.dropdown-item class="dropdown-item text-danger" 
+                                    title="{{ __('components/pages.Delete') }}" wire:click="destroyConfirm({{ $page->id }})">
+                                    {{ __('components/pages.Delete') }}
+                                </x-table.dropdown-item>
+                                @endif
+                            </x-table.cell-dropdown>
+                        </x-table.row>
+                    @empty
+                        <x-table.no-record-found />
+                    @endforelse
+                </x-slot>
+            </x-table>
+        </x-slot>
+    </x-core.card>
+</x-core.container>

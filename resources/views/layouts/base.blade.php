@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' dir="{{ Route::currentRouteName() == 'rtl' ? 'rtl' : '' }}">
+<html style="height:100%"  lang='en' dir="{{ Route::currentRouteName() == 'rtl' ? 'rtl' : '' }}">
 
 <head>
   <meta charset="utf-8" />
@@ -33,7 +33,7 @@
 
 
 </head>
-<body class="g-sidenav-show bg-gray-200 {{ Route::currentRouteName() == 'rtl' ? 'rtl' : '' }}">
+<body style="height:100%" class="g-sidenav-show bg-gray-200 {{ Route::currentRouteName() == 'rtl' ? 'rtl' : '' }}">
     {{ $slot }}
   <script src="{{ mix('js/app.js') }}"></script>
   <script>

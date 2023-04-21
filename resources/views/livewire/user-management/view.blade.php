@@ -100,23 +100,7 @@
                     <div class="col-sm-auto col-8 my-auto">
                         <div class="h-100">
                             <h5 class="mb-1 font-weight-bolder">
-                             {{ $user->name }} ({{ $user->getRoleNames()->implode(',') }})
-                                
-                                @if($this->user->hasRole('Driver'))
-                                <span class="fa-sm material-symbols-outlined text-warning">
-                                   star
-                                   </span>{{$user->OrderRating('driver')}}   ({{ $user->OrderRatingCount('driver') }})
-                                @endif
-
-                                @if($this->user->hasRole('Customer'))
-                                  <span class="fa-sm material-symbols-outlined text-warning">
-                                    star
-                                    </span>{{$user->OrderRating('customer')}}   ({{ $user->OrderRatingCount('customer') }})
-                                @endif
-   
-                                @if($this->user->hasRole('Driver') && $user->driver) -  
-                                    <span class="badge badge-{{ $user->driver->is_live ? 'success' : 'danger' }} badge-sm my-auto ms-auto me-3">{{ $user->driver->is_live ? 'Online' : 'Offline' }}</span>
-                                @endif
+                                 {{ $user->name }} ({{ $user->getRoleNames()->implode(',') }})                                
                             </h5>
                             <p class="mb-0 font-weight-normal text-sm">
                                 + {{ $user->country_code }} {{ $user->phone }}

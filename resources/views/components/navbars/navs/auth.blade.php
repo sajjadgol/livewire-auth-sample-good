@@ -45,18 +45,13 @@
                             <b> {{  strtoupper(\App::getLocale()) }} </b>
                         </a>
                     <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                        @foreach (config('translatable.locales') as $locale)
                         <li class="mb-2">
-                            <a class="dropdown-item border-radius-md" href="{{ route('locale.setting', 'en') }}">
-                             <b>(EN)</b> English 
+                            <a class="dropdown-item border-radius-md" href="{{ route('locale.setting', $locale) }}">
+                             <b>({{ Str::upper($locale) }})</b> {{ \App\Dexlib\Locale::getAllLang()[$locale] }} 
                             </a>
                         </li>   
-
-                        <li class="mb-2">
-                            <a class="dropdown-item border-radius-md" href="{{ route('locale.setting', 'hi') }}">
-                               <b>(HI)</b> Hindi
-                            </a>
-                        </li>   
-
+                       @endforeach
                      </ul>
                 </li> 
 

@@ -28,7 +28,7 @@ return [
     'Store Application Approved Successfully!' => 'Store application approved successfully!',
     'Store Application Rejected' => 'Store application rejected successfully!   ',
     'Search Status Updated Successfully!' => 'Search status updated successfully!',
-    'Top Restaurants Updated Successfully!' => 'Top restaurants updated successfully!',
+    'Top Store Updated Successfully!' => 'Top Store updated successfully!',
     'No account assign to store!'   => 'No account assign to store!',
     'Store open status changed successfully!' => 'Store open status changed successfully!'
 ];

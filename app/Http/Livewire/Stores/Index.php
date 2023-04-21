@@ -3,122 +3,231 @@
 namespace App\Http\Livewire\Stores;
 
 use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\User;
+use Illuminate\Support\Carbon;
+use App\Http\DataTable\WithSorting;
+use App\Http\DataTable\WithCachedRows;
+use App\Http\DataTable\WithBulkActions;
+use App\Http\DataTable\WithPerPagePagination;
+use Spatie\Permission\Models\Role;
+use App\Http\DataTable\WithSingleAction;
+use App\Http\DataTable\Column;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreType;
-use App\Models\Stores\StoreOwners;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Events\InstantMailNotification;
-use Mail;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
+    use WithPerPagePagination, // Added perPage
+        Column,
+        WithSorting, // Added Sorting
+        WithBulkActions, // Bulk actions
+        WithCachedRows, // Improved return  response
+        WithSingleAction; // delete on row item
 
-    use AuthorizesRequests;
-    use WithPagination;
+    // Apply Filters
+    public $filters = [
+        "search" => "",
+        "status" => "",
+        "application_status" => "",
+        "store_type" => "",
+        "from_date" => "",
+        "to_date" => "",
+    ];
 
-    public $search = '';
-    public $sortField = 'id';
-    public $sortDirection = 'desc';
-    public $perPage = 10;
+    // Event listeners are registered in the $listeners property of your Livewire components.
+    protected $listeners = [
+        "refreshTransactions" => '$refresh',
+        "deleteSelected",
+        "confirm",
+    ];
+
+    /* Apply bootstrap layout in pagination */
+    protected $paginationTheme = "bootstrap";
+
+    public $roles;
+    public $account_status = "";
     public $application_status ;
-    public $filter = ["status" => null, "store_type" => null , "application_status"];
-    public $deleteId = '';
-    public $actionStatus = '';
-    public $storeId = '';
     public $storeTypes;
-    protected $listeners = ['remove', 'confirmApplication'];
 
-    protected $queryString = ['sortField', 'sortDirection', 'application_status'];
-    protected $paginationTheme = 'bootstrap';
-    public bool $loadData = false;
-
-  
-    public function init()
+    /**
+     * Generic string-based column, attributes assigned
+     *
+     * @return array() response()
+     */
+    public function columns(): array
     {
-         $this->loadData = true;
+        return [
+            Column::field([
+                "label" => __('components/store.Photo'),
+                "field" => "logo_path",
+                "sortable" => false,
+                "direction" => true,
+            ]),
+            Column::field([
+                "label" => __('components/store.Name'),
+                "field" => "name",
+                "sortable" => true,
+                "direction" => true,
+            ]),
+            Column::field([
+                "label" => __('components/store.Email'),
+                "field" => "email",
+            ]),
+            Column::field([
+                "label" => __('components/store.Phone'),
+                "field" => "phone",
+            ]),
+            Column::field([
+                "label" => __('components/store.Status'),
+                "field" => "status",
+            ]),
+            Column::field([
+                "label" => implode(' | ',config('translatable.locales')),
+                "field" => "name"
+            ]),
+            Column::field([
+                "label" => __('components/store.Creation Date'),
+                "field" => "created_at",
+            ]),
+        ];
     }
 
-
+    /**
+     * The loadData action will be run immediately after the Livewire component renders on the page
+     *
+     * @return void()
+     */
+    public function init()
+    {
+        $this->loadData = true;
+    }
     public function mount() {  
-        $this->filter['application_status'] = $this->application_status; 
-        $this->filter['store_type'] = $this->storeTypes;   
-        $this->perPage = config('commerce.pagination_per_page');
+        $this->filters['application_status'] = $this->application_status; 
+        $this->filters['store_type'] = $this->storeTypes;   
         $this->storeTypes = StoreType::withTranslation()->get();
     }
 
-    public function sortBy($field){
-        if($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
+
+    /**
+     * Pass it to swal:destroyMultiple key of the alert configuration.
+     *
+     * @return void()
+     */
+    public function destroyMultiple()
+    {
+        $deleteCount = $this->selectedRowsQuery->count();
+        if (!$deleteCount > 0) {
+            $this->dispatchBrowserEvent("alert", [
+                "type" => "error",
+                "message" =>
+                __('components/store.Please select at least one user'),
+            ]);
+            return false;
         }
-        $this->sortField = $field;
-    }
- 
-    public function render()
-    {  
-    if($this->filter['application_status']== 'waiting') {
-       
-        $store=Store::where('is_primary' , 0 )->withTranslation()->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->withAvg('OrderRating','rating')->withCount('OrderRating')->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
-    }
-    else{
-        $store=Store::where('is_primary' , 0 )->withTranslation()->whereNotIn('application_status' , ['waiting'])->searchMultipleStore(trim(strtolower($this->search)), $this->filter)->withAvg('OrderRating','rating')->withCount('OrderRating')->orderByTranslation($this->sortField, $this->sortDirection)->paginate($this->perPage);
-    }    
-        return view('livewire.store.index',[
-            'stores' => $this->loadData ? $store : [],
+        $this->dispatchBrowserEvent("swal:destroyMultiple", [
+            "action" => "deleteSelected",
+            "type" => "warning",
+            "confirmButtonText" => __('components/store.Yes, delete it!'),
+            "cancelButtonText" => __('components/store.No, cancel!'),
+            "message" => __('components/store.Are you sure?'),
+            "text" => __(
+                'components/store.If deleted, you will not be able to recover this imaginary file!'
+            ),
         ]);
     }
- 
-    public function updatingSearch()
-    {
-        $this->gotoPage(1);
-    }
 
-    
-    public function updatingFilter()
-    {
-       
-        $this->gotoPage(1);
-    }
-
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }   
-  
     /**
-     * Write code on Method
+     * Remove the selected blog from the storage.
      *
-     * @return response()
+     * @return void()
      */
-    public function destroyConfirm($storeId)
+    public function deleteSelected()
     {
-        $this->deleteId  = $storeId;
-        $this->dispatchBrowserEvent('swal:confirm', [
-                'action' => 'remove',
-                'type' => 'warning',  
-                'confirmButtonText' => __('store.Yes, delete it!'),
-                'cancelButtonText' => __('store.No, cancel!'),
-                'message' => __('store.Are you sure?'), 
-                'text' => __( 'store.If deleted, you will not be able to recover this store data!')
-            ]);
+        $deleteCount = $this->selectedRowsQuery->count();
+
+        $this->selectedRowsQuery->delete();
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('components/store.User Delete Successfully!') . " -: " . $deleteCount,
+        ]);
     }
 
     /**
-     * Write code on Method
+     * Clear the filter form and revert the results to default
      *
-     * @return response()
+     * @return void()
+     */
+    public function resetFilters()
+    {
+        $this->reset("filters");
+    }
+
+
+    /**
+     * Return a array of  all of the 's users with filter.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsQueryProperty()
+    {
+        $query = Store::query()->searchMultipleStore($this->filters);
+        return $this->applySorting($query);
+    }
+
+    /**
+     * Store query result in cache
+     * Return a list of cache users of the application.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRowsProperty()
+    {
+        return $this->cache(function () {
+            return $this->applyPagination($this->rowsQuery);
+        });
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $this->dltid
+     * @return \Illuminate\Http\Response
      */
     public function remove()
     {
-        Store::find($this->deleteId)->delete();
+        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+    }
 
-        $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('store.Store Delete Successfully!')]);
 
-    }    
+    /**
+     * update store status
+     *
+     * @return response()
+     */
+    public function statusUpdate($store_id, $status)
+    {     
+        $status = ( $status == 1 ) ? 0 : 1;
+        Store::where('id', $store_id )->update(['status' => $status]);
+
+        $this->dispatchBrowserEvent("alert", [
+            "type" => "success",
+            "message" =>
+            __('components/store.Status updated Successfully!'),
+        ]);
+   }
+
+    /**
+     * Show a list of all of the application's users.
+     * @return \Illuminate\Http\Response
+     */
+    public function render()
+    {
+        return view("livewire.store.index", [
+            "stores" => $this->rows,
+        ]);
+    }
+
 
      /**
      * Write code on Method
@@ -138,29 +247,17 @@ class Index extends Component
                 'message' => $status == 'approved' ? __('store.Are you approve?') : __('store.Are you Reject'), 
                  'text' =>  $status == 'approved' ?  __('store.If approved, store will be listed in store sections!') : __('store.If rejected, store will be not listed in store sections!')
             ]);
+    }
 
-        $storeDatas =  StoreOwners::where("store_id", $storeId)->with(["user"])->get();
-    
-        if($storeDatas) {
-            foreach($storeDatas as $storeData ) {
-                event(new InstantMailNotification($storeData["user_id"], [
-                    "code" =>  'forget_password',
-                    "args" => [
-                            'name' => $storeData["user"]["name"],
-                    ]
-                ]));
-            }
-        }
-    }  
 
-    /**
+     /**
      * Write code on Method
      *
      * @return response()
      */
     public function confirmApplication()
     {        
-        Store::where('id', '=' , $this->storeId )->update(['application_status' => $this->actionStatus]);
+        Store::where('id', $this->storeId )->update(['application_status' => $this->actionStatus]);
        
         $this->dispatchBrowserEvent('swal:modal', [
             'type' => 'success',  
@@ -168,34 +265,7 @@ class Index extends Component
         ]);
     }
 
-
-    
     /**
-     * update store status
-     *
-     * @return response()
-     */
-    public function statusUpdate($storeId, $status)
-    {        
-        $status = ( $status == 1 ) ? 0 : 1;
-        Store::where('id', '=' , $storeId )->update(['status' => $status]); 
-
-        $storeDatas =  StoreOwners::where("store_id", $storeId)->with(["user"])->get();
-       
-        if($storeDatas) {
-            foreach($storeDatas as $storeData ) {
-                event(new InstantMailNotification($storeData["user_id"], [
-                    "code" =>  'forget_password',
-                    "args" => [
-                          'name' => $storeData["user"]["name"],
-                    ]
-                ]));
-            }
-        }
-   }
-
-
-       /**
      * update searchable status
      *
      * @return response()
@@ -203,7 +273,7 @@ class Index extends Component
     public function searchableConfirm($store)
     {        
         $is_searchable = ( $store['is_searchable'] == 1 ) ? 0 : 1;
-        Store::where('id', '=' , $store['id']  )->update(['is_searchable' => $is_searchable]);     
+        Store::where('id', $store['id']  )->update(['is_searchable' => $is_searchable]);     
         
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => __('store.Search Status Updated Successfully!')]);
@@ -217,12 +287,9 @@ class Index extends Component
     public function featuresConfirm($store)
     {  
         $is_features = ( $store['is_features'] == 1 ) ? 0 : 1;
-        Store::where('id', '=' , $store['id']  )->update(['is_features' => $is_features]);      
+        Store::where('id', $store['id']  )->update(['is_features' => $is_features]);      
         
         $this->dispatchBrowserEvent('alert', 
-        ['type' => 'success',  'message' => __('store.Top Restaurants Updated Successfully!')]);
+        ['type' => 'success',  'message' => __('store.Top Store Updated Successfully!')]);
    }
-
- 
-
 }

@@ -21,13 +21,13 @@
             <x-table.container-filter-row seachable />
 
                 <x-core.card-toolbar>
-
                     {{-- Header Bulk actions  --}}
                     <x-dropdown label="{{ __('components/user.Actions') }}">
                         <x-dropdown.item wire:click="exportSelected">
                             @lang('components/user.Export')
                         </x-dropdown.item>
 
+                        
                         <x-dropdown.item wire:click="destroyMultiple()" class="dropdown-item text-danger">
                             @lang('components/user.Delete')
                         </x-dropdown.item>
@@ -57,11 +57,6 @@
                         <x-button.link wire:click="resetFilters" class="mt-2"> @lang('component.Reset Filters') </x-button.link>
 
                     </x-dropdown>
-
-
-
-                    {{-- Filter button with icon --}}
-                    <x-table.button.filter icon />
 
                     {{--  Hide & show columns dropdown --}}
                     <x-dropdown>
@@ -98,7 +93,6 @@
 
                 </x-slot>
                 <x-slot name="body">
-
                     {{-- Select records count (which rows checkbox checked) --}}
                     <x-table.row-selected-count selectPage="{{ $selectPage }}" selectedAll="{{ $selectAll }}"
                         count="{{ $users->count() }}" total="{{ $users->total() }}" />
@@ -128,6 +122,10 @@
 
                             {{-- Action , examples- edit, view, delete  --}}
                             <x-table.cell-dropdown>
+                                <x-table.dropdown-item class="dropdown-item" 
+                                    title="{{ __('components/user.Edit') }}" href="{{ route('view-user', $user) }}">
+                                    {{ __('components/user.Edit') }}
+                                </x-table.dropdown-item>
                                 <x-table.dropdown-item class="dropdown-item text-danger" 
                                     title="{{ __('components/user.Delete') }}" wire:click="destroyConfirm({{ $user->id }})">
                                     {{ __('components/user.Delete') }}
@@ -142,26 +140,3 @@
         </x-slot>
     </x-core.card>
 </x-core.container>
-
-{{-- Tabel Filter --}}
-<x-table.filter icon label="">
-
-    <x-input.group inline for="filters.status" label="{{ __('components/user.Status') }}">
-        <x-input.select wire:model="filters.status" placeholder="{{ __('components/user.Any Status') }}">
-            <option value="1"> @lang('components/user.Active') </option>
-            <option value="0"> @lang('components/user.Inactive') </option>
-        </x-input.select>
-    </x-input.group>
-
-    <x-input.group inline for="filter-date-min" label="{{ __('components/user.Role') }}">
-        <x-input.select wire:model="filters.role" placeholder="{{ __('components/user.Any Role') }}">
-            @foreach ($roles as $role)
-                <option value="{{ $role->name }}"> {{ $role->name }}</option>
-            @endforeach
-        </x-input.select>
-    </x-input.group>
-
-    {{-- Date renge filter --}}
-    <x-table.filter-date-input />
-
-</x-table.filter>
