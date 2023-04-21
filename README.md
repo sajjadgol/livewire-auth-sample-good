@@ -5,8 +5,22 @@
 
 ## Laravel and Livewire
 
+## Features
+- Laravel 9.x
+- Login
+- Registration With Email Verification
+- Password Reset
+- User Management system
+- Store Management System
+- FAQ Management System
+- Blog Management System
+- Dynamic Applications setting
+- Push notificaitons with queues jobs
+- Real Time Validation
+- Mailing with Queues
+- Cache management for performance  
 
-# Setup
+# Installation
 1. From the projects root folder run `composer update`
 2. From the projects root folder run `php artisan key:generate`
 3. From the projects root folder run `php artisan db:seed`
