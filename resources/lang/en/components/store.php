@@ -31,7 +31,7 @@ return [
     "Suspend" => "Suspend",
     "All Type" => "All Type",
     "Store Type" => "Store Type",
-    "Application status" => "Application status",
+    "Account status" => "Account status",
     "Searchable" => "Searchable",
     "Remove to Searchable" => "Remove to Searchable",
     "Mark as Searchable" => "Mark as Searchable",

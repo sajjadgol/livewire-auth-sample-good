@@ -63,6 +63,7 @@ class Index extends Component
                 "field" => "logo_path",
                 "sortable" => false,
                 "direction" => true,
+                'hidden' => true
             ]),
             Column::field([
                 "label" => __('components/store.Name'),

@@ -49,9 +49,8 @@
                         </x-input.group>
                     
 
-                        <x-input.group inline for="filters.application_status" label="{{ __('components/store.Application status') }}">
+                        <x-input.group inline for="filters.application_status" label="{{ __('components/store.Account status') }}">
                             <x-input.select wire:model="filters.application_status" placeholder="{{ __('components/store.All Account Status') }}">
-                                <option  class="optionSelect" value="">@lang('components/store.All Account Status')</option>
                                 <option  class="optionGroup"  value="approved">@lang('components/store.Approved')</option>
                                 <option  class="optionGroup"  value="suspended">@lang('components/store.Suspend')</option>  
                             </x-input.select>
@@ -133,7 +132,7 @@
                             <x-table.cell-switch column="status" status="{{ $store->status }}"
                                 wire:change="statusUpdate({{ $store->id }},{{ $store->status }})">
                                 @if($store->application_status =='suspended')
-                                    <div class="text-xxs text-warning text-center" >{{ __('component/store.Suspended') }}</div>
+                                    <div class="text-xxs text-warning mt-4 mx-2" >{{ __('components/store.Suspended') }}</div>
                                 @endif
                             </x-table.cell-switch>
 

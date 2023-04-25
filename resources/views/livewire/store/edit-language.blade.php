@@ -36,9 +36,9 @@
 
                             <div class="col-12 mb-4">
                                 <div class="input-group input-group-static">
-                                    <label>Store Type *</label>
+                                    <label>Restaurant Type *</label>
                                     <select class="form-control input-group input-group-dynamic" wire:model.lazy="store.restaurant_type"  id="projectName" onfocus="focused(this)" onfocusout="defocused(this)">
-                                        <option value=''>Choose Your Store Type</option>
+                                        <option value=''>Choose Your Restaurant Type</option>
                                         @foreach ($store_type as $value)
                                         <option value="{{ $value->translate($lang)->name }}"> {{ $value->translate($lang)->name}}</option>
                                         @endforeach
