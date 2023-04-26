@@ -106,10 +106,10 @@ class Edit extends Component
         //  Store translate       
         $this->store = Store::with('storeAddress')->find($id);
 
-        $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(app()->getLocale())->name;
-        $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(app()->getLocale())->descriptions;
-        $this->store->content = isset($this->store->translate($this->lang)->content) ?  $this->store->translate($this->lang)->content: $this->store->translate(app()->getLocale())->content;
-        $this->store->restorant_type = isset($this->store->translate($this->lang)->restorant_type) ? $this->store->translate($this->lang)->restorant_type : $this->store->translate(app()->getLocale())->restorant_type;
+        $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(config('app.locale'))->name;
+        $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(config('app.locale'))->descriptions;
+        $this->store->content = isset($this->store->translate($this->lang)->content) ?  $this->store->translate($this->lang)->content: $this->store->translate(config('app.locale'))->content;
+        $this->store->restorant_type = isset($this->store->translate($this->lang)->restorant_type) ? $this->store->translate($this->lang)->restorant_type : $this->store->translate(config('app.locale'))->restorant_type;
 
         $this->store->phone = substr($this->store->phone , +(strlen($this->store->country_code)));
         $this->storeAddress = $this->store->storeAddress;

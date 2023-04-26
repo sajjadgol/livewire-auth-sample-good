@@ -46,8 +46,8 @@ class Edit extends Component
         
         $this->slider = Slider::find($id);
     
-        $this->slider->name = isset($this->slider->translate($this->lang)->name) ?  $this->slider->translate($this->lang)->name: $this->slider->translate(app()->getLocale())->name;
-        $this->slider->description = isset($this->slider->translate($this->lang)->description) ? $this->slider->translate($this->lang)->description : $this->slider->translate(app()->getLocale())->description;
+        $this->slider->name = isset($this->slider->translate($this->lang)->name) ?  $this->slider->translate($this->lang)->name: $this->slider->translate(config('app.locale'))->name;
+        $this->slider->description = isset($this->slider->translate($this->lang)->description) ? $this->slider->translate($this->lang)->description : $this->slider->translate(config('app.locale'))->description;
        //  Faq translate
 
         $this->sliderImage = $this->slider->sliderImage;

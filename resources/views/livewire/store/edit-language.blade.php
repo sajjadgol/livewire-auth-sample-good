@@ -73,7 +73,7 @@
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-end mt-4">
                                     <a  href="{{ route('store-management') }}" class="btn btn-light m-0">Cancel</a>
-                                    <button type="submit" name="submit"  class="btn bg-gradient-dark m-0 ms-2">Update</button>
+                                    <button type="submit" name="submit"  class="btn bg-gradient-dark m-0 ms-2">Update Store</button>
                                 </div>
                             </div>
                         </div>

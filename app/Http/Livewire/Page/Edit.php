@@ -29,8 +29,8 @@ class Edit extends Component
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
 
-        $this->post->title = isset($this->post->translate($this->lang)->title) ?  $this->post->translate($this->lang)->title: $this->post->translate(app()->getLocale())->title;
-        $this->post->content = isset($this->post->translate($this->lang)->content) ? $this->post->translate($this->lang)->content : $this->post->translate(app()->getLocale())->content;
+        $this->post->title = isset($this->post->translate($this->lang)->title) ?  $this->post->translate($this->lang)->title: $this->post->translate(config('app.locale'))->title;
+        $this->post->content = isset($this->post->translate($this->lang)->content) ? $this->post->translate($this->lang)->content : $this->post->translate(config('app.locale'))->content;
         //page translation
     }
 
