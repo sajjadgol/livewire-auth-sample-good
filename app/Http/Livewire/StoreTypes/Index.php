@@ -183,7 +183,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/StoreType.StoreType_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/StoreType.storetype_delete_msg')]);    
         }
         return $query;
     }
