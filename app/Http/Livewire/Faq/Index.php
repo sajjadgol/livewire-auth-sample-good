@@ -51,6 +51,7 @@ class Index extends Component
             Column::field([
                 "label" => __('components/faq.Title'),
                 "field" => "title",
+                'translate' => true,
                 "sortable" => true,
                 "direction" => true,
             ]),
