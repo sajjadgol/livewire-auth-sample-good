@@ -3,9 +3,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Stores\Create as StoresCreate;
 use App\Http\Livewire\Stores\Edit as StoresEdit;
 use App\Http\Livewire\Stores\Index as StoresIndex;
-use App\Http\Livewire\RestaurantTypes\Create as RestaurantTypesCreate;
-use App\Http\Livewire\RestaurantTypes\Edit as RestaurantTypesEdit;
-use App\Http\Livewire\RestaurantTypes\Index as RestaurantTypesIndex;
+use App\Http\Livewire\StoreTypes\Create as StoreTypesCreate;
+use App\Http\Livewire\StoreTypes\Edit as StoreTypesEdit;
+use App\Http\Livewire\StoreTypes\Index as StoreTypesIndex;
 use App\Http\Livewire\Account\Store\Edit as AccountStore;
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('unverified/stores', StoresIndex::class)->name('unverified-stores');
 
    
-    Route::get('restaurant-types', RestaurantTypesIndex::class)->name('restaurant-type-management');
-    Route::get('restaurant-types/edit/{id}/{ref_lang?}', RestaurantTypesEdit::class)->name('edit-restaurant-type');
-    Route::get('restaurant-types/create', RestaurantTypesCreate::class)->name('add-restaurant-type');
+    Route::get('store-types', StoreTypesIndex::class)->name('store-type-management');
+    Route::get('store-types/edit/{id}/{ref_lang?}', StoreTypesEdit::class)->name('edit-store-type');
+    Route::get('store-types/create', StoreTypesCreate::class)->name('add-store-type');
 });
 
 Route::group(['middleware' => 'auth'], function () {

@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\DataTable\WithSingleAction;
 use App\Http\DataTable\Column;
 use App\Models\Stores\Store;
-use App\Models\Stores\RestaurantType;
+use App\Models\Stores\StoreType;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -30,7 +30,7 @@ class Index extends Component
         "search" => "",
         "status" => "",
         "application_status" => "",
-        "restaurant_type" => "",
+        "store_type" => "",
         "from_date" => "",
         "to_date" => "",
     ];
@@ -47,8 +47,12 @@ class Index extends Component
 
     public $roles;
     public $account_status = "";
-    public $application_status ;
-    public $restaurantTypes;
+    public $application_status;
+    public $StoreTypes;
+    public $actionStatus = '';
+    public $storeId = '';
+
+    protected $queryString = ['application_status'];
 
     /**
      * Generic string-based column, attributes assigned
@@ -69,6 +73,7 @@ class Index extends Component
                 "label" => __('components/store.Name'),
                 "field" => "name",
                 "sortable" => true,
+                'translate' => true,
                 "direction" => true,
             ]),
             Column::field([
@@ -85,7 +90,8 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "name",
+                "viewColumns" => false
             ]),
             Column::field([
                 "label" => __('components/store.Creation Date'),
@@ -105,8 +111,9 @@ class Index extends Component
     }
     public function mount() {  
         $this->filters['application_status'] = $this->application_status; 
-        $this->filters['restaurant_type'] = $this->restaurantTypes;   
-        $this->restaurantTypes = RestaurantType::withTranslation()->get();
+
+        $this->filters['store_type'] = $this->StoreTypes;   
+        $this->StoreTypes = StoreType::withTranslation()->get();
     }
 
 

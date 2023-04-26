@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 use App\Models\Worlds\Cities;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
-use App\Models\Stores\RestaurantType;
+use App\Models\Stores\StoreType;
 use App\Models\Stores\StoreOwners;
 use App\Models\Stores\BusinessHour;
 use App\Models\Stores\StoreAddress;
@@ -70,7 +70,7 @@ class Edit extends Component
         return [
             'store.email'                 => 'required|email|unique:App\Models\Stores\Store,email,'.$this->store->id,
             'store.name'                  =>  'required|unique:App\Models\Stores\StoreTranslation,name'.$store,
-            'store.restaurant_type'       => 'required',
+            'store.store_type'       => 'required',
             'store.descriptions'          => 'required|max:1000',
             'store.phone'                 => 'required|numeric|digits_between:8,10',        
             'store.country_code'           => 'required',
@@ -112,7 +112,7 @@ class Edit extends Component
         $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(app()->getLocale())->name;
         $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(app()->getLocale())->descriptions;
         $this->store->content = isset($this->store->translate($this->lang)->content) ?  $this->store->translate($this->lang)->content: $this->store->translate(app()->getLocale())->content;
-        $this->store->restaurant_type = isset($this->store->translate($this->lang)->restaurant_type) ? $this->store->translate($this->lang)->restaurant_type : $this->store->translate(app()->getLocale())->restaurant_type;
+        $this->store->store_type = isset($this->store->translate($this->lang)->store_type) ? $this->store->translate($this->lang)->store_type : $this->store->translate(app()->getLocale())->store_type;
         
         $this->store->phone = substr($this->store->phone , +(strlen($this->store->country_code)));
         $this->storeAddress = $this->store->storeAddress;
@@ -152,7 +152,7 @@ class Edit extends Component
         
         $this->timeOptionsList = Utils::timeOptions();
         $this->accounts = StoreOwners::where('store_id', $this->store->id)->get();
-        $this->store_type = RestaurantType::withTranslation()->translatedIn($this->lang)->get();
+        $this->store_type = StoreType::withTranslation()->translatedIn($this->lang)->get();
 
         $this->commission_value = $this->store->commission_value;
         $this->is_global_commission = $this->store->is_global_commission;
@@ -525,7 +525,7 @@ class Edit extends Component
         $request =  $this->validate([
             'store.name'                  =>  'required|unique:App\Models\Stores\StoreTranslation,name'.$store,
             'store.descriptions'       => 'required',
-            'store.restaurant_type'       => 'required',
+            'store.store_type'       => 'required',
         ]);
 
         $data = [

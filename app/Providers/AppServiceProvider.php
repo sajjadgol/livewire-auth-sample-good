@@ -140,13 +140,13 @@ class AppServiceProvider extends ServiceProvider
                     $query->where("application_status", ucfirst($application_status))
                )
             ->when(
-                $filters["restaurant_type"],
-                fn($query, $restaurant_type) => 
-                    $query->WhereTranslation("restaurant_type", \Str::lower($restaurant_type))
+                $filters["store_type"],
+                fn($query, $store_type) => 
+                    $query->WhereTranslation("store_type", \Str::lower($store_type))
                 )
             ->when(
                 $filters["application_status"] != 'waiting',
-                fn($query, $restaurant_type) => 
+                fn($query, $store_type) => 
                     $query->whereNot("application_status", 'waiting')
                 );
 

@@ -52,17 +52,7 @@
                     </x-dropdown>
 
                     {{--  Hide & show columns dropdown --}}
-                    <x-dropdown>
-                        <x-slot name="label">
-                            <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mui-datatables-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ViewColumnIcon"><path d="M14.67 5v14H9.33V5h5.34zm1 14H21V5h-5.33v14zm-7.34 0V5H3v14h5.33z"></path></svg>
-                        </x-slot>
-                        @foreach ($columns as $column)
-                            <x-dropdown.item>
-                                <x-input.checkbox label="{{ Str::ucfirst($column['label']) }}"
-                                    wire:model="selectedColumns" value="{{ $column['field'] }}" />
-                            </x-dropdown.item>
-                        @endforeach
-                    </x-dropdown>
+<x-table.view-columns/>
 
                     @can('add-user')
                         {{-- button with icon,href --}}

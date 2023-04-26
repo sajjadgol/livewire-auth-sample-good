@@ -17,6 +17,8 @@ trait  Column
         $column['cellClasses'] = isset($array['cellClasses']) ? $array['cellClasses'] : false;
         $column['hidden'] = isset($array['hidden']) ? $array['hidden'] : false;
         $column['label'] = (string) Str::of($array['label'])->after('.')->ucfirst()->replace('_', ' ');
+        $column['translate'] = isset($array['translate']) ? $array['translate'] : false;
+        $column['viewColumns'] = isset($array['viewColumns']) ? $array['viewColumns'] : true;
         return $column;
     }
     public function mountColumn(){

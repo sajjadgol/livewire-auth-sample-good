@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets') }}/img/favicon.png">
   @endif
   <title>
-  {{ config('app_settings.app_name.value') ?? config('app.name')}} | Food Delivery, Dining and Restaurant Discovery Service. Better food for more
+  {{ config('app_settings.app_name.value') ?? config('app.name')}} | Food Delivery, Dining and Store Discovery Service. Better food for more
   </title>
   
   <link  href="{{ mix('css/app.css') }}" rel="stylesheet">

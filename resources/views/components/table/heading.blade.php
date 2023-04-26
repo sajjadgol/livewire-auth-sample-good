@@ -32,7 +32,7 @@
         hidden
 @endif
     @if($column['sortable'])
-        wire:click="sortBy('{{ $column['field'] }}')"
+        wire:click="sortBy('{{ $column['field'] }}','{{ $column['translate'] }}')"
     @endif
     @if($column['direction'])
     :direction="$this->sorts[$column['field']] ?? null"

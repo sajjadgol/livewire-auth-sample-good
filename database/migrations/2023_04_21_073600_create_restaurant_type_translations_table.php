@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('restaurant_type_translations', function (Blueprint $table) {
+        Schema::create('store_type_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('restaurant_type_id');
+            $table->unsignedBigInteger('store_type_id');
             $table->string('locale')->index();
             $table->string('name', 100)->nullable();
-            $table->foreign('restaurant_type_id')->references('id')->on('restaurant_types')->onDelete('cascade');
+            $table->foreign('store_type_id')->references('id')->on('store_types')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaurant_type_translations');
+        Schema::dropIfExists('store_type_translations');
     }
 };

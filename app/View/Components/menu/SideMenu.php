@@ -30,13 +30,14 @@ class SideMenu extends Component
             $val->sectionTitle = (isset($val->sectionTitle) && !empty($val->sectionTitle) ? $val->sectionTitle : false);
             $val->id = (empty($this->key) ? \Str::camel($val->name) : \Str::camel($this->key));
             $val->collapse = collect((isset($val->collapse) && !empty($val->collapse) ? $val->collapse : null));
+            $val->routeKeys = isset($val->routeKeys) ? json_decode($val->routeKeys) : [];
 
             if ($val->noCollapse || $val->collapse->isEmpty()){
                 if (empty($val->href) && empty($val->route)) {
                     $link = 'javascript::void(0);';
                 }else{
                     $href  =  (!empty($val->href)  ? $val->href : null);
-                    $route =  (!empty($val->route) && \Route::has($val->route) ? route($val->route) : 'javascript::void(0);');    
+                    $route =  (!empty($val->route) && \Route::has($val->route) ? route($val->route,$val->routeKeys) : 'javascript::void(0);');    
                     $link = ($href ? 'javascript::void(0);' : $route);
                 }
             }else {
@@ -50,8 +51,9 @@ class SideMenu extends Component
                 if (empty($val->href) && empty($val->route)) {
                     $link = 'javascript::void(0);';
                 }else{
+                    $val->routeKeys = isset($val->routeKeys) ? (array) $val->routeKeys : [];
                     $href  =  (!empty($val->href)  ? $val->href : null);
-                    $route =  (!empty($val->route) && \Route::has($val->route) ? route($val->route) : 'javascript::void(0);');    
+                    $route =  (!empty($val->route) && \Route::has($val->route) ? route($val->route,$val->routeKeys) : 'javascript::void(0);');    
                     $link = ($href ? 'javascript::void(0);' : $route);
                 }
                 $val->link = $link;

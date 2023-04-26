@@ -52,9 +52,9 @@
                     <x-input.email wire:model.lazy="email" placeholder="Enter an Email" />
                 </x-input.group>
 
-                <x-input.group colspan="col-12" for="restaurant_type" label="Restaurant Type *" :error="$errors->first('restaurant_type')">
-                    <x-input.select class="form-control" wire:model="restaurant_type" id="restaurant_type"
-                        placeholder="Choose Your Restaurant Type">
+                <x-input.group colspan="col-12" for="store_type" label="Store Type *" :error="$errors->first('store_type')">
+                    <x-input.select class="form-control" wire:model="store_type" id="store_type"
+                        placeholder="Choose Your Store Type">
                         @foreach ($store_type as $value)
                             <option value="{{ $value['name'] }}">{{ $value['name']}}</option>
                         @endforeach

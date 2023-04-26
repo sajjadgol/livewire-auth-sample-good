@@ -68,7 +68,8 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "name",
+                "viewColumns" => false
             ]),           
         ];
     }
@@ -231,7 +232,7 @@ class Index extends Component
     public function render()
     {
         return view("livewire.slider.index", [
-            "sliders" => $this->rows,
+            "sliders" =>  $this->rows,
         ]);
     }
 }
