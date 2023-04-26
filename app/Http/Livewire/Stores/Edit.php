@@ -102,15 +102,18 @@ class Edit extends Component
         //  Store translate
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
+        
+       
 
         //  Store translate       
         $this->store = Store::with('storeAddress')->find($id);
+       
 
         $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(app()->getLocale())->name;
         $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(app()->getLocale())->descriptions;
         $this->store->content = isset($this->store->translate($this->lang)->content) ?  $this->store->translate($this->lang)->content: $this->store->translate(app()->getLocale())->content;
-        $this->store->restorant_type = isset($this->store->translate($this->lang)->restorant_type) ? $this->store->translate($this->lang)->restorant_type : $this->store->translate(app()->getLocale())->restorant_type;
-
+        $this->store->restaurant_type = isset($this->store->translate($this->lang)->restaurant_type) ? $this->store->translate($this->lang)->restaurant_type : $this->store->translate(app()->getLocale())->restaurant_type;
+        
         $this->store->phone = substr($this->store->phone , +(strlen($this->store->country_code)));
         $this->storeAddress = $this->store->storeAddress;
         $this->searchResultProviders = collect();
@@ -215,7 +218,7 @@ class Edit extends Component
             if($editedBussinessHour) {
                 $editedBussinessHour->update($bussinessHour);
                 $this->dispatchBrowserEvent('alert', 
-                ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+                ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
             }
         }
         $this->editedBussinessHourIndex = null;
@@ -227,7 +230,7 @@ class Edit extends Component
         if(!is_null($bussinessHour)) {
             BusinessHour::where('id', '=' , $bussinessHour['id'] )->update(['opening_time' => $opening_time]);
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+            ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
         }
         $this->editedBussinessHourIndex = null;
     }
@@ -243,7 +246,7 @@ class Edit extends Component
             } else{
                 BusinessHour::where('id', '=' , $bussinessHour['id'] )->update(['closing_time' => $closing_time]);
                 $this->dispatchBrowserEvent('alert', 
-                ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+                ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
             }
         }
         $this->editedBussinessHourIndex = null;

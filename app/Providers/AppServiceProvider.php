@@ -120,7 +120,7 @@ class AppServiceProvider extends ServiceProvider
             )
             ->when(
                 $filters["from_date"],
-                fn($query, $date) => $query->where(
+                fn($query, $date) => $query->whereDate(
                     "created_at",
                     ">=",
                     Carbon::parse($date)
@@ -128,7 +128,7 @@ class AppServiceProvider extends ServiceProvider
             )
             ->when(
                 $filters["to_date"],
-                fn($query, $date) => $query->where(
+                fn($query, $date) => $query->whereDate(
                     "created_at",
                     "<=",
                     Carbon::parse($date)

@@ -27,7 +27,6 @@ class Create extends Component
     public $name = '';
     public $descriptions='';
     public $phone = '';
-    public $order_preparing_time = '';
     public $number_of_branch = 1;
     public $status = ''; 
     public $address_line_1 = '';
@@ -66,7 +65,6 @@ class Create extends Component
         'logo_path'             => 'required',
         'descriptions'          => 'required|max:1000',
         'phone'                 => 'required|numeric|digits_between:8,10',
-        'order_preparing_time'  => 'required|integer',
         'status'                => 'nullable|between:0,1',
         'address_line_1'        => 'required|string',
         'landmark'              => 'required|string',
@@ -121,7 +119,6 @@ class Create extends Component
             'country_code' => $this->country_code,
             'phone' => $this->country_code.$this->phone,
             'email' => $this->email,
-            'order_preparing_time' => $this->order_preparing_time,
             'logo_path' => $storeLogoPath,
             'number_of_branch' => $this->number_of_branch,
             'application_status' => 'approved'

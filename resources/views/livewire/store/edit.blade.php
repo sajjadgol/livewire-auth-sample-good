@@ -76,7 +76,7 @@
 
             <!-- Card Profile -->
             <div class="card card-body" id="profile">
-                <div class="row justify-content-center align-items-center">
+                <div class="row align-items-center">
                     @error('logo_path')
                     <p class='text-danger'>{{ $message }} </p>
                     @enderror
@@ -110,30 +110,16 @@
                                <input wire:model='logo_path' wire:loading.attr="disabled" type="file" id="file-input">
                             </div>
                     </div>
-                   
-                    <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3">
-                        <div class="form-check form-switch ms-2 my-auto">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault35"  wire:change="statusUpdate({{ $store->id }},{{ $store->status}})"
-                                    @if($store->status) checked="" @endif>
-                            <label class="form-check-label mb-0">
-                                <small id="profileVisibility">
-                                    Active
-                                </small>
-                            </label>
-                        </div>
-                        
-                        &nbsp;
-                       
-                        <div wire:poll class="form-check form-switch ms-2 my-auto">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault35"  wire:change="openStatusUpdate({{ $store->id }},{{ $store->is_open }})"
-                                    @if($store->is_open) checked="" @endif  @if($store->status!=1) disabled="" @endif>
-                             <label class="form-check-label mb-0">
-                                    <small id="profileVisibility">
-                                        Open
-                                    </small>
-                              </label>
-                        </div>
 
+                    <div class="col-sm-8">
+                        <div class="h-100">
+                            <h5 class="mb-1 font-weight-bolder">
+                                {{ $store->name }} 
+                            </h5>
+                            <p class="mb-0 font-weight-normal text-sm">
+                                + {{ $store->phone }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,9 +158,9 @@
                         </div>
                         <div class="col-6 mb-4">
                             <div class="input-group input-group-static">
-                                <label>Store Type *</label>
+                                <label>Restaurant Type *</label>
                                 <select class="form-control input-group input-group-dynamic" wire:model.lazy="store.restaurant_type"  id="projectName" onfocus="focused(this)" onfocusout="defocused(this)">
-                                    <option value=''>Choose Your Store Type</option>
+                                    <option value=''>Choose Your Restaurant Type</option>
                                     @foreach ($store_type as $value)
                                     <option value="{{ $value['name'] }}">{{ $value['name']}}</option>
                                     @endforeach
@@ -184,12 +170,9 @@
                             <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
-
-                        @error('store.number_of_branch')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                            @enderror
-                        </div> 
-
+                    </div>
+                       
+                      <div class="row">
                         <div class="col-2  mb-4">
                             <div class="input-group input-group-static">
                                 <label>Country Code *</label>
@@ -223,8 +206,10 @@
                             @error('store.email')
                             <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
-                        </div>                       
-
+                        </div> 
+                      </div> 
+                                           
+                    <div class="row">
                         <div class="col-12 mb-4">
                             <div class="input-group input-group-static">
                                 <label>Description *</label>
