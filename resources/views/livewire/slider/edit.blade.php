@@ -44,7 +44,7 @@
 
                 <x-input.group colspan="col-6 mt-4" for="to_date" label="End Date Time *" :error="$errors->first('slider.end_date_time')">
                     {{-- Rech text --}}
-                    <x-input.date id="to_date" wire:model.lazy="slider.end_date_time" placeholder="Enter a End Date Time"/>
+                    <x-input.date id="to_date" wire:model="slider.end_date_time"  autocomplete="slider.end_date_time"  placeholder="Enter a End Date Time"/>
                 </x-input.group>
 
                 <x-input.group inline colspan="col-12" for="is_default" label="Is Default *" :error="$errors->first('slider.is_default')">
@@ -71,7 +71,7 @@
                 </x-button.bg-gradient-dark>
             </div>
 
-            <x-table >
+            <x-table>
                 <x-slot name="head">
                     <x-table.heading>ID
                     </x-table.heading>                        
@@ -118,53 +118,46 @@
             @endif
         </x-slot>
     </x-core.card>
-</x-core.container>
-
-
-<x-modal wire:ignore.self  id="exampleModal" >
-    <x-slot name="title">
-        Add New Slider Image
-    </x-slot>
-    <x-slot name="content">
-        <div class="avatar avatar-xl m-2 position-relative">
-            <div class="position-relative preview">
-                <label>Image</label>
-                <label for="file-input"
-                    class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
-                    <i wire:loading.remove class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top"
-                        title="" aria-hidden="true" data-bs-original-title="Select Image"
-                        aria-label="Select Image"></i><span class="sr-only">Select Image</span>
-                        <div wire:loading wire:target="image">
-                            <x-spinner></x-spinner>
-                        </div>
-                </label>
-                <span class="h-9 w-16 overflow-hidden bg-gray-100 ">
-                    @if ($image)
-                        <img src="{{ $image->temporaryUrl() }}" alt="Profile Photo">
-                    @else
-                        <img src="{{ asset('assets') }}/img/default-food-avatar.jpg" alt="avatar">
-                    @endif</span>
-                    <input  wire:loading.attr="disabled" wire:model="image" type="file" id="file-input">
+    <x-modal>
+        <x-slot name="title">
+            Add New Slider Image
+        </x-slot>
+        <x-slot name="content">
+            <div class="avatar avatar-xl m-2 position-relative">
+                <div class="position-relative preview">
+                    <label>Image</label>
+                    <label for="file-input"
+                        class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
+                        <i wire:loading.remove class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="" aria-hidden="true" data-bs-original-title="Select Image"
+                            aria-label="Select Image"></i><span class="sr-only">Select Image</span>
+                            <div wire:loading wire:target="image">
+                                <x-spinner></x-spinner>
+                            </div>
+                    </label>
+                    <span class="h-9 w-16 overflow-hidden bg-gray-100 ">
+                        @if ($image)
+                            <img src="{{ $image->temporaryUrl() }}" alt="Profile Photo">
+                        @else
+                            <img src="{{ asset('assets') }}/img/default-food-avatar.jpg" alt="avatar">
+                        @endif</span>
+                        <input  wire:loading.attr="disabled" wire:model="image" type="file" id="file-input">
+                </div>
             </div>
-        </div>
-
-        @error('image')
-            <p class='text-danger inputerror m-3 ms-0'>{{ $message }} </p>
-        @enderror
-
-         <p class="mt-4">(Recommended dimensions 16:9 ratio)</p>
-
-    </x-slot>
-    <x-slot name="footer">
-        <x-button.light data-bs-dismiss="modal">Cancel</x-button.light>
-        <x-button.bg-gradient-dark  wire:click.prevent='storeImage()' id="storeImage">Save</x-button.bg-gradient-dark>
-    </x-slot>
-</x-modal>
-
-
-
-
-
+    
+            @error('image')
+                <p class='text-danger inputerror m-3 ms-0'>{{ $message }} </p>
+            @enderror
+    
+             <p class="mt-4">(Recommended dimensions 16:9 ratio)</p>
+    
+        </x-slot>
+        <x-slot name="footer">
+            <x-button.light data-bs-dismiss="modal">Cancel</x-button.light>
+            <x-button.bg-gradient-dark  wire:click.prevent='storeImage()' id="storeImage" class="close-modal">Save</x-button.bg-gradient-dark>
+        </x-slot>
+    </x-modal>
+</x-core.container>
 
 @push('js')
 <script src="{{ asset('assets') }}/js/plugins/flatpickr.min.js"></script>
@@ -172,9 +165,11 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#storeImage').on('click',function(){
-                $('#exampleModal').modal('hide');
+        window.addEventListener('closeModal', function (event) {
+            $('#exampleModal').modal('hide');
         });
     });
 </script>
 @endpush
+
+
