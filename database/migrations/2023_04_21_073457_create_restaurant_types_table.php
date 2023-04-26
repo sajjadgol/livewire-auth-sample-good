@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('restaurant_types', function (Blueprint $table) {
+        Schema::create('store_types', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default('0');
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaurant_types');
+        Schema::dropIfExists('store_types');
     }
 };

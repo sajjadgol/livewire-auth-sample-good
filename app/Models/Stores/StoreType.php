@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Models\Tags;
+namespace App\Models\Stores;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 
-class Tag extends Model implements TranslatableContract
+class StoreType extends Model implements TranslatableContract
 {
-    use HasFactory, Translatable;
-
-
-    
-    /**
-     * The attributes that are mass assignable.
+    use HasFactory,Translatable;
+     /**
+     * The transalate attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    public $translatedAttributes = ['title'];
+    public $translatedAttributes = ['name'];
 
     /**
      * The attributes that are mass assignable.
@@ -26,12 +23,6 @@ class Tag extends Model implements TranslatableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
-        'title',
-        'meta_title',
-        'content',
-        'order_number',
-        'type',
-        'status'
+        'id','name','status'
     ];
 }

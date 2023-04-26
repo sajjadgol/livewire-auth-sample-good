@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\RestaurantTypes;
+namespace App\Http\Livewire\StoreTypes;
 
 use Livewire\Component;
-use App\Models\Stores\RestaurantType;
+use App\Models\Stores\StoreType;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Create extends Component
@@ -16,7 +16,7 @@ class Create extends Component
     protected function rules(){
         $this->name = trim($this->name);
       return  [
-            'name'   => 'required|max:255|unique:App\Models\Stores\RestaurantTypeTranslation,name',
+            'name'   => 'required|max:255|unique:App\Models\Stores\StoreTypeTranslation,name',
             'status' => 'nullable|between:0,1',
         ];
     }
@@ -31,16 +31,16 @@ class Create extends Component
     public function store() {
         $this->validate();
         
-        RestaurantType::create([
+        StoreType::create([
             'name'   => $this->name,
             'status' => $this->status ? 1 : 0,
         ]);
 
-        return redirect(route('restaurant-type-management'))->with('status','Restaurant type successfully created.');
+        return redirect(route('store-type-management'))->with('status','Store type successfully created.');
     }
 
     public function render()
     {
-        return view('livewire.restaurant-types.create');
+        return view('livewire.store-types.create');
     }
 }

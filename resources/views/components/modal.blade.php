@@ -24,7 +24,7 @@ switch ($maxWidth ?? '2xl') {
 }
 @endphp
 
-<div
+{{-- <div
     x-data="{
         show: false,
         focusables() {
@@ -50,7 +50,9 @@ switch ($maxWidth ?? '2xl') {
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="show"
     id="{{ $id }}"
-    class="modal fade">
+    class="modal fade"> --}}
+
+    <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">

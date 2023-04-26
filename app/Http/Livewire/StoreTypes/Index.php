@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\RestaurantTypes;
+namespace App\Http\Livewire\StoreTypes;
 
 use Livewire\Component;
 use App\Http\DataTable\WithSorting;
@@ -9,7 +9,7 @@ use App\Http\DataTable\WithBulkActions;
 use App\Http\DataTable\WithPerPagePagination;
 use App\Http\DataTable\WithSingleAction;
 use App\Http\DataTable\Column;
-use App\Models\Stores\RestaurantType;
+use App\Models\Stores\StoreType;
 
 class Index extends Component
 {
@@ -49,21 +49,24 @@ class Index extends Component
     {
         return [
             Column::field([
-                "label" => __('components/restaurantType.Name'),
+                "label" => __('components/StoreType.Name'),
                 "field" => "name",
+                "sortable" => false,
+                "translate" => true,
                
             ]),
             Column::field([
-                "label" => __('components/restaurantType.Creation Date'),
+                "label" => __('components/StoreType.Creation Date'),
                 "field" => "created_at",
             ]),
             Column::field([
-                "label" => __('components/restaurantType.Status'),
+                "label" => __('components/StoreType.Status'),
                 "field" => "status",
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "name",
+                "viewColumns" => false
             ]),           
         ];
     }
@@ -90,18 +93,18 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/restaurantType.Please select at least one restaurant type!'),
+                __('components/StoreType.Please select at least one store type!'),
             ]);
             return false;
         }
         $this->dispatchBrowserEvent("swal:destroyMultiple", [
             "action" => "deleteSelected",
             "type" => "warning",
-            "confirmButtonText" => __('components/restaurantType.Yes, delete it!'),
-            "cancelButtonText" => __('components/restaurantType.No, cancel!'),
-            "message" => __('components/restaurantType.Are you sure?'),
+            "confirmButtonText" => __('components/StoreType.Yes, delete it!'),
+            "cancelButtonText" => __('components/StoreType.No, cancel!'),
+            "message" => __('components/StoreType.Are you sure?'),
             "text" => __(
-                'components/restaurantType.If deleted, you will not be able to recover this restaurant types!'
+                'components/StoreType.If deleted, you will not be able to recover this store types!'
             ),
         ]);
     }
@@ -119,7 +122,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/restaurantType.Restaurant Type Delete Successfully!') . " -: " . $deleteCount,
+            __('components/StoreType.Store Type Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -140,7 +143,7 @@ class Index extends Component
      */
     public function getRowsQueryProperty()
     {   
-        $query = RestaurantType::query()
+        $query = StoreType::query()
             ->when(
                 $this->filters["search"],
                 fn($query, $search) => $query->WhereTranslationLike(
@@ -180,7 +183,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/restaurantType.restaurantType_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/StoreType.StoreType_delete_msg')]);    
         }
         return $query;
     }
@@ -194,12 +197,12 @@ class Index extends Component
     public function statusUpdate($id, $status)
     {     
         $status = ( $status == 1 ) ? 0 : 1;
-        RestaurantType::where('id', $id )->update(['status' => $status]);
+        StoreType::where('id', $id )->update(['status' => $status]);
         
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/restaurantType.Status updated Successfully!'),
+            __('components/StoreType.Status updated Successfully!'),
         ]);
    }
 
@@ -209,8 +212,8 @@ class Index extends Component
      */
     public function render()
     {
-        return view("livewire.restaurant-types.index", [
-            "restaurantTypes" => $this->rows,
+        return view("livewire.store-types.index", [
+            "StoreTypes" => $this->rows,
         ]);
     }
 }

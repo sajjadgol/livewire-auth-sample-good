@@ -37,15 +37,18 @@
           "key" : "unverified-stores",
           "permission" : "unverified-stores",
           "href" : "",
-          "route" : "unverified-stores"
+          "route" : "unverified-stores",
+          "routeKeys" : {
+            "application_status" : "waiting"
+          }
         },
         {
-          "name" : "Restaurants Type",
+          "name" : "Store Type",
           "icon" : "local_convenience_store",
-          "key" : "restaurant-type-management",
-          "permission" : "restaurant-type-management",
+          "key" : "store-type-management",
+          "permission" : "store-type-management",
           "href" : "",
-          "route" : "restaurant-type-management"
+          "route" : "store-type-management"
         }
       ]
     },

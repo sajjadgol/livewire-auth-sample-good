@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 use App\Models\Worlds\Cities;
 use Livewire\WithFileUploads;
 use App\Models\Worlds\Country;
-use App\Models\Stores\RestaurantType;
+use App\Models\Stores\StoreType;
 use App\Models\Stores\StoreOwners;
 use App\Models\Stores\BusinessHour;
 use App\Models\Stores\StoreAddress;
@@ -70,7 +70,7 @@ class Edit extends Component
         return [
             'store.email'                 => 'required|email|unique:App\Models\Stores\Store,email,'.$this->store->id,
             'store.name'                  =>  'required|unique:App\Models\Stores\StoreTranslation,name'.$store,
-            'store.restaurant_type'       => 'required',
+            'store.store_type'       => 'required',
             'store.descriptions'          => 'required|max:1000',
             'store.phone'                 => 'required|numeric|digits_between:8,10',        
             'store.country_code'           => 'required',
@@ -102,9 +102,12 @@ class Edit extends Component
         //  Store translate
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
+        
+       
 
         //  Store translate       
         $this->store = Store::with('storeAddress')->find($id);
+       
 
         $this->store->name = isset($this->store->translate($this->lang)->name) ?  $this->store->translate($this->lang)->name: $this->store->translate(config('app.locale'))->name;
         $this->store->descriptions = isset($this->store->translate($this->lang)->descriptions) ? $this->store->translate($this->lang)->descriptions : $this->store->translate(config('app.locale'))->descriptions;
@@ -149,7 +152,7 @@ class Edit extends Component
         
         $this->timeOptionsList = Utils::timeOptions();
         $this->accounts = StoreOwners::where('store_id', $this->store->id)->get();
-        $this->store_type = RestaurantType::withTranslation()->translatedIn($this->lang)->get();
+        $this->store_type = StoreType::withTranslation()->translatedIn($this->lang)->get();
 
         $this->commission_value = $this->store->commission_value;
         $this->is_global_commission = $this->store->is_global_commission;
@@ -215,7 +218,7 @@ class Edit extends Component
             if($editedBussinessHour) {
                 $editedBussinessHour->update($bussinessHour);
                 $this->dispatchBrowserEvent('alert', 
-                ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+                ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
             }
         }
         $this->editedBussinessHourIndex = null;
@@ -227,7 +230,7 @@ class Edit extends Component
         if(!is_null($bussinessHour)) {
             BusinessHour::where('id', '=' , $bussinessHour['id'] )->update(['opening_time' => $opening_time]);
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+            ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
         }
         $this->editedBussinessHourIndex = null;
     }
@@ -243,7 +246,7 @@ class Edit extends Component
             } else{
                 BusinessHour::where('id', '=' , $bussinessHour['id'] )->update(['closing_time' => $closing_time]);
                 $this->dispatchBrowserEvent('alert', 
-                ['type' => 'success',  'message' => 'Bussiness Hours changed Successfully!']);
+                ['type' => 'success',  'message' => 'Bussiness Hours Changed Successfully!']);
             }
         }
         $this->editedBussinessHourIndex = null;
@@ -522,7 +525,7 @@ class Edit extends Component
         $request =  $this->validate([
             'store.name'                  =>  'required|unique:App\Models\Stores\StoreTranslation,name'.$store,
             'store.descriptions'       => 'required',
-            'store.restaurant_type'       => 'required',
+            'store.store_type'       => 'required',
         ]);
 
         $data = [

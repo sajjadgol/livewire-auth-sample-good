@@ -1,11 +1,10 @@
 {{-- Page Title --}}
 @section('page_title')
     @if($this->application_status == 'waiting')
-        @lang("components/store.page_title")
+        @lang("components/store.page_title") 
     @else
         @lang("components/store.Stores")
     @endif
-
 @endsection
 
 <x-core.container wire:init="init">
@@ -49,18 +48,17 @@
                         </x-input.group>
                     
 
-                        <x-input.group inline for="filters.application_status" label="{{ __('components/store.Application status') }}">
+                        <x-input.group inline for="filters.application_status" label="{{ __('components/store.Account status') }}">
                             <x-input.select wire:model="filters.application_status" placeholder="{{ __('components/store.All Account Status') }}">
-                                <option  class="optionSelect" value="">@lang('components/store.All Account Status')</option>
                                 <option  class="optionGroup"  value="approved">@lang('components/store.Approved')</option>
                                 <option  class="optionGroup"  value="suspended">@lang('components/store.Suspend')</option>  
                             </x-input.select>
                         </x-input.group>
 
-                        <x-input.group inline for="filters.restaurant_type" label="{{ __('components/store.Store Type') }}">
-                            <x-input.select wire:model="filters.restaurant_type" placeholder="{{ __('components/store.All Type') }}">
-                                @foreach ($restaurantTypes as $restaurantType)
-                                    <option  class="optionGroup"  value="{{ $restaurantType->name }}"> {{ $restaurantType->name }}</option>
+                        <x-input.group inline for="filters.store_type" label="{{ __('components/store.Store Type') }}">
+                            <x-input.select wire:model="filters.store_type" placeholder="{{ __('components/store.All Type') }}">
+                                @foreach ($StoreTypes as $StoreType)
+                                    <option  class="optionGroup"  value="{{ $StoreType->name }}"> {{ $StoreType->name }}</option>
                                 @endforeach  
                             </x-input.select>
                         </x-input.group>
@@ -76,17 +74,7 @@
                     </x-dropdown>
 
                     {{--  Hide & show columns dropdown --}}
-                    <x-dropdown>
-                        <x-slot name="label">
-                            <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mui-datatables-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ViewColumnIcon"><path d="M14.67 5v14H9.33V5h5.34zm1 14H21V5h-5.33v14zm-7.34 0V5H3v14h5.33z"></path></svg>
-                        </x-slot>
-                        @foreach ($columns as $column)
-                            <x-dropdown.item>
-                                <x-input.checkbox label="{{ Str::ucfirst($column['label']) }}"
-                                    wire:model="selectedColumns" value="{{ $column['field'] }}" />
-                            </x-dropdown.item>
-                        @endforeach
-                    </x-dropdown>
+<x-table.view-columns/>
 
                     @can('add-store')
                         {{-- button with icon,href --}}
@@ -133,7 +121,7 @@
                             <x-table.cell-switch column="status" status="{{ $store->status }}"
                                 wire:change="statusUpdate({{ $store->id }},{{ $store->status }})">
                                 @if($store->application_status =='suspended')
-                                    <div class="text-xxs text-warning text-center" >{{ __('component/store.Suspended') }}</div>
+                                    <div class="text-xxs text-warning mt-4 mx-2" >{{ __('components/store.Suspended') }}</div>
                                 @endif
                             </x-table.cell-switch>
 

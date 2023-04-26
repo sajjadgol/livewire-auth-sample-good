@@ -5,7 +5,7 @@ namespace App\Models\Stores;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RestaurantTypeTranslation extends Model
+class StoreTypeTranslation extends Model
 {
     use HasFactory;
     /**
