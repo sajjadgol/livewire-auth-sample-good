@@ -53,6 +53,9 @@ class Index extends Component
             Column::field([
                 "label" => __('components/slider.Name'),
                 "field" => "name",
+                'translate' => true,
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/slider.START DATE TIME'),
@@ -68,7 +71,7 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name",
+                "field" => "id",
                 "viewColumns" => false
             ]),           
         ];
@@ -202,7 +205,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/slider.slider_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/slider.Slider Delete Successfully!')]);    
         }
         return $query;
     }

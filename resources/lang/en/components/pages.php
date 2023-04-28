@@ -24,7 +24,7 @@ return [
     "START DATE TIME" => "START DATE TIME",
     "END DATE TIME" => "END DATE TIME",
     "Unpublished" => "Unpublished",
-    "add_page" => "Add Page",
+    "Add Page" => "Add Page",
     "add_page_title" => "Add Page",
-    "page_delete_msg" => "Page Delete Successfully!"
+    
 ];

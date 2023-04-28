@@ -24,6 +24,5 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'add_country' => 'Add Country',
-    'country_delete_msg' => 'Country Delete Successfully!'
+    'Add Country' => 'Add Country',
 ];

@@ -34,7 +34,6 @@ class Edit extends Component
         //  Faq translate
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
-        
         $this->faq->title = isset($this->faq->translate($this->lang)->title) ?  $this->faq->translate($this->lang)->title: $this->faq->translate(config('app.locale'))->title;
         $this->faq->descriptions = isset($this->faq->translate($this->lang)->descriptions) ? $this->faq->translate($this->lang)->descriptions : $this->faq->translate(config('app.locale'))->descriptions;
         //  Faq translate

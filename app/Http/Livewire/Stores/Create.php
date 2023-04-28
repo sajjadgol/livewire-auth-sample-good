@@ -38,6 +38,7 @@ class Create extends Component
     public $latitude = '';
     public $longitude = '';
     public $store_address = '';
+    public $store_types = '';
     public $store_type = '';
     public $userName = '';
     public $country_code = '';
@@ -51,7 +52,7 @@ class Create extends Component
     ];
 
     public function setLatitudeLongitude($latitude, $longitude, $name) 
-   {    
+    {    
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->landmark = $name;
@@ -81,12 +82,12 @@ class Create extends Component
         $this->countries = Country::all();
         $this->states = collect();
         $this->cities = collect();
-        $this->store_type = StoreType::all();
+        $this->store_types = StoreType::all();
         $this->country_code = Country::where('is_default', 1)->value('country_code');
     }
 
     public function updated($propertyName) {
-        $this->validateOnly($propertyName);
+       $this->validateOnly($propertyName);
     } 
 
     public function store() {

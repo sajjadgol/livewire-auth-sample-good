@@ -64,6 +64,8 @@ class Index extends Component
             Column::field([
                 "label" => __('components/state.Creation Date'),
                 "field" => "created_at",
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/state.Status'),
@@ -183,7 +185,7 @@ class Index extends Component
         $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/state.state_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/state.State Delete Successfully!')]);    
         }
         return $query;
     }

@@ -51,18 +51,20 @@ class Index extends Component
             Column::field([
                 "label" => __('components/page.Title'),
                 "field" => "title",
+                'translate' => true,
                 "sortable" => true,
                 "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Slug'),
                 "field" => "slug",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Creation Date'),
                 "field" => "created_at",
+                'translate' => true,
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Status'),
@@ -70,7 +72,7 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name",
+                "field" => "id",
                 "viewColumns" => false
             ]),           
         ];
@@ -187,7 +189,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/pages.page_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/pages.Page Delete Successfully!')]);    
         }
         return $query;
     }

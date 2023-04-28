@@ -38,8 +38,6 @@ return [
     "Top Store" => "Top Store",
     "Remove to Top Store" => "Remove to Top Store",
     "Mark as Top Store" => "Mark as Top Store",
-    "add_store" => "Add Store",
+    "Add Store" => "Add Store",
     "add_store_title"=> "Add New Store",
-    "store_delete_msg" => "Store Delete Successfully!"
-
 ];

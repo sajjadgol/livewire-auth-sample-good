@@ -23,5 +23,4 @@ return [
     'Add Store' => 'Add Store Type',
     'add_store_title' => "Add Store Type",
     'edit_store_title' => "Edit Store Type",
-    'storetype_delete_msg' => "Store Type Delete Successfully!"
 ];

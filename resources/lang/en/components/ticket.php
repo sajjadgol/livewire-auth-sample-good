@@ -20,5 +20,4 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    "ticket_delete_msg" => 'Ticket Delete Successfully!'
 ];

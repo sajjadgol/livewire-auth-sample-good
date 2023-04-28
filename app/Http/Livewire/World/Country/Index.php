@@ -205,7 +205,7 @@ class Index extends Component
         $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/country.country_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/country.Country Delete Successfully!')]);    
         }
         return $query;
     }

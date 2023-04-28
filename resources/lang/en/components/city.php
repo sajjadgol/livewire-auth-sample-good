@@ -23,6 +23,5 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'add_city' => 'Add City',
-    'city_delete_msg' => 'City Delete Successfully!'
+    'Add City' => 'Add City',
 ];

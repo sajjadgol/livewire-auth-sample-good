@@ -22,8 +22,7 @@ return [
     "START DATE TIME" => "START DATE TIME",
     "END DATE TIME" => "END DATE TIME",
     "add_slider_title" => "Add Slider",
-    "add_slider" => "Add Slider",
+    "Add Slider" => "Add Slider",
     "edit_slider_title" => "Edit Slider",
-    "slider_delete_msg" => "Slider Delete Successfully!"
 
 ];

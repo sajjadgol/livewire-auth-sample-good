@@ -55,7 +55,7 @@
                 <x-input.group colspan="col-12" for="store_type" label="Store Type *" :error="$errors->first('store_type')">
                     <x-input.select class="form-control" wire:model="store_type" id="store_type"
                         placeholder="Choose Your Store Type">
-                        @foreach ($store_type as $value)
+                        @foreach($store_types as $value)
                             <option value="{{ $value['name'] }}">{{ $value['name']}}</option>
                         @endforeach
                     </x-input.select>

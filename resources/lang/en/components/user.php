@@ -12,7 +12,7 @@ return [
     "Yes, delete it!" => "Yes, delete it!",
     "No, cancel!" => "No, cancel!",
     "Are you sure?" => "Are you sure?",
-    "If deleted, you will not be able to recover this imaginary file!" => "If deleted, you will not be able to recover this imaginary file!",
+    "If deleted, you will not be able to recover this users!" => "If deleted, you will not be able to recover this users!",
     "User Delete Successfully!" => "User Delete Successfully!",
     "Please select at least one user" => "Please select at least one user",
     'Status updated Successfully!' => "Status updated Successfully!",
@@ -25,6 +25,5 @@ return [
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
     'Any Role' => 'Any Role',
-    'add_user' => 'Add User',
-    'user_delete_msg'=> 'User Delete Successfully!'
+    'Add User' => 'Add User',
 ];

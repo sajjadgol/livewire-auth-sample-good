@@ -123,7 +123,7 @@ class Index extends Component
             "cancelButtonText" => __('components/user.No, cancel!'),
             "message" => __('components/user.Are you sure?'),
             "text" => __(
-                'components/user.If deleted, you will not be able to recover this imaginary file!'
+                'components/user.If deleted, you will not be able to recover this users!'
             ),
         ]);
     }
@@ -227,7 +227,7 @@ class Index extends Component
          $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
          if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/user.user_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/user.User Delete Successfully!')]);    
          }
          return $query;
     }

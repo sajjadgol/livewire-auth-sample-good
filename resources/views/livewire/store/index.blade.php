@@ -78,7 +78,7 @@
 
                     @can('add-store')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-store') }}" > @lang('components/store.add_store') </x-table.button.add>
+                        <x-table.button.add icon href="{{ route('add-store') }}" > @lang('components/store.Add Store') </x-table.button.add>
                     @endcan
 
                 </x-core.card-toolbar>
@@ -150,7 +150,7 @@
                                     @can('edit-store')
                                         <x-table.dropdown-item class="dropdown-item" 
                                             title="{{ __('components/store.Searchable') }}" wire:click="searchableConfirm({{ $store }})">
-                                            {{ $store->is_searchable ? trans("components/store.Remove to Searchable") : trans("components/store.'Mark as Searchable") }}
+                                            {{ $store->is_searchable ? trans("components/store.Remove to Searchable") : trans("components/store.Mark as Searchable") }}
                                         </x-table.dropdown-item>
 
                                         <x-table.dropdown-item class="dropdown-item" 

@@ -65,7 +65,7 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name",
+                "field" => "id",
                 "viewColumns" => false
             ]),           
         ];
@@ -183,7 +183,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/StoreType.storetype_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/StoreType.Store Type Delete Successfully!')]);    
         }
         return $query;
     }

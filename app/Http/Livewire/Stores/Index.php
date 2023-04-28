@@ -40,6 +40,7 @@ class Index extends Component
         "refreshTransactions" => '$refresh',
         "deleteSelected",
         "confirm",
+        "confirmApplication",
     ];
 
     /* Apply bootstrap layout in pagination */
@@ -65,8 +66,6 @@ class Index extends Component
             Column::field([
                 "label" => __('components/store.Photo'),
                 "field" => "logo_path",
-                "sortable" => false,
-                "direction" => true,
                 'hidden' => true
             ]),
             Column::field([
@@ -90,7 +89,7 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name",
+                "field" => "id",
                 "viewColumns" => false
             ]),
             Column::field([
@@ -208,7 +207,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/store.store_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/store.Store Delete Successfully!')]);    
         }
         return $query;
     }
@@ -270,7 +269,7 @@ class Index extends Component
      * @return response()
      */
     public function confirmApplication()
-    {        
+    {     
         Store::where('id', $this->storeId )->update(['application_status' => $this->actionStatus]);
        
         $this->dispatchBrowserEvent('swal:modal', [

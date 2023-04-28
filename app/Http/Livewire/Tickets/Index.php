@@ -55,18 +55,16 @@ class Index extends Component
             Column::field([
                 "label" => __('components/ticket.Title'),
                 "field" => "title",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Customer Name'),
                 "field" => "user_id",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Creation Date'),
                 "field" => "created_at",
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Status'),
@@ -74,7 +72,7 @@ class Index extends Component
             ]),
         ];
     }
-    public function mount($status = 'open') {
+    public function mount($status="") {
         $this->filters['status'] = $status;
         $statusConst = new TicketsStatus();
         $this->statusList =  $statusConst->getConstants();
@@ -209,7 +207,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/ticket.ticket_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/ticket.Ticket Delete Successfully!')]);    
         }
         return $query;
     }

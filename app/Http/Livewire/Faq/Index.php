@@ -58,12 +58,13 @@ class Index extends Component
             Column::field([
                 "label" => __('components/faq.App Name'),
                 "field" => "role_type",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/faq.Creation Date'),
                 "field" => "created_at",
+                'translate' => true,
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/faq.Status'),
@@ -71,7 +72,7 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name",
+                "field" => "id",
                 "viewColumns" => false
             ]),           
         ];
@@ -157,7 +158,7 @@ class Index extends Component
                     "%" . $search . "%"
                 )
             );
-
+            
             if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
                 $query->where('status' , '=' ,  $this->filters['status']);
             }   
@@ -188,7 +189,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/faq.faq_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/faq.Faq Delete Successfully!')]);    
         }
         return $query;
     }

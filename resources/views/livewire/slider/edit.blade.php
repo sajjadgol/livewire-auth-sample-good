@@ -41,11 +41,12 @@
                     {{-- Rech text --}}
                     <x-input.date id="from_date" wire:model.lazy="slider.start_date_time" placeholder="Enter a Start Date Time"/>
                 </x-input.group>
-
+                
                 <x-input.group colspan="col-6 mt-4" for="to_date" label="End Date Time *" :error="$errors->first('slider.end_date_time')">
                     {{-- Rech text --}}
-                    <x-input.date id="to_date" wire:model="slider.end_date_time"  autocomplete="slider.end_date_time"  placeholder="Enter a End Date Time"/>
+                    <x-input.date id="to_date" wire:model.lazy="slider.end_date_time" placeholder="Enter a End Date Time"/>
                 </x-input.group>
+                
 
                 <x-input.group inline colspan="col-12" for="is_default" label="Is Default *" :error="$errors->first('slider.is_default')">
                     {{-- Input text --}}
@@ -168,7 +169,7 @@
         window.addEventListener('closeModal', function (event) {
             $('#exampleModal').modal('hide');
         });
-    });
+    });   
 </script>
 @endpush
 

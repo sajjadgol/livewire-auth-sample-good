@@ -63,7 +63,7 @@
 
                     @can('add-user')
                         {{-- button with icon,href --}}
-                        <x-table.button.add icon href="{{ route('add-user', ['role' => $this->filters['role']]) }}" > @lang('components/user.add_user') </x-table.button.add>
+                        <x-table.button.add icon href="{{ route('add-user', ['role' => $this->filters['role']]) }}" > @lang('components/user.Add User') </x-table.button.add>
                     @endcan
 
                 </x-core.card-toolbar>

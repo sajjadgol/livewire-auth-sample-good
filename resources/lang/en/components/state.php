@@ -22,6 +22,5 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'add_state' => 'Add State',
-    'state_delete_msg' => 'State Delete Successfully!'
+    'Add State' => 'Add State',
 ];

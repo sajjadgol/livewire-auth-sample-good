@@ -45,8 +45,7 @@ class Edit extends Component
         $this->languages = request()->language;
         
         $this->slider = Slider::find($id);
-        
-    
+      
         $this->slider->name = isset($this->slider->translate($this->lang)->name) ?  $this->slider->translate($this->lang)->name: $this->slider->translate(config('app.locale'))->name;
         $this->slider->description = isset($this->slider->translate($this->lang)->description) ? $this->slider->translate($this->lang)->description : $this->slider->translate(config('app.locale'))->description;
        //  Faq translate
@@ -60,7 +59,6 @@ class Edit extends Component
  
 
     public function edit() {
-        dd($this->validate());
         $this->validate();
         if($this->slider->is_default){
             Slider::where('is_default', 1)->update(['is_default' => 0]);

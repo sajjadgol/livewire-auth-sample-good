@@ -85,7 +85,8 @@
                             <x-table.cell column="user_id" href="">{{ $ticket->user->name }}</x-table.cell>
 
                             <x-table.cell-date column="created_at">{{ $ticket->created_at }}</x-table.cell-date>
-                            <x-table.cell>{{ ucfirst($ticket->status) }}</x-table.cell> 
+                            <x-table.cell column="status">{{ ucfirst($ticket->status) }}</x-table.cell> 
+
                        
                         
                             {{-- Action , examples- edit, view, delete  --}}

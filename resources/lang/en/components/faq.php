@@ -21,7 +21,6 @@ return [
     'Active' => 'Active',
     'Inactive' => 'Inactive',
     'Any Status' => 'Any Status',
-    'Add Faq' => 'Add FAQ',
+    'Add FAQ' => 'Add FAQ',
     'edit_page_title' => 'Edit FAQ',
-    'faq_delete_msg' => 'FAQ Delete Successfully!'
 ];

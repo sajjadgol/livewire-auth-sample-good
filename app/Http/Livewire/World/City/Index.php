@@ -189,7 +189,7 @@ class Index extends Component
 
         if ($query) {
             $this->dispatchBrowserEvent('alert', 
-            ['type' => 'success',  'message' => __('components/city.city_delete_msg')]);    
+            ['type' => 'success',  'message' => __('components/city.City Delete Successfully!')]);    
         }
         return $query;
     }
