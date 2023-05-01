@@ -19,7 +19,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('user-management') }}">
+            <x-form.form submitText="create user" submit-target="store" cancel-route="{{ route('user-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Full Name *" :error="$errors->first('name')">

@@ -64,6 +64,8 @@ class Index extends Component
             Column::field([
                 "label" => __('components/state.Creation Date'),
                 "field" => "created_at",
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/state.Status'),
@@ -94,7 +96,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/state.Please select at least one user'),
+                __('components/state.Please select at least one state'),
             ]);
             return false;
         }
@@ -105,7 +107,7 @@ class Index extends Component
             "cancelButtonText" => __('components/state.No, cancel!'),
             "message" => __('components/state.Are you sure?'),
             "text" => __(
-                'components/state.If deleted, you will not be able to recover this imaginary file!'
+                'components/state.If deleted, you will not be able to recover this states!'
             ),
         ]);
     }
@@ -147,8 +149,9 @@ class Index extends Component
         $query = State::query()
             ->when(
                 $this->filters["search"],
-                fn($query, $search) => $query->WhereTranslationLike(
-                    "title",
+                fn($query, $search) => $query->Where(
+                    "name",
+                    "like",
                     "%" . $search . "%"
                 )
             );
@@ -179,7 +182,12 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/state.State Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 

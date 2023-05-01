@@ -1,5 +1,5 @@
 @section('page_title')
-    @lang("components/faq.page_title")
+    @lang("components/faq.edit_page_title")
 @endsection
 
 <x-core.container>
@@ -18,7 +18,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="edit" cancel-route="{{ route('faq-management') }}">
+            <x-form.form submitText="Update Faq" submit-target="edit" cancel-route="{{ route('faq-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="title" label="Title *" :error="$errors->first('faq.title')">
@@ -29,7 +29,7 @@
                 <x-input.group colspan="col-12" for="description" label="Description *" :error="$errors->first('faq.descriptions')">
                     {{-- Rech text --}}
                     <x-input.rich-text wire:model.lazy="faq.descriptions">
-                        {{ $faq->descriptions }}
+                        {!! $faq->descriptions !!}
                     </x-input.rich-text>
                 </x-input.group>
 

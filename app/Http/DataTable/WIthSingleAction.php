@@ -24,10 +24,10 @@ trait WithSingleAction
         $this->dispatchBrowserEvent('swal:confirm', [
                 'action' => 'remove',
                 'type' => 'warning',  
-                'confirmButtonText' => __('slider.Yes, delete it!'),
-                'cancelButtonText' => __('slider.No, cancel!'),
-                'message' => __('slider.Are you sure?'), 
-                'text' => __('slider.If deleted, you will not be able to recover this Slider!')
+                'confirmButtonText' => __('component.Yes, delete it!'),
+                'cancelButtonText' => __('component.No, cancel!'),
+                'message' => __('component.Are you sure?'), 
+                'text' => __('component.If deleted, you will not be able to recover this record!')
             ]);
     }
 }

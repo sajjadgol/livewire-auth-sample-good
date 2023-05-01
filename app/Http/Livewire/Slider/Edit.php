@@ -20,7 +20,7 @@ class Edit extends Component
     public $sliderImage = [];
     public $deleteId;
     public $sliderId = '';
-    protected $listeners = ['remove', 'confirm'];
+    protected $listeners = ['remove', 'confirm', 'refreshComponent' => '$refresh'];
      
     use AuthorizesRequests;  
     use WithFileUploads;
@@ -34,7 +34,7 @@ class Edit extends Component
             'slider.status' => 'nullable|between:0,1',
             'slider.is_default' => 'nullable|between:0,1',    
             'slider.start_date_time' => 'required',
-            'slider.end_date_time'   => 'required',
+            'slider.end_date_time' => 'required',
         ];
          
     }
@@ -45,8 +45,9 @@ class Edit extends Component
         $this->languages = request()->language;
         
         $this->slider = Slider::find($id);
-        $this->slider->name = isset($this->slider->translate($this->lang)->name) ?  $this->slider->translate($this->lang)->name: $this->slider->translate(app()->getLocale())->name;
-        $this->slider->description = isset($this->slider->translate($this->lang)->description) ? $this->slider->translate($this->lang)->description : $this->slider->translate(app()->getLocale())->description;
+      
+        $this->slider->name = isset($this->slider->translate($this->lang)->name) ?  $this->slider->translate($this->lang)->name: $this->slider->translate(config('app.locale'))->name;
+        $this->slider->description = isset($this->slider->translate($this->lang)->description) ? $this->slider->translate($this->lang)->description : $this->slider->translate(config('app.locale'))->description;
        //  Faq translate
 
         $this->sliderImage = $this->slider->sliderImage;
@@ -83,6 +84,8 @@ class Edit extends Component
             $this->setErrorBag($validator->getMessageBag());
             return redirect()->back();
         }
+
+        
     }
  
     public function storeImage(){
@@ -120,7 +123,11 @@ class Edit extends Component
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => __('slider.Slider Image successfully uploaded.')]);
         
-        return redirect(request()->header('Referer'));
+        $this->dispatchBrowserEvent('closeModal');
+
+        $this->emit('refreshComponent');
+       
+        //return redirect(request()->header('Referer'));
     }
 
 
@@ -164,11 +171,11 @@ class Edit extends Component
      * @return response()
      */
     public function statusUpdate($sliderId, $status)
-    {        
+    {     
         $status = ( $status == 1 ) ? 0 : 1;
-        SliderImage::where('id', '=' , $sliderId )->update(['status' => $status]);      
+        SliderImage::where('id', '=' , $sliderId )->update(['status' => $status]);
+    }
 
-   }
     public function editTranslate()
     {
         $request =  $this->validate([
@@ -184,6 +191,7 @@ class Edit extends Component
         $slider->update($data);
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => 'Slider successfully updated.']);
+       
     }
 
 

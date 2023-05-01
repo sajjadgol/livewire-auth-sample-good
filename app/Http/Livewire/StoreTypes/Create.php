@@ -36,7 +36,7 @@ class Create extends Component
             'status' => $this->status ? 1 : 0,
         ]);
 
-        return redirect(route('store-type-management'))->with('status','store type successfully created.');
+        return redirect(route('store-type-management'))->with('status','Store type successfully created.');
     }
 
     public function render()

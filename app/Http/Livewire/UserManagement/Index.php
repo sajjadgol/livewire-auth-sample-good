@@ -123,7 +123,7 @@ class Index extends Component
             "cancelButtonText" => __('components/user.No, cancel!'),
             "message" => __('components/user.Are you sure?'),
             "text" => __(
-                'components/user.If deleted, you will not be able to recover this imaginary file!'
+                'components/user.If deleted, you will not be able to recover this users!'
             ),
         ]);
     }
@@ -173,7 +173,7 @@ class Index extends Component
             )
             ->when(
                 $this->filters["from_date"],
-                fn($query, $date) => $query->where(
+                fn($query, $date) => $query->whereDate(
                     "created_at",
                     ">=",
                     Carbon::parse($date)
@@ -181,7 +181,7 @@ class Index extends Component
             )
             ->when(
                 $this->filters["to_date"],
-                fn($query, $date) => $query->where(
+                fn($query, $date) => $query->whereDate(
                     "created_at",
                     "<=",
                     Carbon::parse($date)
@@ -223,8 +223,13 @@ class Index extends Component
      * @return \Illuminate\Http\Response
      */
     public function remove()
-    {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+    {           
+         $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+         if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/user.User Delete Successfully!')]);    
+         }
+         return $query;
     }
 
 

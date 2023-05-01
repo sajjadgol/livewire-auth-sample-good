@@ -18,7 +18,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('faq-management') }}">
+            <x-form.form submitText="Create Faq" submit-target="store" cancel-route="{{ route('faq-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="title" label="Title *" :error="$errors->first('title')">
@@ -43,7 +43,7 @@
                 </x-input.group>
 
 
-                <x-input.group inline colspan="col-12" for="status" label="Status *" :error="$errors->first('name')">
+                <x-input.group inline colspan="col-12" for="status" label="Status" :error="$errors->first('name')">
                     {{-- Input text --}}
                     <x-input.checkbox wire:model.lazy="status" label="Active"/>
                 </x-input.group>

@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire\World\Country;
 
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Http\DataTable\Column;
+use App\Models\Worlds\Country;
 use App\Http\DataTable\WithSorting;
 use App\Http\DataTable\WithCachedRows;
 use App\Http\DataTable\WithBulkActions;
-use App\Http\DataTable\WithPerPagePagination;
 use App\Http\DataTable\WithSingleAction;
-use App\Http\DataTable\Column;
-use App\Models\Worlds\Country;
+use App\Http\DataTable\WithPerPagePagination;
 
 class Index extends Component
 {
@@ -99,7 +100,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/country.Please select at least one user'),
+                __('components/country.Please select at least one country'),
             ]);
             return false;
         }
@@ -110,7 +111,7 @@ class Index extends Component
             "cancelButtonText" => __('components/country.No, cancel!'),
             "message" => __('components/country.Are you sure?'),
             "text" => __(
-                'components/country.If deleted, you will not be able to recover this imaginary file!'
+                'components/country.If deleted, you will not be able to recover this countries!'
             ),
         ]);
     }
@@ -128,7 +129,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/country.country Delete Successfully!') . " -: " . $deleteCount,
+            __('components/country.Country Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -152,9 +153,26 @@ class Index extends Component
         $query = Country::query()
             ->when(
                 $this->filters["search"],
-                fn($query, $search) => $query->WhereTranslationLike(
-                    "title",
+                fn($query, $search) => $query->where(
+                    "name", 
+                    "like",
                     "%" . $search . "%"
+                )
+            )
+            ->when(
+                $this->filters["from_date"],
+                fn($query, $date) => $query->whereDate(
+                    "created_at",
+                    ">=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $this->filters["to_date"],
+                fn($query, $date) => $query->whereDate(
+                    "created_at",
+                    "<=",
+                    Carbon::parse($date)
                 )
             );
 
@@ -184,7 +202,12 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/country.Country Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 

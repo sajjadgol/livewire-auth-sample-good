@@ -1,3 +1,6 @@
+@section('page_title')
+    @lang("components/pages.edit_page_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,22 +17,22 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="edit" cancel-route="{{ route('page-management') }}">
+            <x-form.form submitText="Edit Page" submit-target="edit" cancel-route="{{ route('page-management') }}">
 
                 {{-- Input-group --}}
-                <x-input.group colspan="col-12" for="title" label="Title *" :error="$errors->first('title')">
+                <x-input.group colspan="col-12" for="title" label="Title *" :error="$errors->first('post.title')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="post.title" placeholder="Enter a Title" />
+                    <x-input.text wire:model.lazy="post.title" placeholder="Enter a page title" />
                 </x-input.group>
 
-                <x-input.group colspan="col-12" for="content" label="Content *" :error="$errors->first('content')">
+                <x-input.group colspan="col-12" for="content" label="Content *" :error="$errors->first('post.content')">
                     {{-- Rech text --}}
                     <x-input.rich-text wire:model.lazy="post.content">
-                        {{ $post->content }}
+                        {!! $post->content !!}
                     </x-input.rich-text>
                 </x-input.group>
 
-                <x-input.group colspan="col-12 mt-4" for="status" label="Select Status *" :error="$errors->first('status')">
+                <x-input.group colspan="col-12 mt-4" for="status" label="Select Status" :error="$errors->first('status')">
                     <x-input.select class="form-control" wire:model="post.status" id="status" onfocus="focused(this)" onfocusout="defocused(this)"
                         placeholder="Choose a status">
                         <option value="published">Published</option>

@@ -37,10 +37,13 @@
           "key" : "unverified-stores",
           "permission" : "unverified-stores",
           "href" : "",
-          "route" : "unverified-stores"
+          "route" : "unverified-stores",
+          "routeKeys" : {
+            "application_status" : "waiting"
+          }
         },
         {
-          "name" : "Stores Type",
+          "name" : "Store Type",
           "icon" : "local_convenience_store",
           "key" : "store-type-management",
           "permission" : "store-type-management",

@@ -25,9 +25,8 @@ class Create extends Component
     public $logo_path;
     public $email = '';
     public $name = '';
-    public $descriptions = '';
+    public $descriptions='';
     public $phone = '';
-    public $order_preparing_time = '';
     public $number_of_branch = 1;
     public $status = ''; 
     public $address_line_1 = '';
@@ -39,21 +38,21 @@ class Create extends Component
     public $latitude = '';
     public $longitude = '';
     public $store_address = '';
-    public $restaurant_type = '';
+    public $store_types = '';
+    public $store_type = '';
     public $userName = '';
     public $country_code = '';
 
     public $countries;
     public $states;
     public $cities;
-    public $store_type ;
 
     protected $listeners = [
         'set:latitude-longitude' => 'setLatitudeLongitude'
     ];
 
     public function setLatitudeLongitude($latitude, $longitude, $name) 
-   {    
+    {    
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->landmark = $name;
@@ -62,11 +61,10 @@ class Create extends Component
     protected $rules = [
         'email'                 => 'required|email|unique:App\Models\Stores\Store,email',
         'name'                  =>  'required|unique:App\Models\Stores\StoreTranslation,name',
-        'restaurant_type'       => 'required',
+        'store_type'       => 'required',
         'logo_path'             => 'required',
         'descriptions'          => 'required|max:1000',
         'phone'                 => 'required|numeric|digits_between:8,10',
-        'order_preparing_time'  => 'required|integer',
         'status'                => 'nullable|between:0,1',
         'address_line_1'        => 'required|string',
         'landmark'              => 'required|string',
@@ -84,12 +82,12 @@ class Create extends Component
         $this->countries = Country::all();
         $this->states = collect();
         $this->cities = collect();
-        $this->store_type = StoreType::all();
+        $this->store_types = StoreType::all();
         $this->country_code = Country::where('is_default', 1)->value('country_code');
     }
 
     public function updated($propertyName) {
-        $this->validateOnly($propertyName);
+       $this->validateOnly($propertyName);
     } 
 
     public function store() {
@@ -115,13 +113,12 @@ class Create extends Component
 
         $store = Store::create([
             'name' => $this->name,
-            'restaurant_type' => $this->restaurant_type,
+            'store_type' => $this->store_type,
             'descriptions' => $this->descriptions,
             'status'=> $this->status ? 1:0,
             'country_code' => $this->country_code,
             'phone' => $this->country_code.$this->phone,
             'email' => $this->email,
-            'order_preparing_time' => $this->order_preparing_time,
             'logo_path' => $storeLogoPath,
             'number_of_branch' => $this->number_of_branch,
             'application_status' => 'approved'

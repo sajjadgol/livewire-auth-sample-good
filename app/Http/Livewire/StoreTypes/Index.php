@@ -49,22 +49,24 @@ class Index extends Component
     {
         return [
             Column::field([
-                "label" => __('components/storeType.Name'),
+                "label" => __('components/StoreType.Name'),
                 "field" => "name",
-                "sortable" => true,
-                "direction" => true,
+                "sortable" => false,
+                "translate" => true,
+               
             ]),
             Column::field([
-                "label" => __('components/storeType.Creation Date'),
+                "label" => __('components/StoreType.Creation Date'),
                 "field" => "created_at",
             ]),
             Column::field([
-                "label" => __('components/storeType.Status'),
+                "label" => __('components/StoreType.Status'),
                 "field" => "status",
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "id",
+                "viewColumns" => false
             ]),           
         ];
     }
@@ -91,18 +93,18 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/storeType.Please select at least one user'),
+                __('components/StoreType.Please select at least one store type!'),
             ]);
             return false;
         }
         $this->dispatchBrowserEvent("swal:destroyMultiple", [
             "action" => "deleteSelected",
             "type" => "warning",
-            "confirmButtonText" => __('components/storeType.Yes, delete it!'),
-            "cancelButtonText" => __('components/storeType.No, cancel!'),
-            "message" => __('components/storeType.Are you sure?'),
+            "confirmButtonText" => __('components/StoreType.Yes, delete it!'),
+            "cancelButtonText" => __('components/StoreType.No, cancel!'),
+            "message" => __('components/StoreType.Are you sure?'),
             "text" => __(
-                'components/storeType.If deleted, you will not be able to recover this imaginary file!'
+                'components/StoreType.If deleted, you will not be able to recover this store types!'
             ),
         ]);
     }
@@ -120,7 +122,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/storeType.Store Type Delete Successfully!') . " -: " . $deleteCount,
+            __('components/StoreType.Store Type Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -140,7 +142,7 @@ class Index extends Component
      * @return \Illuminate\Http\Response
      */
     public function getRowsQueryProperty()
-    {
+    {   
         $query = StoreType::query()
             ->when(
                 $this->filters["search"],
@@ -152,7 +154,8 @@ class Index extends Component
 
             if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
                 $query->where('status' , '=' ,  $this->filters['status']);
-            }   
+            }  
+            
         return $this->applySorting($query);
     }
 
@@ -176,7 +179,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/StoreType.Store Type Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 
@@ -193,7 +202,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/storeType.Status updated Successfully!'),
+            __('components/StoreType.Status updated Successfully!'),
         ]);
    }
 
@@ -204,7 +213,7 @@ class Index extends Component
     public function render()
     {
         return view("livewire.store-types.index", [
-            "storeTypes" => $this->rows,
+            "StoreTypes" => $this->rows,
         ]);
     }
 }

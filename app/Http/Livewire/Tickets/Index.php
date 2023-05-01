@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire\Tickets;
 
-use App\Constants\TicketsStatus;
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Http\DataTable\Column;
+use App\Models\Tickets\Ticket;
+use App\Constants\TicketsStatus;
 use App\Http\DataTable\WithSorting;
 use App\Http\DataTable\WithCachedRows;
 use App\Http\DataTable\WithBulkActions;
-use App\Http\DataTable\WithPerPagePagination;
 use App\Http\DataTable\WithSingleAction;
-use App\Http\DataTable\Column;
-use App\Models\Tickets\Ticket;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\DataTable\WithPerPagePagination;
 
 class Index extends Component
 {
@@ -53,18 +55,16 @@ class Index extends Component
             Column::field([
                 "label" => __('components/ticket.Title'),
                 "field" => "title",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Customer Name'),
                 "field" => "user_id",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Creation Date'),
                 "field" => "created_at",
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/ticket.Status'),
@@ -72,7 +72,7 @@ class Index extends Component
             ]),
         ];
     }
-    public function mount($status = 'open') {
+    public function mount($status="") {
         $this->filters['status'] = $status;
         $statusConst = new TicketsStatus();
         $this->statusList =  $statusConst->getConstants();
@@ -101,7 +101,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/ticket.Please select at least one user'),
+                __('components/ticket.Please select at least one ticket'),
             ]);
             return false;
         }
@@ -112,7 +112,7 @@ class Index extends Component
             "cancelButtonText" => __('components/ticket.No, cancel!'),
             "message" => __('components/ticket.Are you sure?'),
             "text" => __(
-                'components/ticket.If deleted, you will not be able to recover this imaginary file!'
+                'components/ticket.If deleted, you will not be able to recover this tickets!'
             ),
         ]);
     }
@@ -150,19 +150,36 @@ class Index extends Component
      * @return \Illuminate\Http\Response
      */
     public function getRowsQueryProperty()
-    {
+    {   
         $query = Ticket::query()
             ->when(
                 $this->filters["search"],
-                fn($query, $search) => $query->WhereTranslationLike(
-                    "title",
+                fn($query, $search) => $query->where(
+                    "title", "like",
                     "%" . $search . "%"
+                )
+            )
+            ->when(
+                $this->filters["from_date"],
+                fn($query, $date) => $query->whereDate(
+                    "created_at",
+                    ">=",
+                    Carbon::parse($date)
+                )
+            )
+            ->when(
+                $this->filters["to_date"],
+                fn($query, $date) => $query->whereDate(
+                    "created_at",
+                    "<=",
+                    Carbon::parse($date)
                 )
             )->
             with(['user', 'category']);
-            if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
+            if(array_key_exists('status', $this->filters) && !empty($this->filters['status'])){ 
                 $query->where('status' , '=' ,  $this->filters['status']);
-            }   
+            } 
+       
         return $this->applySorting($query);
     }
 
@@ -186,7 +203,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/ticket.Ticket Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 

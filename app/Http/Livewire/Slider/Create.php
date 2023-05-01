@@ -44,7 +44,7 @@ class Create extends Component
     }
 
     public function store(){
-
+      
         $this->validate();
 
         $faq = Slider::create([

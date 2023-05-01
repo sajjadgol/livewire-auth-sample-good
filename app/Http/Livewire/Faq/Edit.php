@@ -34,9 +34,8 @@ class Edit extends Component
         //  Faq translate
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
-
-         $this->faq->title = isset($this->faq->translate($this->lang)->title) ?  $this->faq->translate($this->lang)->title: $this->faq->translate(app()->getLocale())->title;
-         $this->faq->descriptions = isset($this->faq->translate($this->lang)->descriptions) ? $this->faq->translate($this->lang)->descriptions : $this->faq->translate(app()->getLocale())->descriptions;
+        $this->faq->title = isset($this->faq->translate($this->lang)->title) ?  $this->faq->translate($this->lang)->title: $this->faq->translate(config('app.locale'))->title;
+        $this->faq->descriptions = isset($this->faq->translate($this->lang)->descriptions) ? $this->faq->translate($this->lang)->descriptions : $this->faq->translate(config('app.locale'))->descriptions;
         //  Faq translate
 
          $this->faq_category = FaqCategory::all();
@@ -49,12 +48,12 @@ class Edit extends Component
     }
 
     public function saveForm()
-    {
-        $descriptions =$this->descriptions;
-            if ($descriptions == '<p>b</p>'){
-                $this->$descriptions = 'cannot send empty value';
+    {   
+        $descriptions=$this->descriptions;
+            if ($descriptions == '<p><br></p>'){
+                $this->$descriptions = '';
             }
-        $this->validate();
+         $this->validate();
 
     }
 
@@ -65,7 +64,13 @@ class Edit extends Component
     }
 
     public function editTranslate()
-    {
+    {  
+        $descriptions =$this->faq->descriptions;
+
+        if ($descriptions == '<p><br></p>'){
+            $this->faq->descriptions = '';
+        }
+
         $request =  $this->validate([
             'faq.title' => 'required',
             'faq.descriptions' => 'required',

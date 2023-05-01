@@ -1,3 +1,7 @@
+{{-- Page Title --}}
+@section('page_title')
+    @lang("components/StoreType.edit_store_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,17 +18,17 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('store-type-management') }}">
+            <x-form.form  submitText="Update Store Type" submit-target="edit" cancel-route="{{ route('store-type-management') }}">
 
                 {{-- Input-group --}}
-                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
+                <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('StoreType.name')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="storeType.name" placeholder="Enter a store type name" />
+                    <x-input.text wire:model.lazy="StoreType.name" placeholder="Enter a store type name" />
                 </x-input.group>
 
-                <x-input.group inline colspan="col-12" for="status" label="Status *" :error="$errors->first('name')">
+                <x-input.group inline colspan="col-12" for="status" label="Status" :error="$errors->first('StoreType.status')">
                     {{-- Input text --}}
-                    <x-input.checkbox wire:model.lazy="storeType.status" label="Active"/>
+                    <x-input.checkbox wire:model.lazy="StoreType.status" label="Active"/>
                 </x-input.group>
 
 

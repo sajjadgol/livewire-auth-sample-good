@@ -40,6 +40,7 @@ class Index extends Component
         "refreshTransactions" => '$refresh',
         "deleteSelected",
         "confirm",
+        "confirmApplication",
     ];
 
     /* Apply bootstrap layout in pagination */
@@ -47,8 +48,12 @@ class Index extends Component
 
     public $roles;
     public $account_status = "";
-    public $application_status ;
-    public $storeTypes;
+    public $application_status;
+    public $StoreTypes;
+    public $actionStatus = '';
+    public $storeId = '';
+
+    protected $queryString = ['application_status'];
 
     /**
      * Generic string-based column, attributes assigned
@@ -61,13 +66,13 @@ class Index extends Component
             Column::field([
                 "label" => __('components/store.Photo'),
                 "field" => "logo_path",
-                "sortable" => false,
-                "direction" => true,
+                'hidden' => true
             ]),
             Column::field([
                 "label" => __('components/store.Name'),
                 "field" => "name",
                 "sortable" => true,
+                'translate' => true,
                 "direction" => true,
             ]),
             Column::field([
@@ -84,7 +89,8 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "id",
+                "viewColumns" => false
             ]),
             Column::field([
                 "label" => __('components/store.Creation Date'),
@@ -104,8 +110,9 @@ class Index extends Component
     }
     public function mount() {  
         $this->filters['application_status'] = $this->application_status; 
-        $this->filters['store_type'] = $this->storeTypes;   
-        $this->storeTypes = StoreType::withTranslation()->get();
+
+        $this->filters['store_type'] = $this->StoreTypes;   
+        $this->StoreTypes = StoreType::withTranslation()->get();
     }
 
 
@@ -121,7 +128,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/store.Please select at least one user'),
+                __('components/store.Please select at least one store'),
             ]);
             return false;
         }
@@ -132,7 +139,7 @@ class Index extends Component
             "cancelButtonText" => __('components/store.No, cancel!'),
             "message" => __('components/store.Are you sure?'),
             "text" => __(
-                'components/store.If deleted, you will not be able to recover this imaginary file!'
+                'components/store.If deleted, you will not be able to recover this stores!'
             ),
         ]);
     }
@@ -150,7 +157,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/store.User Delete Successfully!') . " -: " . $deleteCount,
+            __('components/store.Store Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -196,7 +203,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/store.Store Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 
@@ -256,7 +269,7 @@ class Index extends Component
      * @return response()
      */
     public function confirmApplication()
-    {        
+    {     
         Store::where('id', $this->storeId )->update(['application_status' => $this->actionStatus]);
        
         $this->dispatchBrowserEvent('swal:modal', [

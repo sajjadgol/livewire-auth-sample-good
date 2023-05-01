@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('stores/create/new', StoresCreate::class)->name('add-store');
     Route::get('unverified/stores', StoresIndex::class)->name('unverified-stores');
 
+   
     Route::get('store-types', StoreTypesIndex::class)->name('store-type-management');
     Route::get('store-types/edit/{id}/{ref_lang?}', StoreTypesEdit::class)->name('edit-store-type');
     Route::get('store-types/create', StoreTypesCreate::class)->name('add-store-type');

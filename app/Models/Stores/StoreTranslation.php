@@ -17,6 +17,6 @@ class StoreTranslation extends Model
         'name',
         'descriptions',
         'content',
-        'restaurant_type'
+        'store_type'
     ];
 }

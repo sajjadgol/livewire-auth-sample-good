@@ -21,7 +21,7 @@ class Store extends Model implements TranslatableContract
      *
      * @var array<int, string>
      */
-    public $translatedAttributes = ['name','descriptions','content','restaurant_type'];
+    public $translatedAttributes = ['name','descriptions','content','store_type'];
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +44,7 @@ class Store extends Model implements TranslatableContract
         'is_open',
         'is_searchable',
         'is_features',
-        'restaurant_type',
+        'store_type',
         'order_number',
         'commission_type',
         'commission_value',

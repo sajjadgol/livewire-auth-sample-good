@@ -1,3 +1,6 @@
+@section('page_title')
+    @lang("components/state.add_state_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,12 +17,12 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('state-management') }}">
+            <x-form.form submitText="Create State" submit-target="store" cancel-route="{{ route('state-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
                     {{-- Input text --}}
-                    <x-input.text wire:model.lazy="name" placeholder="Enter a country name" />
+                    <x-input.text wire:model.lazy="name" placeholder="Enter a state name" />
                 </x-input.group>
 
                 <x-input.group colspan="col-12 mt-4" for="country_id" label="Country *" :error="$errors->first('country_id')">

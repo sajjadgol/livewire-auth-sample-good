@@ -51,18 +51,20 @@ class Index extends Component
             Column::field([
                 "label" => __('components/page.Title'),
                 "field" => "title",
+                'translate' => true,
                 "sortable" => true,
                 "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Slug'),
                 "field" => "slug",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Creation Date'),
                 "field" => "created_at",
+                'translate' => true,
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/page.Status'),
@@ -70,7 +72,8 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "id",
+                "viewColumns" => false
             ]),           
         ];
     }
@@ -97,18 +100,18 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/page.Please select at least one user'),
+                __('components/pages.Please select at least one page'),
             ]);
             return false;
         }
         $this->dispatchBrowserEvent("swal:destroyMultiple", [
             "action" => "deleteSelected",
             "type" => "warning",
-            "confirmButtonText" => __('components/page.Yes, delete it!'),
-            "cancelButtonText" => __('components/page.No, cancel!'),
-            "message" => __('components/page.Are you sure?'),
+            "confirmButtonText" => __('components/pages.Yes, delete it!'),
+            "cancelButtonText" => __('components/pages.No, cancel!'),
+            "message" => __('components/pages.Are you sure?'),
             "text" => __(
-                'components/page.If deleted, you will not be able to recover this imaginary file!'
+                'components/pages.If deleted, you will not be able to recover this pages!'
             ),
         ]);
     }
@@ -126,7 +129,7 @@ class Index extends Component
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
             "message" =>
-            __('components/page.Page Delete Successfully!') . " -: " . $deleteCount,
+            __('components/pages.Page Delete Successfully!') . " -: " . $deleteCount,
         ]);
     }
 
@@ -182,7 +185,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/pages.Page Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 

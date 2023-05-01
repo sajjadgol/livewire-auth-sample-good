@@ -51,18 +51,20 @@ class Index extends Component
             Column::field([
                 "label" => __('components/faq.Title'),
                 "field" => "title",
+                'translate' => true,
                 "sortable" => true,
                 "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/faq.App Name'),
                 "field" => "role_type",
-                "sortable" => true,
-                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/faq.Creation Date'),
                 "field" => "created_at",
+                'translate' => true,
+                "sortable" => true,
+                "direction" => true,
             ]),
             Column::field([
                 "label" => __('components/faq.Status'),
@@ -70,7 +72,8 @@ class Index extends Component
             ]),
             Column::field([
                 "label" => implode(' | ',config('translatable.locales')),
-                "field" => "name"
+                "field" => "id",
+                "viewColumns" => false
             ]),           
         ];
     }
@@ -97,7 +100,7 @@ class Index extends Component
             $this->dispatchBrowserEvent("alert", [
                 "type" => "error",
                 "message" =>
-                __('components/faq.Please select at least one user'),
+                __('components/faq.Please select at least one faq'),
             ]);
             return false;
         }
@@ -108,7 +111,7 @@ class Index extends Component
             "cancelButtonText" => __('components/faq.No, cancel!'),
             "message" => __('components/faq.Are you sure?'),
             "text" => __(
-                'components/faq.If deleted, you will not be able to recover this imaginary file!'
+                'components/faq.If deleted, you will not be able to recover this faqs!'
             ),
         ]);
     }
@@ -155,7 +158,7 @@ class Index extends Component
                     "%" . $search . "%"
                 )
             );
-
+            
             if(array_key_exists('status', $this->filters) && is_numeric($this->filters['status'])){ 
                 $query->where('status' , '=' ,  $this->filters['status']);
             }   
@@ -182,7 +185,13 @@ class Index extends Component
      */
     public function remove()
     {
-        return (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+        $query = (clone $this->rowsQuery)->whereId($this->dltid)->delete();
+
+        if ($query) {
+            $this->dispatchBrowserEvent('alert', 
+            ['type' => 'success',  'message' => __('components/faq.Faq Delete Successfully!')]);    
+        }
+        return $query;
     }
 
 

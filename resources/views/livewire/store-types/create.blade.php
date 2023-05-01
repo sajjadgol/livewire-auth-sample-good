@@ -1,3 +1,7 @@
+{{-- Page Title --}}
+@section('page_title')
+    @lang("components/StoreType.add_store_title")
+@endsection
 <x-core.container>
 
     {{-- loader --}}
@@ -14,7 +18,7 @@
         {{-- Card Body --}}
         <x-slot name="body">
             {{-- Form --}}
-            <x-form.form submit-target="store" cancel-route="{{ route('store-type-management') }}">
+            <x-form.form submitText="create store type" submit-target="store" cancel-route="{{ route('store-type-management') }}">
 
                 {{-- Input-group --}}
                 <x-input.group colspan="col-12" for="name" label="Name *" :error="$errors->first('name')">
@@ -22,7 +26,7 @@
                     <x-input.text wire:model.lazy="name" placeholder="Enter a store type name" />
                 </x-input.group>
 
-                <x-input.group inline colspan="col-12" for="status" label="Status *" :error="$errors->first('name')">
+                <x-input.group inline colspan="col-12" for="status" label="Status" :error="$errors->first('status')">
                     {{-- Input text --}}
                     <x-input.checkbox wire:model.lazy="status" label="Active"/>
                 </x-input.group>

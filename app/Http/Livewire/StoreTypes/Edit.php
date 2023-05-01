@@ -8,28 +8,28 @@ use Livewire\Component;
 class Edit extends Component
 {  
     use AuthorizesRequests;
-    public StoreType $storeType;
+    public StoreType $StoreType;
     public $lang = '';
     public $languages = '';
 
     protected function rules() {
-        $storeType = isset($this->storeType->translate($this->lang)->id)  ? ','.$this->storeType->translate($this->lang)->id : null;
-        $this->storeType->name = trim($this->storeType->name);
+        $StoreType = isset($this->StoreType->translate($this->lang)->id)  ? ','.$this->StoreType->translate($this->lang)->id : null;
+        $this->StoreType->name = trim($this->StoreType->name);
 
         return [
-            'storeType.name'   => 'required|unique:App\Models\Stores\StoreTypeTranslation,name'.$storeType,
-            'storeType.status' => 'nullable|between:0,1',
+            'StoreType.name'   => 'required|unique:App\Models\Stores\StoreTypeTranslation,name'.$StoreType,
+            'StoreType.status' => 'nullable|between:0,1',
         ];
     }
 
     public function mount($id) {
 
-        $this->storeType = StoreType::find($id);
+        $this->StoreType = StoreType::find($id);
         //store type translate
         $this->lang = request()->ref_lang;
         $this->languages = request()->language;
 
-        $this->storeType->name = isset($this->storeType->translate($this->lang)->name) ?  $this->storeType->translate($this->lang)->name: $this->storeType->translate(app()->getLocale())->name;
+        $this->StoreType->name = isset($this->StoreType->translate($this->lang)->name) ?  $this->StoreType->translate($this->lang)->name: $this->StoreType->translate(app()->getLocale())->name;
       
         //store type translate
 
@@ -43,7 +43,7 @@ class Edit extends Component
     public function edit() {
 
         $this->validate();
-        $this->storeType->update();
+        $this->StoreType->update();
 
         return redirect(route('store-type-management'))->with('status', 'Store type successfully updated.');
 
@@ -51,16 +51,16 @@ class Edit extends Component
 
     public function editTranslate()
     {
-        $storeType = isset($this->storeType->translate($this->lang)->id)  ? ','.$this->storeType->translate($this->lang)->id : null;
+        $StoreType = isset($this->StoreType->translate($this->lang)->id)  ? ','.$this->StoreType->translate($this->lang)->id : null;
         $request =  $this->validate([
-            'storeType.name' => 'required|unique:App\Models\Stores\StoreTypeTranslation,name'.$storeType,
+            'StoreType.name' => 'required|unique:App\Models\Stores\StoreTypeTranslation,name'.$StoreType,
         ]);
 
         $data = [
-            $this->lang => $request['storeType']
+            $this->lang => $request['StoreType']
         ];
-        $storeType = StoreType::findOrFail($this->storeType->id);
-        $storeType->update($data);
+        $StoreType = StoreType::findOrFail($this->StoreType->id);
+        $StoreType->update($data);
 
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => 'Store type successfully updated.']);
@@ -70,9 +70,9 @@ class Edit extends Component
     {
         
         if ($this->lang != app()->getLocale()) {
-            return view('livewire.store-types.edit-language');
+            return view('livewire.Store-types.edit-language');
         }
-        return view('livewire.store-types.edit');
+        return view('livewire.Store-types.edit');
     }
 
 }
