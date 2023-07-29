@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\DataTable;
-trait WithSingleAction{
+trait WithSingleAction
+{
     public $dltid = false;
     public function initializeWithSingleAction()
     {
